@@ -19,10 +19,12 @@
 		<java.version>17</java.version>
 	</properties>
 	<dependencies>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -34,26 +36,31 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+
 		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-tomcat</artifactId>
 			<scope>provided</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -76,31 +83,57 @@
 				<artifactId>maven-resources-plugin</artifactId>
 			</plugin>
 
-		<plugin>
-   			<artifactId>maven-deploy-plugin</artifactId>
-  			 <version>2.8.1</version>
-   			<executions>
-      			<execution>
-         		   <id>default-deploy</id>
-        		    <phase>deploy</phase>
-        		    <goals>
-            		    <goal>deploy</goal>
-         		  </goals>
-      			</execution>
-   		   </executions>
-		</plugin>
+			<plugin>
+				<artifactId>maven-deploy-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>default-deploy</id>
+						<phase>deploy</phase>
+						<goals>
+							<goal>deploy</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.10</version>
+				<configuration>
+					<excludes>
+						<exclude>**/com/anikdv/blog/app/SpringBootBlogApplicationBackEndApplication.class</exclude>
+						<exclude>**/com/anikdv/blog/app/ServletInitializer.class</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
 
 		</plugins>
 	</build>
 
-		<distributionManagement>
-			<repository>
-				<uniqueVersion>false</uniqueVersion>
-				<id>corp1</id>
-				<name>Corporate Repository</name>
-				<url>file:///home/myfolder/.m2</url>
-				<layout>default</layout>
-			</repository>
-		</distributionManagement>
+	<distributionManagement>
+		<repository>
+			<uniqueVersion>false</uniqueVersion>
+			<id>corp1</id>
+			<name>Corporate Repository</name>
+			<url>file:///home/myfolder/.m2</url>
+			<layout>default</layout>
+		</repository>
+	</distributionManagement>
 
 </project>

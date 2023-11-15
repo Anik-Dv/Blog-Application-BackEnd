@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ApiResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SpringBoot-Blog-Application-BackEnd</a> &gt; <a href="index.source.html" class="el_package">com.anikdv.blog.app.payloads</a> &gt; <span class="el_source">ApiResponse.java</span></div><h1>ApiResponse.java</h1><pre class="source lang-java linenums">package com.anikdv.blog.app.payloads;
+
+/**
+ * @author AnikDV
+ */
+public class ApiResponse {
+
+	private String message;
+	private boolean status;
+
+	/**
+	 * super constructor
+	 */
+	public ApiResponse() {
+<span class="nc" id="L15">		super();</span>
+<span class="nc" id="L16">	}</span>
+
+	/**
+	 * parameterize constructor
+	 * 
+	 * @param message
+	 * @param status
+	 */
+	public ApiResponse(String message, boolean status) {
+<span class="nc" id="L25">		super();</span>
+<span class="nc" id="L26">		this.message = message;</span>
+<span class="nc" id="L27">		this.status = status;</span>
+<span class="nc" id="L28">	}</span>
+
+	/**
+	 * @return the message
+	 */
+	public String getMessage() {
+<span class="nc" id="L34">		return message;</span>
+	}
+
+	/**
+	 * @param message the message to set
+	 */
+	public void setMessage(String message) {
+<span class="nc" id="L41">		this.message = message;</span>
+<span class="nc" id="L42">	}</span>
+
+	/**
+	 * @return the status
+	 */
+	public boolean isStatus() {
+<span class="nc" id="L48">		return status;</span>
+	}
+
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(boolean status) {
+<span class="nc" id="L55">		this.status = status;</span>
+<span class="nc" id="L56">	}</span>
+
+	@Override
+	public String toString() {
+<span class="nc" id="L60">		return &quot;ApiResponse [message=&quot; + message + &quot;, status=&quot; + status + &quot;]&quot;;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
