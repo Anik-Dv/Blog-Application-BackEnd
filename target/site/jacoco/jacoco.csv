@@ -1,6 +1,7 @@
 GROUP,PACKAGE,CLASS,INSTRUCTION_MISSED,INSTRUCTION_COVERED,BRANCH_MISSED,BRANCH_COVERED,LINE_MISSED,LINE_COVERED,COMPLEXITY_MISSED,COMPLEXITY_COVERED,METHOD_MISSED,METHOD_COVERED
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.entities,User,101,3,0,0,35,2,18,1,18,1
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.exceptions,ResourceNotFoundException,58,0,0,0,15,0,8,0,8,0
+SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.exceptions,GlobalExceptionHandler,14,3,0,0,3,1,1,1,1,1
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.payloads,UserDto,104,0,0,0,37,0,19,0,19,0
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.payloads,ApiResponse,32,0,0,0,13,0,7,0,7,0
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.controllers,UserController,232,7,12,0,47,2,11,1,5,1

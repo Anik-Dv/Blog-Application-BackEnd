@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import com.anikdv.blog.app.entities.User;
 import com.anikdv.blog.app.exceptions.ResourceNotFoundException;
 import com.anikdv.blog.app.payloads.UserDto;
-import com.anikdv.blog.app.repositories.User_Repository;
+import com.anikdv.blog.app.repositories.UserRepository;
 import com.anikdv.blog.app.services.UserService;
 
 /**
@@ -21,13 +21,13 @@ import com.anikdv.blog.app.services.UserService;
 public class UserServiceImpl implements UserService {
 
 	@Autowired
-	private User_Repository user_Repository;
+	private UserRepository userRepository;
 
 	@Override
 	public UserDto getUserById(final Integer userId) {
 		User user = null;
 		try {
-			user = this.user_Repository.findById(userId)
+			user = this.userRepository.findById(userId)
 					.orElseThrow(() -> new ResourceNotFoundException("USER ", "ID ", userId));
 			return this.EntityToDto(user);
 		} catch (ResourceNotFoundException e) {
@@ -38,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<UserDto> getAllUsers() {
-		List<User> users = this.user_Repository.findAll();
+		List<User> users = this.userRepository.findAll();
 		List<UserDto> allUserDto = users.stream().map(user -> this.EntityToDto(user)).collect(Collectors.toList());
 		return allUserDto;
 	}
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
 		User user = null;
 		try {
 			user = this.DtoToEntity(userDto);
-			User savedUser = this.user_Repository.save(user);
+			User savedUser = this.userRepository.save(user);
 			return this.EntityToDto(savedUser);
 
 		} catch (Exception e) {
@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
 
 		try {
 			// search user form resource
-			user = this.user_Repository.findById(userId)
+			user = this.userRepository.findById(userId)
 					.orElseThrow(() -> new ResourceNotFoundException("USER ", "ID ", userId));
 
 			// set user new informations
@@ -77,7 +77,7 @@ public class UserServiceImpl implements UserService {
 			user.setPassword(userDto.getPassword());
 
 			// update the user
-			User updatedUser = this.user_Repository.save(user);
+			User updatedUser = this.userRepository.save(user);
 			UserDto User_Dto = this.EntityToDto(updatedUser);
 			return User_Dto;
 		} catch (ResourceNotFoundException e) {
@@ -91,9 +91,9 @@ public class UserServiceImpl implements UserService {
 		boolean flag = false;
 		try {
 			
-			User user = this.user_Repository.findById(userId)
+			User user = this.userRepository.findById(userId)
 					.orElseThrow(() -> new ResourceNotFoundException("USER ", "ID ", userId));
-			this.user_Repository.delete(user);
+			this.userRepository.delete(user);
 			flag = true;
 			return flag; 
 		} catch (ResourceNotFoundException e) {

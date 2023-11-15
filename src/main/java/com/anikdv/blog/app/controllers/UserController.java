@@ -22,8 +22,8 @@ import com.anikdv.blog.app.payloads.UserDto;
 import com.anikdv.blog.app.services.UserService;
 
 /**
- * User Controller
- */
+ * User RestController
+*/
 
 @RestController
 @RequestMapping("/api/user")
