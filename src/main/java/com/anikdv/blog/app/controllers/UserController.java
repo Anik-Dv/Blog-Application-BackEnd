@@ -21,6 +21,8 @@ import com.anikdv.blog.app.payloads.ApiResponse;
 import com.anikdv.blog.app.payloads.UserDto;
 import com.anikdv.blog.app.services.UserService;
 
+import jakarta.validation.Valid;
+
 /**
  * User RestController
 */
@@ -29,10 +31,10 @@ import com.anikdv.blog.app.services.UserService;
 @RequestMapping("/api/user")
 public class UserController {
 
-	Logger logger = LoggerFactory.getLogger(UserController.class);
+	private Logger logger = LoggerFactory.getLogger(UserController.class);
 
 	@Autowired
-	UserService userService;
+	private UserService userService;
 
 	/**
 	 * @info This Method call for create new user
@@ -40,7 +42,7 @@ public class UserController {
 	 * @return Status Code
 	 */
 	@PostMapping(value = "/create", consumes = "application/json")
-	public ResponseEntity<UserDto> createUser(final @RequestBody UserDto userDto) {
+	public ResponseEntity<UserDto> createUser(@Valid final @RequestBody UserDto userDto) {
 		final String METHOD_NAME = "createUser";
 		logger.info("Method Invoked: " + this.getClass().getName() + ":" + METHOD_NAME);
 		try {
@@ -61,7 +63,7 @@ public class UserController {
 	 * @return Status Code
 	 */
 	@PutMapping(value = "/update/{userId}", consumes = "application/json")
-	public ResponseEntity<?> updateUser(final @RequestBody UserDto userDto, final @PathVariable Integer userId) {
+	public ResponseEntity<?> updateUser(@Valid final @RequestBody UserDto userDto, final @PathVariable Integer userId) {
 		final String METHOD_NAME = "updateUser";
 		logger.info("Method Invoked: " + this.getClass().getName() + ":" + METHOD_NAME);
 
@@ -76,7 +78,7 @@ public class UserController {
 
 		} catch (ResourceNotFoundException e) {
 			logger.error(e.getMessage());
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("User Can't Deleted!", false));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), false));
 		}
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
@@ -86,7 +88,7 @@ public class UserController {
 	 * @return Status Code
 	 */
 	@DeleteMapping(value = "/delete/{userId}")
-	public ResponseEntity<?> deleteUser(@PathVariable Integer userId) {
+	public ResponseEntity<?> deleteUser(final @PathVariable Integer userId) {
 
 		final String METHOD_NAME = "deleteUser";
 		logger.info("Method Invoked: " + this.getClass().getName() + ":" + METHOD_NAME);
@@ -140,7 +142,7 @@ public class UserController {
 
 		} catch (ResourceNotFoundException e) {
 			logger.error(e.getMessage());
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("Invalided User Id!", false));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage() + " | Invalided User Id!", false));
 		}
 	}
 

@@ -1,15 +1,31 @@
 package com.anikdv.blog.app.payloads;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 /**
  * This Model Class is DTO (Data Transfer Object)
  */
 public class UserDto {
 
 	private int userId;
+
+	@NotBlank
+	@Size(min = 4, max = 26, message = "You Name Is Must be Minimum 4 Chars and Maximum is 26 Chars!")
 	private String name;
+	@NotBlank
 	private String role;
+	@NotBlank
+	@Size(min = 16, max = 2500, message = "About is Must be Minimum 12 Chars and Maximum is 2500 Chars!")
 	private String about;
+	@Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "Email Address is Not Valid!")
+	@NotBlank
 	private String email;
+	@NotBlank
+	@Pattern(regexp = "^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$", message = "Minimum eight characters, at least one upper case letter, one number and one special character")
+	@Size(min = 8, max = 20)
 	private String password;
 	private String image_url;
 	private String status;
@@ -35,6 +51,27 @@ public class UserDto {
 			String status) {
 		super();
 		this.userId = userId;
+		this.name = name;
+		this.role = role;
+		this.about = about;
+		this.email = email;
+		this.password = password;
+		this.image_url = image_url;
+		this.status = status;
+	}
+	
+	/**
+	 * @param name
+	 * @param role
+	 * @param about
+	 * @param email
+	 * @param password
+	 * @param image_url
+	 * @param status
+	 */
+	public UserDto(String name, String role, String about, String email, String password, String image_url,
+			String status) {
+		super();
 		this.name = name;
 		this.role = role;
 		this.about = about;

@@ -7,9 +7,12 @@ package com.anikdv.blog.app.exceptions;
 public class ResourceNotFoundException extends RuntimeException {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 219163967739332249L;
+	/**
 	 * Default Serial UID
 	 */
-	private static final long serialVersionUID = 1L;
 	private String resourceName;
 	private String resourceField;
 	private long resourceId;
@@ -19,7 +22,7 @@ public class ResourceNotFoundException extends RuntimeException {
 	 * @param resourceField
 	 * @param resourceId
 	 */
-	public ResourceNotFoundException(String resourceName, String resourceField, long resourceId) {
+	public ResourceNotFoundException(final String resourceName, final String resourceField, final long resourceId) {
 		super(String.format("%s Resource Not Found! %s : %s", resourceName, resourceField, resourceId));
 		this.resourceName = resourceName;
 		this.resourceField = resourceField;

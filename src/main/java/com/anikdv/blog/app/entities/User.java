@@ -8,7 +8,8 @@ import jakarta.persistence.Id;
 
 /**
  * This is User Entity
- * @author AnikDv 
+ * 
+ * @author AnikDV
  */
 
 @Entity

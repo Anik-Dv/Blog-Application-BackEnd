@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.anikdv.blog.app.configurations.ModelMapperConfiguration;
 import com.anikdv.blog.app.entities.User;
 import com.anikdv.blog.app.exceptions.ResourceNotFoundException;
 import com.anikdv.blog.app.payloads.UserDto;
@@ -23,16 +24,14 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private ModelMapperConfiguration modelMapperConfiguration;
+
 	@Override
 	public UserDto getUserById(final Integer userId) {
-		User user = null;
-		try {
-			user = this.userRepository.findById(userId)
-					.orElseThrow(() -> new ResourceNotFoundException("USER ", "ID ", userId));
-			return this.EntityToDto(user);
-		} catch (ResourceNotFoundException e) {
-			e.getMessage();
-		}
+		User user = this.userRepository.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("USER ", "ID ", userId));
+
 		return this.EntityToDto(user);
 	}
 
@@ -60,71 +59,57 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDto updateUser(final UserDto userDto, Integer userId) {
 
-		// initial user is null;
-		User user = null;
+		// search user form resource
+		User user = this.userRepository.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("USER", "ID ", userId));
 
-		try {
-			// search user form resource
-			user = this.userRepository.findById(userId)
-					.orElseThrow(() -> new ResourceNotFoundException("USER ", "ID ", userId));
+		// set user new informations
+		user.setName(userDto.getName());
+		user.setEmail(userDto.getEmail());
+		user.setAbout(userDto.getAbout());
+		user.setStatus(userDto.getStatus());
+		user.setImage_url(userDto.getImage_url());
+		user.setPassword(userDto.getPassword());
 
-			// set user new informations
-			user.setName(userDto.getName());
-			user.setEmail(userDto.getEmail());
-			user.setAbout(userDto.getAbout());
-			user.setStatus(userDto.getStatus());
-			user.setImage_url(userDto.getImage_url());
-			user.setPassword(userDto.getPassword());
-
-			// update the user
-			User updatedUser = this.userRepository.save(user);
-			UserDto User_Dto = this.EntityToDto(updatedUser);
-			return User_Dto;
-		} catch (ResourceNotFoundException e) {
-			e.getMessage();
-		}
-		return this.EntityToDto(user);
+		// update the user
+		User updatedUser = this.userRepository.save(user);
+		return this.EntityToDto(updatedUser);
 	}
 
 	@Override
 	public boolean deleteUser(final Integer userId) {
 		boolean flag = false;
 		try {
-			
+
 			User user = this.userRepository.findById(userId)
 					.orElseThrow(() -> new ResourceNotFoundException("USER ", "ID ", userId));
 			this.userRepository.delete(user);
 			flag = true;
-			return flag; 
+			return flag;
 		} catch (ResourceNotFoundException e) {
 			e.getMessage();
 			return flag;
 		}
-
 	}
 
 	/**
-	 * Convert UserDTO To UserEntity
+	 * DtoToEntity convert object an DTO To Entity
 	 * 
-	 * @param userDto
-	 * @return userEntity
+	 * @param userDto object
+	 * @return fully mapped instance of {@code destinationType}
 	 */
 	public User DtoToEntity(final UserDto userDto) {
-		User user = new User(userDto.getUserId(), userDto.getName(), userDto.getRole(), userDto.getAbout(),
-				userDto.getEmail(), userDto.getPassword(), userDto.getImage_url(), userDto.getStatus());
-		return user;
+		return this.modelMapperConfiguration.modelMapper().map(userDto, User.class);
 	}
 
 	/**
-	 * Convert UserEntity To UserDTO
+	 * EntityToDto {@code source} convert object an Entity To DTO
 	 * 
-	 * @param user
-	 * @return userDto
+	 * @param user object
+	 * @return fully mapped instance of {@code destinationType}
 	 */
 	public UserDto EntityToDto(final User user) {
-		UserDto userDto = new UserDto(user.getUserId(), user.getName(), user.getRole(), user.getAbout(),
-				user.getEmail(), user.getPassword(), user.getImage_url(), user.getStatus());
-		return userDto;
+		return this.modelMapperConfiguration.modelMapper().map(user, UserDto.class);
 	}
 
 }
