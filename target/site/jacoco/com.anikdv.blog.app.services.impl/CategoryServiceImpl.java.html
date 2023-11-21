@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CategoryServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SpringBoot-Blog-Application-BackEnd</a> &gt; <a href="index.source.html" class="el_package">com.anikdv.blog.app.services.impl</a> &gt; <span class="el_source">CategoryServiceImpl.java</span></div><h1>CategoryServiceImpl.java</h1><pre class="source lang-java linenums">package com.anikdv.blog.app.services.impl;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.anikdv.blog.app.configurations.ModelMapperConfiguration;
+import com.anikdv.blog.app.entities.Category;
+import com.anikdv.blog.app.exceptions.ResourceNotFoundException;
+import com.anikdv.blog.app.payloads.CategoryDto;
+import com.anikdv.blog.app.repositories.CategoryRepository;
+import com.anikdv.blog.app.services.CategoryService;
+
+/**
+ * This is a implements of category service
+ *
+ * @author AnikDV
+ */
+@Service
+<span class="fc" id="L22">public class CategoryServiceImpl implements CategoryService {</span>
+
+	@Autowired
+	private CategoryRepository categoryRepository;
+
+	@Autowired
+	private ModelMapperConfiguration mapperConfiguration;
+
+	@Override
+	public CategoryDto createCategory(CategoryDto categoryDto) {
+<span class="nc" id="L32">		Category category = null;</span>
+		try {
+<span class="nc" id="L34">			category = this.DtoToEntity(categoryDto);</span>
+<span class="nc" id="L35">			Category savedCategory = this.categoryRepository.save(category);</span>
+<span class="nc" id="L36">			return this.EntityToDto(savedCategory);</span>
+<span class="nc" id="L37">		} catch (Exception e) {</span>
+<span class="nc" id="L38">			e.getMessage();</span>
+		}
+<span class="nc" id="L40">		return this.EntityToDto(category);</span>
+
+	}
+
+	@Override
+	public CategoryDto updateCategory(CategoryDto categoryDto, Integer categoryId) {
+		// get find old category and when not find any category then throws error
+<span class="nc" id="L47">		Category oldCategory = this.categoryRepository.findById(categoryId)</span>
+<span class="nc" id="L48">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Category&quot;, &quot;CategoryID&quot;, categoryId));</span>
+		// set new content
+<span class="nc" id="L50">		oldCategory.setCategoryTitle(categoryDto.getCategoryTitle());</span>
+		// save new category
+<span class="nc" id="L52">		Category updatedCategory = this.categoryRepository</span>
+<span class="nc" id="L53">				.save(this.mapperConfiguration.modelMapper().map(oldCategory, Category.class));</span>
+		// and then return
+<span class="nc" id="L55">		return this.mapperConfiguration.modelMapper().map(updatedCategory, CategoryDto.class);</span>
+	}
+
+	@Override
+	public boolean deleteCategory(Integer categoryId) {
+<span class="nc" id="L60">		boolean flag = false;</span>
+		try {
+<span class="nc" id="L62">			Category category = this.categoryRepository.findById(categoryId)</span>
+<span class="nc" id="L63">					.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Category&quot;, &quot;CategoryID&quot;, categoryId));</span>
+
+<span class="nc" id="L65">			this.categoryRepository.delete(category);</span>
+<span class="nc" id="L66">			flag = true;</span>
+<span class="nc" id="L67">			return flag;</span>
+<span class="nc" id="L68">		} catch (ResourceNotFoundException e) {</span>
+<span class="nc" id="L69">			e.printStackTrace();</span>
+<span class="nc" id="L70">			return flag;</span>
+		}
+	}
+
+	@Override
+	public CategoryDto getSingleCategory(Integer categoryId) {
+<span class="nc" id="L76">		Category category = this.categoryRepository.findById(categoryId)</span>
+<span class="nc" id="L77">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Category&quot;, &quot;CategoryID&quot;, categoryId));</span>
+<span class="nc" id="L78">		return this.EntityToDto(category);</span>
+	}
+
+	@Override
+	public List&lt;CategoryDto&gt; getCategories() {
+<span class="nc" id="L83">		List&lt;Category&gt; categorys = this.categoryRepository.findAll();</span>
+<span class="nc" id="L84">		List&lt;CategoryDto&gt; listOfCategoryDto = categorys.stream()</span>
+<span class="nc" id="L85">				.map(cat -&gt; this.mapperConfiguration.modelMapper().map(cat, CategoryDto.class))</span>
+<span class="nc" id="L86">				.collect(Collectors.toList());</span>
+<span class="nc" id="L87">		return listOfCategoryDto;</span>
+	}
+
+	/**
+	 * DtoToEntity Method convert object an DTO To Entity
+	 *
+	 * @param categoryDto
+	 * @return fully mapped instance of {@code destinationType}
+	 */
+	public Category DtoToEntity(final CategoryDto categoryDto) {
+<span class="nc" id="L97">		return this.mapperConfiguration.modelMapper().map(categoryDto, Category.class);</span>
+	}
+
+	/**
+	 * EntityToDto Method {@code source} convert object an Entity To DTO
+	 *
+	 * @param category
+	 *
+	 * @return fully mapped instance of {@code destinationType}
+	 */
+	public CategoryDto EntityToDto(final Category category) {
+<span class="nc" id="L108">		return this.mapperConfiguration.modelMapper().map(category, CategoryDto.class);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
