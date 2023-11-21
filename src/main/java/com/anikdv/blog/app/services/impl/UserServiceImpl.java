@@ -1,6 +1,7 @@
 package com.anikdv.blog.app.services.impl;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,6 +48,10 @@ public class UserServiceImpl implements UserService {
 		User user = null;
 		try {
 			user = this.DtoToEntity(userDto);
+			Optional<User> userDetails = this.userRepository.findByEmail(user.getEmail());
+			if (userDetails.isPresent()) {
+				throw new InternalError("This Email ID '"+ userDetails.get().getEmail() + "' Already Exists!");
+			}
 			User savedUser = this.userRepository.save(user);
 			return this.EntityToDto(savedUser);
 
@@ -94,7 +99,7 @@ public class UserServiceImpl implements UserService {
 
 	/**
 	 * DtoToEntity convert object an DTO To Entity
-	 * 
+	 *
 	 * @param userDto object
 	 * @return fully mapped instance of {@code destinationType}
 	 */
@@ -104,12 +109,20 @@ public class UserServiceImpl implements UserService {
 
 	/**
 	 * EntityToDto {@code source} convert object an Entity To DTO
-	 * 
+	 *
 	 * @param user object
 	 * @return fully mapped instance of {@code destinationType}
 	 */
 	public UserDto EntityToDto(final User user) {
 		return this.modelMapperConfiguration.modelMapper().map(user, UserDto.class);
+	}
+
+	@Override
+	public Optional<UserDto> findByEmail(String emailId) {
+		Optional<User> userDetails = this.userRepository.findByEmail(emailId);
+		Optional<UserDto> userDto = Optional
+				.of(this.modelMapperConfiguration.modelMapper().map(userDetails, UserDto.class));
+		return userDto;
 	}
 
 }

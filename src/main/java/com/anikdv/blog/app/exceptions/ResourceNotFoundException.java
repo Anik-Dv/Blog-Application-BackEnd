@@ -7,7 +7,7 @@ package com.anikdv.blog.app.exceptions;
 public class ResourceNotFoundException extends RuntimeException {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 219163967739332249L;
 	/**

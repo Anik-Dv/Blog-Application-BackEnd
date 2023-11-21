@@ -1,166 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SpringBoot-Blog-Application-BackEnd</a> &gt; <a href="index.source.html" class="el_package">com.anikdv.blog.app.payloads</a> &gt; <span class="el_source">UserDto.java</span></div><h1>UserDto.java</h1><pre class="source lang-java linenums">package com.anikdv.blog.app.payloads;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 /**
  * This Model Class is DTO (Data Transfer Object)
  */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+<span class="pc" id="L22">@Builder</span>
 public class UserDto {
 
-	private int userId;
+	private Integer userId;
+
+	@NotBlank
+	@Size(min = 4, max = 26, message = &quot;You Name Is Must be Minimum 4 Chars and Maximum is 26 Chars!&quot;)
 	private String name;
+	@NotBlank
 	private String role;
+	@NotBlank
+	@Size(min = 16, max = 2500, message = &quot;About is Must be Minimum 12 Chars and Maximum is 2500 Chars!&quot;)
 	private String about;
+	@Email(regexp = &quot;^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$&quot;, message = &quot;Email Address is Not Valid!&quot;)
+	@NotBlank
 	private String email;
+	@NotBlank
+	@Pattern(regexp = &quot;^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$&quot;, message = &quot;Minimum eight characters, at least one upper case letter, one number and one special character&quot;)
+	@Size(min = 8, max = 20)
 	private String password;
 	private String image_url;
 	private String status;
-
-	/**
-	 * 
-	 */
-	public UserDto() {
-<span class="nc" id="L21">		super();</span>
-<span class="nc" id="L22">	}</span>
-
-	/**
-	 * @param userId
-	 * @param name
-	 * @param role
-	 * @param about
-	 * @param email
-	 * @param password
-	 * @param image_url
-	 * @param status
-	 */
-	public UserDto(int userId, String name, String role, String about, String email, String password, String image_url,
-			String status) {
-<span class="nc" id="L36">		super();</span>
-<span class="nc" id="L37">		this.userId = userId;</span>
-<span class="nc" id="L38">		this.name = name;</span>
-<span class="nc" id="L39">		this.role = role;</span>
-<span class="nc" id="L40">		this.about = about;</span>
-<span class="nc" id="L41">		this.email = email;</span>
-<span class="nc" id="L42">		this.password = password;</span>
-<span class="nc" id="L43">		this.image_url = image_url;</span>
-<span class="nc" id="L44">		this.status = status;</span>
-<span class="nc" id="L45">	}</span>
-
-	/**
-	 * @return the userId
-	 */
-	public int getUserId() {
-<span class="nc" id="L51">		return userId;</span>
-	}
-
-	/**
-	 * @param userId the userId to set
-	 */
-	public void setUserId(int userId) {
-<span class="nc" id="L58">		this.userId = userId;</span>
-<span class="nc" id="L59">	}</span>
-
-	/**
-	 * @return the name
-	 */
-	public String getName() {
-<span class="nc" id="L65">		return name;</span>
-	}
-
-	/**
-	 * @param name the name to set
-	 */
-	public void setName(String name) {
-<span class="nc" id="L72">		this.name = name;</span>
-<span class="nc" id="L73">	}</span>
-
-	/**
-	 * @return the role
-	 */
-	public String getRole() {
-<span class="nc" id="L79">		return role;</span>
-	}
-
-	/**
-	 * @param role the role to set
-	 */
-	public void setRole(String role) {
-<span class="nc" id="L86">		this.role = role;</span>
-<span class="nc" id="L87">	}</span>
-
-	/**
-	 * @return the about
-	 */
-	public String getAbout() {
-<span class="nc" id="L93">		return about;</span>
-	}
-
-	/**
-	 * @param about the about to set
-	 */
-	public void setAbout(String about) {
-<span class="nc" id="L100">		this.about = about;</span>
-<span class="nc" id="L101">	}</span>
-
-	/**
-	 * @return the email
-	 */
-	public String getEmail() {
-<span class="nc" id="L107">		return email;</span>
-	}
-
-	/**
-	 * @param email the email to set
-	 */
-	public void setEmail(String email) {
-<span class="nc" id="L114">		this.email = email;</span>
-<span class="nc" id="L115">	}</span>
-
-	/**
-	 * @return the password
-	 */
-	public String getPassword() {
-<span class="nc" id="L121">		return password;</span>
-	}
-
-	/**
-	 * @param password the password to set
-	 */
-	public void setPassword(String password) {
-<span class="nc" id="L128">		this.password = password;</span>
-<span class="nc" id="L129">	}</span>
-
-	/**
-	 * @return the image_url
-	 */
-	public String getImage_url() {
-<span class="nc" id="L135">		return image_url;</span>
-	}
-
-	/**
-	 * @param image_url the image_url to set
-	 */
-	public void setImage_url(String image_url) {
-<span class="nc" id="L142">		this.image_url = image_url;</span>
-<span class="nc" id="L143">	}</span>
-
-	/**
-	 * @return the status
-	 */
-	public String getStatus() {
-<span class="nc" id="L149">		return status;</span>
-	}
-
-	/**
-	 * @param status the status to set
-	 */
-	public void setStatus(String status) {
-<span class="nc" id="L156">		this.status = status;</span>
-<span class="nc" id="L157">	}</span>
-
-	@Override
-	public String toString() {
-<span class="nc" id="L161">		return &quot;UserDto [userId=&quot; + userId + &quot;, name=&quot; + name + &quot;, role=&quot; + role + &quot;, about=&quot; + about + &quot;, email=&quot;</span>
-				+ email + &quot;, password=&quot; + password + &quot;, image_url=&quot; + image_url + &quot;, status=&quot; + status + &quot;]&quot;;
-	}
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -7,9 +7,12 @@
 public class ResourceNotFoundException extends RuntimeException {
 
 	/**
+	 *
+	 */
+	private static final long serialVersionUID = 219163967739332249L;
+	/**
 	 * Default Serial UID
 	 */
-	private static final long serialVersionUID = 1L;
 	private String resourceName;
 	private String resourceField;
 	private long resourceId;
@@ -19,58 +22,58 @@ public class ResourceNotFoundException extends RuntimeException {
 	 * @param resourceField
 	 * @param resourceId
 	 */
-	public ResourceNotFoundException(String resourceName, String resourceField, long resourceId) {
-<span class="nc" id="L23">		super(String.format(&quot;%s Resource Not Found! %s : %s&quot;, resourceName, resourceField, resourceId));</span>
-<span class="nc" id="L24">		this.resourceName = resourceName;</span>
-<span class="nc" id="L25">		this.resourceField = resourceField;</span>
-<span class="nc" id="L26">		this.resourceId = resourceId;</span>
-<span class="nc" id="L27">	}</span>
+	public ResourceNotFoundException(final String resourceName, final String resourceField, final long resourceId) {
+<span class="nc" id="L26">		super(String.format(&quot;%s Resource Not Found! %s : %s&quot;, resourceName, resourceField, resourceId));</span>
+<span class="nc" id="L27">		this.resourceName = resourceName;</span>
+<span class="nc" id="L28">		this.resourceField = resourceField;</span>
+<span class="nc" id="L29">		this.resourceId = resourceId;</span>
+<span class="nc" id="L30">	}</span>
 
 	/**
 	 * @return the resourceName
 	 */
 	public String getResourceName() {
-<span class="nc" id="L33">		return resourceName;</span>
+<span class="nc" id="L36">		return resourceName;</span>
 	}
 
 	/**
 	 * @param resourceName the resourceName to set
 	 */
 	public void setResourceName(String resourceName) {
-<span class="nc" id="L40">		this.resourceName = resourceName;</span>
-<span class="nc" id="L41">	}</span>
+<span class="nc" id="L43">		this.resourceName = resourceName;</span>
+<span class="nc" id="L44">	}</span>
 
 	/**
 	 * @return the resourceField
 	 */
 	public String getResourceField() {
-<span class="nc" id="L47">		return resourceField;</span>
+<span class="nc" id="L50">		return resourceField;</span>
 	}
 
 	/**
 	 * @param resourceField the resourceField to set
 	 */
 	public void setResourceField(String resourceField) {
-<span class="nc" id="L54">		this.resourceField = resourceField;</span>
-<span class="nc" id="L55">	}</span>
+<span class="nc" id="L57">		this.resourceField = resourceField;</span>
+<span class="nc" id="L58">	}</span>
 
 	/**
 	 * @return the resourceId
 	 */
 	public long getResourceId() {
-<span class="nc" id="L61">		return resourceId;</span>
+<span class="nc" id="L64">		return resourceId;</span>
 	}
 
 	/**
 	 * @param resourceId the resourceId to set
 	 */
 	public void setResourceId(long resourceId) {
-<span class="nc" id="L68">		this.resourceId = resourceId;</span>
-<span class="nc" id="L69">	}</span>
+<span class="nc" id="L71">		this.resourceId = resourceId;</span>
+<span class="nc" id="L72">	}</span>
 
 	@Override
 	public String toString() {
-<span class="nc" id="L73">		return &quot;ResourceNotFoundException [resourceName=&quot; + resourceName + &quot;, resourceField=&quot; + resourceField</span>
+<span class="nc" id="L76">		return &quot;ResourceNotFoundException [resourceName=&quot; + resourceName + &quot;, resourceField=&quot; + resourceField</span>
 				+ &quot;, resourceId=&quot; + resourceId + &quot;]&quot;;
 	}
 

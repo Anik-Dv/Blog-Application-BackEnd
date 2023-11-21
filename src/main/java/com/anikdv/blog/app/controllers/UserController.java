@@ -25,8 +25,7 @@ import jakarta.validation.Valid;
 
 /**
  * User RestController
-*/
-
+ */
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
@@ -42,18 +41,17 @@ public class UserController {
 	 * @return Status Code
 	 */
 	@PostMapping(value = "/create", consumes = "application/json")
-	public ResponseEntity<UserDto> createUser(@Valid final @RequestBody UserDto userDto) {
+	public ResponseEntity<UserDto> createUser(final @Valid @RequestBody UserDto userDto) {
 		final String METHOD_NAME = "createUser";
 		logger.info("Method Invoked: " + this.getClass().getName() + ":" + METHOD_NAME);
 		try {
 			UserDto createdUser = this.userService.createUser(userDto);
 			logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
 			return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
-
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 		}
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
 
 	/**
@@ -63,24 +61,35 @@ public class UserController {
 	 * @return Status Code
 	 */
 	@PutMapping(value = "/update/{userId}", consumes = "application/json")
-	public ResponseEntity<?> updateUser(@Valid final @RequestBody UserDto userDto, final @PathVariable Integer userId) {
+	public ResponseEntity<?> updateUser(final @Valid @RequestBody UserDto userDto, final @PathVariable Integer userId) {
 		final String METHOD_NAME = "updateUser";
 		logger.info("Method Invoked: " + this.getClass().getName() + ":" + METHOD_NAME);
 
-		try {
-			if (userId != null || !userDto.getName().isEmpty() || !userDto.getEmail().isEmpty()
-					|| !userDto.getAbout().isEmpty() || !userDto.getPassword().isEmpty()) {
-				UserDto updatedUser = this.userService.updateUser(userDto, userId);
+		// Optional<UserDto> oldUser =
+		// Optional.of(this.userService.getUserById(userId));
 
-				logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
-				return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
+//		if (!oldUser.isPresent()) {
+//			logger.error("User with ID " + userId + "does not exist.");
+//			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+//					.body(new ApiResponse("User with ID " + userId + "does not exist.", false));
+//		}
+
+		try {
+
+			if (userDto == null || userId == null) {
+				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+						.body(new ApiResponse("User or ID must not be Empty!", false));
 			}
+
+			UserDto updatedUser = this.userService.updateUser(userDto, userId);
+			logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
+			return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
 
 		} catch (ResourceNotFoundException e) {
 			logger.error(e.getMessage());
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage(), false));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new ApiResponse("User ID " + userId + " does not exist.", false));
 		}
-		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
 	}
 
 	/**
@@ -142,7 +151,8 @@ public class UserController {
 
 		} catch (ResourceNotFoundException e) {
 			logger.error(e.getMessage());
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(e.getMessage() + " | Invalided User Id!", false));
+			return ResponseEntity.status(HttpStatus.NOT_FOUND)
+					.body(new ApiResponse(e.getMessage() + " | Invalided User Id!", false));
 		}
 	}
 
