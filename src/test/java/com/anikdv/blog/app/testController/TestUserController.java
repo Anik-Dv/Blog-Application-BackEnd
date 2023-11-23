@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.time.ZonedDateTime;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,7 +57,7 @@ public class TestUserController {
 
 		// create an user
 		UserDto user = new UserDto(123, "anikdv", "user", "testing this method", "anik@gmail.com", "Anik1234",
-				"image.jpg", "active");
+				"image.jpg", "active", ZonedDateTime.now());
 
 		// Implement the mocking
 		when(this.service.createUser(ArgumentMatchers.any())).thenReturn(user);
@@ -93,7 +95,7 @@ public class TestUserController {
 
 		// create an user
 		UserDto user = new UserDto(123, "anikdv", "user", "testing this method", "anik@gmail.com", "Anik1234",
-				"image.jpg", "active");
+				"image.jpg", "active", ZonedDateTime.now());
 
 		// Implement the mocking
 		when(this.service.createUser(ArgumentMatchers.any())).thenThrow(InternalServerError.class);

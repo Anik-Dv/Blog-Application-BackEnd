@@ -1,5 +1,6 @@
 package com.anikdv.blog.app.services.impl;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -52,6 +53,7 @@ public class UserServiceImpl implements UserService {
 			if (userDetails.isPresent()) {
 				throw new InternalError("This Email ID '"+ userDetails.get().getEmail() + "' Already Exists!");
 			}
+			user.setCreateDate(ZonedDateTime.now());
 			User savedUser = this.userRepository.save(user);
 			return this.EntityToDto(savedUser);
 

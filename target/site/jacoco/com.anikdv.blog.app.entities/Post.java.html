@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Post.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SpringBoot-Blog-Application-BackEnd</a> &gt; <a href="index.source.html" class="el_package">com.anikdv.blog.app.entities</a> &gt; <span class="el_source">Post.java</span></div><h1>Post.java</h1><pre class="source lang-java linenums">package com.anikdv.blog.app.entities;
+
+import java.util.Date;
+
+import org.springframework.format.annotation.DateTimeFormat;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+/**
+ * This is Post Entity
+ *
+ * @author AnikDV
+ */
+
+@Entity
+@Table(name = &quot;Posts&quot;)
+@Getter
+<span class="nc" id="L27">@Setter</span>
+<span class="fc" id="L28">@NoArgsConstructor</span>
+public class Post {
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+<span class="nc" id="L33">	private Integer postId;</span>
+
+<span class="nc" id="L35">	private String title;</span>
+<span class="nc" id="L36">	private String content;</span>
+<span class="nc" id="L37">	private String tag;</span>
+<span class="nc" id="L38">	private String imageName;</span>
+	@DateTimeFormat(pattern = &quot;dd/MM/yyyy&quot;)
+<span class="nc" id="L40">	private Date createDate;</span>
+
+	@ManyToOne
+	@JoinColumn(nullable = false, name = &quot;category_ID&quot;)
+<span class="nc" id="L44">	private Category category;</span>
+
+	@ManyToOne
+	@JoinColumn(nullable = false, name = &quot;user_ID&quot;)
+<span class="nc" id="L48">	private User user;</span>
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

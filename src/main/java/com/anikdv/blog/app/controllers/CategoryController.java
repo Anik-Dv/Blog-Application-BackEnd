@@ -24,7 +24,7 @@ import com.anikdv.blog.app.services.CategoryService;
 import jakarta.validation.Valid;
 
 /**
- * This is a category controller
+ * @apiNote This is Category REST API Controller
  *
  * @author AnikDV
  */
@@ -38,7 +38,9 @@ public class CategoryController {
 	private CategoryService categoryService;
 
 	/**
-	 * @return All categories
+	 * This Method For Get All Category Resource
+	 * 
+	 * @return All categories | NOT NULL
 	 */
 	@GetMapping("/")
 	public ResponseEntity<List<CategoryDto>> getAllCategory() {
@@ -56,8 +58,10 @@ public class CategoryController {
 	}
 
 	/**
+	 * This Method For Get Single Category Resource
+	 * 
 	 * @param categoryId
-	 * @return single category
+	 * @return single category | NOT NULL
 	 */
 	@GetMapping("/{categoryId}")
 	public ResponseEntity<?> getSingleCategory(final @PathVariable Integer categoryId) {
@@ -74,8 +78,10 @@ public class CategoryController {
 	}
 
 	/**
+	 * This Method For Create Category Resource
+	 * 
 	 * @param categoryDto
-	 * @return created category
+	 * @return created category | NOT NULL
 	 */
 	@PostMapping(value = "/create", consumes = "application/json")
 	public ResponseEntity<?> createCategory(@Valid final @RequestBody CategoryDto categoryDto) {
@@ -93,12 +99,15 @@ public class CategoryController {
 	}
 
 	/**
+	 * This Method For Update Category Resource
+	 * 
 	 * @param categoryDto
 	 * @param categoryId
-	 * @return updated category
+	 * @return updated category | NOT NULL
 	 */
 	@PutMapping(value = "/update/{categoryId}", consumes = "application/json")
-	public ResponseEntity<?> updateCategory(@Valid final @RequestBody CategoryDto categoryDto, final @PathVariable Integer categoryId) {
+	public ResponseEntity<?> updateCategory(@Valid final @RequestBody CategoryDto categoryDto,
+			final @PathVariable Integer categoryId) {
 		final String METHOD_NAME = "updateCategory";
 		logger.info("Method Invoked: " + this.getClass().getName() + ":" + METHOD_NAME);
 		try {
@@ -107,13 +116,16 @@ public class CategoryController {
 			return ResponseEntity.status(HttpStatus.OK).body(updatedCategory);
 		} catch (ResourceNotFoundException e) {
 			logger.error(e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse("Category Not Found!", false));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ApiResponse("Category Not Found!", false));
 		}
 	}
 
 	/**
+	 * This Method For Delete Category Resource
+	 * 
 	 * @param categoryId
-	 * @return server status code
+	 * @return status with If Deleted True/False | NOT NULL
 	 */
 	@DeleteMapping("/delete/{categoryId}")
 	public ResponseEntity<?> deleteCategory(final @PathVariable Integer categoryId) {
@@ -130,7 +142,8 @@ public class CategoryController {
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage() + " | Something Went Wrong!", false));
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ApiResponse(e.getMessage() + " | Something Went Wrong!", false));
 		}
 	}
 

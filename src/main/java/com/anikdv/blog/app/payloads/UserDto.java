@@ -1,5 +1,7 @@
 package com.anikdv.blog.app.payloads;
 
+import java.time.ZonedDateTime;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -30,7 +32,7 @@ public class UserDto {
 	@NotBlank
 	private String role;
 	@NotBlank
-	@Size(min = 16, max = 2500, message = "About is Must be Minimum 12 Chars and Maximum is 2500 Chars!")
+	@Size(min = 16, max = 900, message = "About is Must be Minimum 16 Chars and Maximum is 900 Chars!")
 	private String about;
 	@Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$", message = "Email Address is Not Valid!")
 	@NotBlank
@@ -41,5 +43,6 @@ public class UserDto {
 	private String password;
 	private String image_url;
 	private String status;
+	private ZonedDateTime createDate;
 
 }

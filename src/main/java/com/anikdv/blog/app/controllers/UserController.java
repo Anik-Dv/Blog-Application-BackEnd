@@ -24,7 +24,8 @@ import com.anikdv.blog.app.services.UserService;
 import jakarta.validation.Valid;
 
 /**
- * User RestController
+ * @apiNote This is User REST API Controller
+ * @author AnikDV
  */
 @RestController
 @RequestMapping("/api/user")
@@ -36,9 +37,9 @@ public class UserController {
 	private UserService userService;
 
 	/**
-	 * @info This Method call for create new user
+	 * @info This Method for create new user
 	 * @param userDto
-	 * @return Status Code
+	 * @return Status with created post | NOT NULL
 	 */
 	@PostMapping(value = "/create", consumes = "application/json")
 	public ResponseEntity<UserDto> createUser(final @Valid @RequestBody UserDto userDto) {
@@ -55,25 +56,15 @@ public class UserController {
 	}
 
 	/**
-	 * @info This Method call for Update User
+	 * @info This Method For Update User
 	 * @param userDto
 	 * @param userId
-	 * @return Status Code
+	 * @return Status with updated user | NOT NULL
 	 */
 	@PutMapping(value = "/update/{userId}", consumes = "application/json")
 	public ResponseEntity<?> updateUser(final @Valid @RequestBody UserDto userDto, final @PathVariable Integer userId) {
 		final String METHOD_NAME = "updateUser";
 		logger.info("Method Invoked: " + this.getClass().getName() + ":" + METHOD_NAME);
-
-		// Optional<UserDto> oldUser =
-		// Optional.of(this.userService.getUserById(userId));
-
-//		if (!oldUser.isPresent()) {
-//			logger.error("User with ID " + userId + "does not exist.");
-//			return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//					.body(new ApiResponse("User with ID " + userId + "does not exist.", false));
-//		}
-
 		try {
 
 			if (userDto == null || userId == null) {
@@ -93,8 +84,9 @@ public class UserController {
 	}
 
 	/**
+	 * This Method For Delete User
 	 * @param userId
-	 * @return Status Code
+	 * @return Status with delete user True/False | NOT NULL
 	 */
 	@DeleteMapping(value = "/delete/{userId}")
 	public ResponseEntity<?> deleteUser(final @PathVariable Integer userId) {
@@ -118,7 +110,8 @@ public class UserController {
 	}
 
 	/**
-	 * @return All Users Resources
+	 * This Method For Delete User
+	 * @return All Users Resources | NOT NULL
 	 */
 	@GetMapping(value = "/")
 	public ResponseEntity<List<?>> getAllUsers() {
@@ -136,8 +129,10 @@ public class UserController {
 	}
 
 	/**
+	 * This Method For Get Single User
+	 * 
 	 * @param userId
-	 * @return Single Users Resources
+	 * @return Single Users Resources | NOT NULL
 	 */
 	@GetMapping(value = "/{userId}")
 	public ResponseEntity<?> getSingleUser(@PathVariable Integer userId) {

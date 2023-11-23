@@ -3,6 +3,8 @@ package com.anikdv.blog.app.entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -30,7 +32,9 @@ public class Category {
 	private Integer categoryId;
 	private String categoryTitle;
 
+
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JsonBackReference
 	private Set<Post> posts = new HashSet<>();
 
 }
