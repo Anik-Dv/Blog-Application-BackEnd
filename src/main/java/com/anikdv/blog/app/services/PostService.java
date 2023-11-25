@@ -5,9 +5,10 @@ import java.util.Set;
 
 import com.anikdv.blog.app.exceptions.ResourceNotFoundException;
 import com.anikdv.blog.app.payloads.PostDto;
+import com.anikdv.blog.app.payloads.PostResponse;
 
 /**
- * This is Post Service
+ * This is Declaration of Post Service
  *
  * @author AnikDV
  */
@@ -40,10 +41,15 @@ public interface PostService {
 	boolean deletePost(final Integer postId);
 
 	/**
+	 * @param pageNumber
+	 * @param pageSize
+	 * @param sortBy
+	 * @param asc
 	 * @return All Posts
 	 * @throws ResourceNotFoundException
 	 */
-	List<PostDto> getPosts() throws ResourceNotFoundException;
+	PostResponse getPosts(Integer pageNumber, Integer pageSize, String sortBy, String asc)
+			throws ResourceNotFoundException;
 
 	/**
 	 * @param postId
@@ -67,6 +73,6 @@ public interface PostService {
 	 * @param keyword
 	 * @return post
 	 */
-	PostDto searchPostByKeyword(final String keyword);
+	List<PostDto> searchPostByKeyword(final String keyword);
 
 }

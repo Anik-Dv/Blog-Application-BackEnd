@@ -15,12 +15,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.HttpServerErrorException.InternalServerError;
 
 import com.anikdv.blog.app.exceptions.ResourceNotFoundException;
 import com.anikdv.blog.app.payloads.ApiResponse;
 import com.anikdv.blog.app.payloads.PostDto;
+import com.anikdv.blog.app.payloads.PostResponse;
 import com.anikdv.blog.app.services.PostService;
 
 /**
@@ -173,14 +175,22 @@ public class PostController {
 	/**
 	 * Getting All Posts
 	 * 
+	 * @param pageNumber
+	 * @param pageContentSize
+	 * @param sortBy
+	 * @param sortDir
 	 * @return All Posts
 	 */
 	@GetMapping(value = "/posts/feed")
-	public ResponseEntity<?> getPosts() {
+	public ResponseEntity<?> getPosts(
+			@RequestParam(value = "pageNumber", defaultValue = "0", required = false) Integer pageNumber,
+			@RequestParam(value = "pageContentSize", defaultValue = "8", required = false) Integer pageContentSize,
+			@RequestParam(value = "sortBy", defaultValue = "postId", required = false) String sortBy,
+			@RequestParam(value = "sortDir", defaultValue = "asc", required = false) String sortDir) {
 		final String METHOD_NAME = "getPosts";
 		logger.info("Method Invoked: " + this.getClass().getName() + ":" + METHOD_NAME);
 		try {
-			List<PostDto> posts = this.postService.getPosts();
+			PostResponse posts = this.postService.getPosts(pageNumber, pageContentSize, sortBy, sortDir);
 			logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
 			return ResponseEntity.status(HttpStatus.FOUND).body(posts);
 		} catch (ResourceNotFoundException e) {
@@ -211,7 +221,29 @@ public class PostController {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
 					.body(new ApiResponse("Not Found Any Post ID " + postId, false));
 		}
+	}
 
+	/**
+	 * Search The Posts
+	 * @param keyword 
+	 * 		  
+	 * @return all search posts | NOT NULL
+	 */
+	@GetMapping(value = "/search/post/{keyword}")
+	public ResponseEntity<?> searchPostHandler(@PathVariable String keyword) {
+		final String METHOD_NAME = "searchPostHandler";
+		logger.info("Method Invoked: " + this.getClass().getName() + ":" + METHOD_NAME);
+		try {
+			List<PostDto> result = this.postService.searchPostByKeyword(keyword);
+			if (result.isEmpty()) {
+				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("Not Found Any Posts!", false));
+			}
+			logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
+			return ResponseEntity.status(HttpStatus.FOUND).body(result);
+		} catch (ResourceNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ApiResponse("Something Went Wrong!", false));
+		}
 	}
 
 }

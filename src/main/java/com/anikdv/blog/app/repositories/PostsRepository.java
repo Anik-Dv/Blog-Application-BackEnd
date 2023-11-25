@@ -1,8 +1,11 @@
 package com.anikdv.blog.app.repositories;
 
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.anikdv.blog.app.entities.Category;
 import com.anikdv.blog.app.entities.Post;
@@ -31,5 +34,13 @@ public interface PostsRepository extends JpaRepository<Post, Integer> {
 	 * @return post
 	 */
 	Set<Post> findByUser(User user);
+
+	/**
+	 * For Searching Posts
+	 * @param keyword
+	 * @return all posts of matched keywords
+	 */
+	@Query("select p from Post p where p.title like :key")
+	List<Post> searchPosts(@Param("key") String keyword);
 
 }
