@@ -3,6 +3,7 @@
  */
 package com.anikdv.blog.app.exceptions;
 
+import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -83,6 +84,17 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ApiResponse> internalServerExceptionHandler(InternalError e) {
 		String message = e.getMessage();
 		ApiResponse apiResponse = new ApiResponse(message, false);
+		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
+	}
+
+	/**
+	 * @param e
+	 * @return internalServerException
+	 */
+	@ExceptionHandler(FileNotFoundException.class)
+	public ResponseEntity<ApiResponse> fileNotFoundExceptionHandler(FileNotFoundException e) {
+		String message = e.getMessage();
+		ApiResponse apiResponse = new ApiResponse("Not Found " + message.substring(8) + " File!", false);
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(apiResponse);
 	}
 

@@ -39,7 +39,7 @@ public class CategoryController {
 
 	/**
 	 * This Method For Get All Category Resource
-	 * 
+	 *
 	 * @return All categories | NOT NULL
 	 */
 	@GetMapping("/")
@@ -59,7 +59,7 @@ public class CategoryController {
 
 	/**
 	 * This Method For Get Single Category Resource
-	 * 
+	 *
 	 * @param categoryId
 	 * @return single category | NOT NULL
 	 */
@@ -79,7 +79,7 @@ public class CategoryController {
 
 	/**
 	 * This Method For Create Category Resource
-	 * 
+	 *
 	 * @param categoryDto
 	 * @return created category | NOT NULL
 	 */
@@ -100,7 +100,7 @@ public class CategoryController {
 
 	/**
 	 * This Method For Update Category Resource
-	 * 
+	 *
 	 * @param categoryDto
 	 * @param categoryId
 	 * @return updated category | NOT NULL
@@ -123,7 +123,7 @@ public class CategoryController {
 
 	/**
 	 * This Method For Delete Category Resource
-	 * 
+	 *
 	 * @param categoryId
 	 * @return status with If Deleted True/False | NOT NULL
 	 */

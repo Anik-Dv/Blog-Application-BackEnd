@@ -130,7 +130,7 @@ public class UserController {
 
 	/**
 	 * This Method For Get Single User
-	 * 
+	 *
 	 * @param userId
 	 * @return Single Users Resources | NOT NULL
 	 */

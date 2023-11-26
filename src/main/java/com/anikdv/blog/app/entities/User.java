@@ -15,23 +15,20 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * This is User Entity
  *
  * @author AnikDV
  */
-@Entity
+
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@ToString
+@Entity
 public class User {
 
 	@Id
@@ -49,7 +46,7 @@ public class User {
 	private String password;
 	private String image_url;
 	private String status;
-	
+
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private ZonedDateTime createDate;
 
