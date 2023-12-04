@@ -66,7 +66,6 @@ public class CategoryServiceImpl implements CategoryService {
 			flag = true;
 			return flag;
 		} catch (ResourceNotFoundException e) {
-			e.printStackTrace();
 			return flag;
 		}
 	}

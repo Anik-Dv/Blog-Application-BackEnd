@@ -1,6 +1,7 @@
 package com.anikdv.blog.app.payloads;
 
-import java.time.ZonedDateTime;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -22,7 +23,9 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 @Builder
-public class UserDto {
+public class UserDto implements Serializable {
+
+	private static final long serialVersionUID = 6082824759048463498L;
 
 	private Integer userId;
 
@@ -43,6 +46,6 @@ public class UserDto {
 	private String password;
 	private String image_url;
 	private String status;
-	private ZonedDateTime createDate;
+	private LocalDateTime createDate;
 
 }

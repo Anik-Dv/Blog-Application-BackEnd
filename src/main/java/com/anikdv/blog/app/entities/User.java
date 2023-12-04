@@ -1,6 +1,6 @@
 package com.anikdv.blog.app.entities;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -48,7 +48,7 @@ public class User {
 	private String status;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-	private ZonedDateTime createDate;
+	private LocalDateTime createDate;
 
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonBackReference

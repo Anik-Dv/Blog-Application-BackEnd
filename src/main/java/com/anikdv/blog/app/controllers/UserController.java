@@ -85,6 +85,7 @@ public class UserController {
 
 	/**
 	 * This Method For Delete User
+	 * 
 	 * @param userId
 	 * @return Status with delete user True/False | NOT NULL
 	 */
@@ -110,7 +111,8 @@ public class UserController {
 	}
 
 	/**
-	 * This Method For Delete User
+	 * This Method For Get All Users
+	 * 
 	 * @return All Users Resources | NOT NULL
 	 */
 	@GetMapping(value = "/")

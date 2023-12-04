@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class SpringBootBlogApplicationBackEndApplication {
 
 	/**
-	 * @param args
+	 * @param Arguments
 	 */
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootBlogApplicationBackEndApplication.class, args);

@@ -27,5 +27,7 @@ public class AppConstants {
 	 * This is Sort Direction Default Arguments
 	 */
 	public static final String SORT_DIR = "asc";
+	
+	public static final String CACHE_KEY = "posts";
 
 }

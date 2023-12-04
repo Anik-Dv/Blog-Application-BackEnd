@@ -3,7 +3,8 @@
  */
 package com.anikdv.blog.app.payloads;
 
-import java.time.ZonedDateTime;
+import java.io.Serializable;
+import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -17,7 +18,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class PostDto {
+public class PostDto implements Serializable {
+
+	private static final long serialVersionUID = 6340156754117897222L;
 
 	private Integer postId;
 
@@ -32,7 +35,7 @@ public class PostDto {
 	@Size(min = 3, max = 25, message = "Post Tag Must be Minimum of 3 Chars and Maximum is 25 Chars!")
 	private String tag;
 	private String imageName;
-	private ZonedDateTime createDate;
+	private LocalDateTime createDate;
 	@NotBlank
 	private CategoryDto category;
 	@NotBlank

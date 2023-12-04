@@ -1,18 +1,22 @@
 package com.anikdv.blog.app.services.impl;
 
-import java.time.ZonedDateTime;
+import java.io.File;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.anikdv.blog.app.configurations.ModelMapperConfiguration;
+import com.anikdv.blog.app.configurations.ObjectMapperConfig;
 import com.anikdv.blog.app.entities.Category;
 import com.anikdv.blog.app.entities.Post;
 import com.anikdv.blog.app.entities.User;
@@ -22,7 +26,9 @@ import com.anikdv.blog.app.payloads.PostResponse;
 import com.anikdv.blog.app.repositories.CategoryRepository;
 import com.anikdv.blog.app.repositories.PostsRepository;
 import com.anikdv.blog.app.repositories.UserRepository;
+import com.anikdv.blog.app.services.FileService;
 import com.anikdv.blog.app.services.PostService;
+import com.anikdv.blog.app.utils.GetAllDataFromCache;
 
 /**
  * This is Implementation of Post Service
@@ -44,22 +50,38 @@ public class PostServiceImpl implements PostService {
 	@Autowired
 	private ModelMapperConfiguration mapperConfiguration;
 
+	@Autowired
+	private ObjectMapperConfig objectMapperConfig;
+
+	@Lazy
+	@Autowired
+	private FileService fileService;
+
 	@Override
-	public PostDto createPost(PostDto postdto, Integer userId, Integer categoryId) {
+	public PostDto createPost(String postData, Integer userId, Integer categoryId, String path, MultipartFile file)
+			throws Exception {
+
 		User user = this.userRepository.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("USER", "ID", userId));
 		Category category = this.categoryRepository.findById(categoryId)
 				.orElseThrow(() -> new ResourceNotFoundException("Category", "ID", categoryId));
 
-		Post post = this.mapperConfiguration.modelMapper().map(postdto, Post.class);
+		// convert string into json
+		PostDto postDto = objectMapperConfig.getObjectMapper().readValue(postData, PostDto.class);
 
+		Post postEntity = this.mapperConfiguration.modelMapper().map(postDto, Post.class);
+
+		// upload file in post
+		// FileService fileService = new FileServiceImpl();
+		String uploadedFileName = this.fileService.fileUpoad(path, file);
+		if (!uploadedFileName.isEmpty() && uploadedFileName != null) {
+			postEntity.setImageName(uploadedFileName);
+		}
 		// setup default properties
-		post.setImageName("default.png");
-		post.setCreateDate(ZonedDateTime.now());
-		post.setUser(user);
-		post.setCategory(category);
-
-		Post createdPost = this.postsRepository.save(post);
+		postEntity.setCreateDate(LocalDateTime.now());
+		postEntity.setUser(user);
+		postEntity.setCategory(category);
+		Post createdPost = this.postsRepository.save(postEntity);
 		return this.mapperConfiguration.modelMapper().map(createdPost, PostDto.class);
 	}
 
@@ -80,15 +102,20 @@ public class PostServiceImpl implements PostService {
 	}
 
 	@Override
-	public boolean deletePost(Integer postId) {
+	public boolean deletePost(Integer postId, String path) {
 		boolean flag = false;
 		try {
 			Post post = this.postsRepository.findById(postId)
 					.orElseThrow(() -> new ResourceNotFoundException("POST", "ID", postId));
+
+			String filePath = path + File.separator + post.getImageName();
+			File file = new File(filePath);
+			if (file.exists()) {
+				file.delete();
+			}
 			this.postsRepository.delete(post);
 			return flag = true;
 		} catch (ResourceNotFoundException e) {
-			e.printStackTrace();
 			return flag;
 		}
 	}
@@ -104,6 +131,11 @@ public class PostServiceImpl implements PostService {
 	@Override
 	public PostResponse getPosts(Integer pageNumber, Integer pageSize, String sortBy, String sortDir)
 			throws ResourceNotFoundException {
+
+		// for get all data from cache
+		GetAllDataFromCache cache = new GetAllDataFromCache();
+		cache.getAllDataCache(pageNumber, pageSize);
+
 		Sort sortDiraction = null;
 		if (sortDir.equals("asc"))
 			sortDiraction = Sort.by(sortBy).ascending();
@@ -113,7 +145,7 @@ public class PostServiceImpl implements PostService {
 		Pageable pageable = PageRequest.of(pageNumber, pageSize, sortDiraction);
 		Page<Post> postOfPage = this.postsRepository.findAll(pageable);
 		List<Post> allPosts = postOfPage.getContent();
-
+		System.out.println("get all data from database");
 		List<PostDto> listOfPostDto = allPosts.stream()
 				.map((post) -> this.mapperConfiguration.modelMapper().map(post, PostDto.class))
 				.collect(Collectors.toList());
@@ -123,13 +155,14 @@ public class PostServiceImpl implements PostService {
 		postResponse.setPageNumber(postOfPage.getNumber());
 		postResponse.setPageContentSize(postOfPage.getSize());
 		postResponse.setTotalPages(postOfPage.getTotalPages());
-		postResponse.setTotalElements(postOfPage.getTotalElements());
+		postResponse.setTotalContent(postOfPage.getTotalElements());
 		postResponse.setLastPage(postOfPage.isLast());
 		return postResponse;
 	}
 
 	@Override
 	public Set<PostDto> getPostByUser(Integer userId) {
+
 		User user = this.userRepository.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("USER", "ID", userId));
 		Set<Post> userAllPosts = this.postsRepository.findByUser(user);
@@ -140,6 +173,7 @@ public class PostServiceImpl implements PostService {
 
 	@Override
 	public Set<PostDto> getPostByCategory(Integer categoryId) {
+
 		Category category = this.categoryRepository.findById(categoryId)
 				.orElseThrow(() -> new ResourceNotFoundException("Category", "ID", categoryId));
 		Set<Post> categoryAllPosts = this.postsRepository.findByCategory(category);

@@ -1,6 +1,6 @@
 package com.anikdv.blog.app.entities;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -41,7 +41,7 @@ public class Post {
 	private String tag;
 	private String imageName;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-	private ZonedDateTime createDate;
+	private LocalDateTime createDate;
 
 	@ManyToOne
 	@JoinColumn(nullable = false, name = "category_ID")

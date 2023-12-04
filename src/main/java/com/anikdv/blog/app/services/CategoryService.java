@@ -2,6 +2,9 @@ package com.anikdv.blog.app.services;
 
 import java.util.List;
 
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+
 import com.anikdv.blog.app.payloads.CategoryDto;
 
 /**
@@ -17,7 +20,8 @@ public interface CategoryService {
 	 * @param categoryDto
 	 * @return created category
 	 */
-	CategoryDto createCategory(final CategoryDto categoryDto);
+	@CacheEvict(value = "category", allEntries = true)
+	CategoryDto createCategory(final CategoryDto category);
 
 	/**
 	 * update category
@@ -26,7 +30,8 @@ public interface CategoryService {
 	 * @param categoryId
 	 * @return updated category
 	 */
-	CategoryDto updateCategory(final CategoryDto categoryDto, final Integer categoryId);
+	@CacheEvict(value = "category", key = "#categoryId", allEntries = true)
+	CategoryDto updateCategory(final CategoryDto category, final Integer categoryId);
 
 	/**
 	 * delete category
@@ -34,6 +39,7 @@ public interface CategoryService {
 	 * @param categoryId
 	 * @return true/false
 	 */
+	@CacheEvict(cacheNames = "category", key = "#categoryId", allEntries = true)
 	boolean deleteCategory(final Integer categoryId);
 
 	/**
@@ -42,6 +48,7 @@ public interface CategoryService {
 	 * @param categoryId
 	 * @return category
 	 */
+	@Cacheable(value = "category", key = "#categoryId")
 	CategoryDto getSingleCategory(final Integer categoryId);
 
 	/**
@@ -49,6 +56,7 @@ public interface CategoryService {
 	 *
 	 * @return list of categories
 	 */
+	@Cacheable(cacheNames = "category")
 	List<CategoryDto> getCategories();
 
 }

@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +54,7 @@ public class PostController {
 	@Autowired
 	private FileService fileService;
 
-	@Value("${project.image}")
+	@Value("${file.upload-dir}")
 	private String path;
 
 	/**
@@ -62,26 +63,28 @@ public class PostController {
 	 * @param postDto
 	 * @param categoryId
 	 * @param userId
+	 * @param MultipartFile -> (optional)
 	 * @return StatusCode
 	 */
-	@PostMapping(value = "/user/{userId}/category/{categoryId}/post/create", consumes = "application/json")
-	public ResponseEntity<?> createPost(final @RequestBody PostDto postDto, final @PathVariable Integer userId,
-			final @PathVariable Integer categoryId) {
+	@PostMapping(value = "/user/{userId}/category/{categoryId}/post/create")
+	public ResponseEntity<?> createPost(final @RequestParam("postData") String postData,
+			final @RequestParam(value = "file", required = false) MultipartFile file, final @PathVariable("userId") Integer userId,
+			final @PathVariable("categoryId") Integer categoryId) {
 		final String METHOD_NAME = "createPost";
 		logger.info("Method Invoked: " + this.getClass().getName() + ":" + METHOD_NAME);
 		try {
-			if (postDto == null || categoryId == null || userId == null) {
-				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-						.body(new ApiResponse("Post And CategoryID or UserId Must Not be Empty!", false));
+			if (postData.isEmpty()) {
+				logger.error("Post Data Must Not be Empty!");
+				return ResponseEntity.status(HttpStatus.NOT_FOUND)
+						.body(new ApiResponse("Post Content Must Not be Empty!", false));
 			}
-			PostDto createdPost = this.postService.createPost(postDto, userId, categoryId);
+			PostDto createdPost = this.postService.createPost(postData, userId, categoryId, path, file);
 			logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
 			return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);
-
-		} catch (InternalServerError e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-					.body(new ApiResponse("Something Went Wrong!", false));
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse("Invalid Request!", false));
 		}
 	}
 
@@ -123,7 +126,7 @@ public class PostController {
 		logger.info("Method Invoked: " + this.getClass().getName() + ":" + METHOD_NAME);
 
 		try {
-			boolean deletedPost = this.postService.deletePost(postId);
+			boolean deletedPost = this.postService.deletePost(postId, path);
 			if (deletedPost) {
 				logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
 				return ResponseEntity.status(HttpStatus.OK)
@@ -264,6 +267,8 @@ public class PostController {
 	}
 
 	/**
+	 * Upload Post Images
+	 * 
 	 * @param path
 	 * @param file
 	 * @param postId
@@ -276,15 +281,21 @@ public class PostController {
 		logger.info("Method Invoked: " + this.getClass().getName() + ":" + METHOD_NAME);
 		// find previous post
 		PostDto post = this.postService.getPostById(postId);
+
+		if (file.isEmpty()) {
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("File Is Must Not Empty!", false));
+		}
+
 		// upload the file
 		String fileName;
 		try {
 			fileName = this.fileService.fileUpoad(path, file);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			logger.error(e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(new ApiResponse("Post Images Not Uploaded!", false));
 		}
+
 		// set new property
 		post.setImageName(fileName);
 		// then this update post
@@ -296,19 +307,57 @@ public class PostController {
 	}
 
 	/**
+	 * Fetch Post Images
+	 * 
 	 * @param fileName
 	 * @param response
 	 * @throws IOException
 	 */
 	@GetMapping(value = "/post/file/{fileName}", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
-	public void getFileResource(final @PathVariable String fileName, HttpServletResponse response) throws IOException {
+	public ResponseEntity<?> getFileResource(final @PathVariable String fileName, HttpServletResponse response) {
 		final String METHOD_NAME = "getFileResource";
 		logger.info("Method Invoked: " + this.getClass().getName() + ":" + METHOD_NAME);
+		try {
+			InputStream fileResource = this.fileService.getFileResource(path, fileName);
+			response.setContentType(MediaType.IMAGE_JPEG_VALUE);
+			StreamUtils.copy(fileResource, response.getOutputStream());
+			logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
+			return ResponseEntity.ok()
+					.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"")
+					.contentType(MediaType.valueOf(response.getContentType())).build();
+		} catch (IOException e) {
+			logger.error(e.getMessage());
+			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("File Is Not Found!");
+		}
+	}
 
-		InputStream fileResource = this.fileService.fileResource(path, fileName);
-		response.setContentType(MediaType.IMAGE_JPEG_VALUE);
-		StreamUtils.copy(fileResource, response.getOutputStream());
-		logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
+	/**
+	 * Delete Post Images
+	 * 
+	 * @param postId
+	 * @param fileName
+	 */
+	@DeleteMapping("/post/{postId}/file/{fileName}")
+	public ResponseEntity<?> deleteFileResourceFromPost(@PathVariable Integer postId, @PathVariable String fileName) {
+		final String METHOD_NAME = "deleteFileResourceFromPost";
+		logger.info("Method Invoked: " + this.getClass().getName() + ":" + METHOD_NAME);
+
+		try {
+			boolean deleteFileResource = this.fileService.deleteFileResource(postId, path, fileName);
+			if (!deleteFileResource) {
+				return ResponseEntity.status(HttpStatus.OK)
+						.body(new ApiResponse("File Not Found!", deleteFileResource));
+			}
+
+			logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
+			return ResponseEntity.status(HttpStatus.OK)
+					.body(new ApiResponse("File Was Deleted Successfully!", deleteFileResource));
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ApiResponse("File Was Not Deleted!", false));
+
+		}
 	}
 
 }

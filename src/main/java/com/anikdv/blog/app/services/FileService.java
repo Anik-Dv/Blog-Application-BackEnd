@@ -1,12 +1,10 @@
-/**
- * 
- */
 package com.anikdv.blog.app.services;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -22,7 +20,7 @@ public interface FileService {
 	 * @return FileName | NOT NULL
 	 * @throws IOException
 	 */
-	String fileUpoad(String path, MultipartFile file) throws IOException;
+	String fileUpoad(final String path, final MultipartFile file) throws IOException;
 
 	/**
 	 * @param path
@@ -30,6 +28,14 @@ public interface FileService {
 	 * @return File InputStream | NOT NULL
 	 * @throws FileNotFoundException
 	 */
-	InputStream fileResource(String path, String fileName) throws FileNotFoundException;
+	InputStream getFileResource(final String path, final String fileName) throws FileNotFoundException;
+
+	/**
+	 * @param fileName
+	 * @param postId
+	 * @return true/false | NOT NULL
+	 * @throws FileNotFoundException
+	 */
+	boolean deleteFileResource(final Integer postId, final String path, final String fileName) throws FileNotFoundException;
 
 }

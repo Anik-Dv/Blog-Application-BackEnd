@@ -32,7 +32,6 @@ public class Category {
 	private Integer categoryId;
 	private String categoryTitle;
 
-
 	@OneToMany(mappedBy = "category", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonBackReference
 	private Set<Post> posts = new HashSet<>();

@@ -22,12 +22,13 @@
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
+			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
 
+		<!-- for JPA support -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
 		<dependency>
@@ -42,12 +43,26 @@
 			<optional>true</optional>
 		</dependency>
 
+		<!--Spring-boot-starter-cache -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-cache</artifactId>
+		</dependency>
+
+		<!-- For Redis support -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-redis</artifactId>
+		</dependency>
+
+		<!-- for embedded database support -->
 		<dependency>
 			<groupId>com.mysql</groupId>
 			<artifactId>mysql-connector-j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
 
+		<!-- for Lombok support -->
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -69,6 +84,11 @@
 			<groupId>org.modelmapper</groupId>
 			<artifactId>modelmapper</artifactId>
 			<version>3.2.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
 		</dependency>
 
 	</dependencies>
@@ -106,6 +126,7 @@
 				</executions>
 			</plugin>
 
+			<!-- for jacoco plugin -->
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
@@ -115,7 +136,8 @@
 						<exclude>
 							**/com/anikdv/blog/app/SpringBootBlogApplicationBackEndApplication.class</exclude>
 						<exclude>**/com/anikdv/blog/app/ServletInitializer.class</exclude>
-						<exclude>**/com/anikdv/blog/app/payloads/UserDto.class</exclude>
+						<!--
+						<exclude>**/com/anikdv/blog/app/payloads/UserDto.class</exclude> -->
 					</excludes>
 				</configuration>
 				<executions>

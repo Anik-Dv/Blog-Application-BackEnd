@@ -1,5 +1,6 @@
 package com.anikdv.blog.app.services.impl;
 
+import java.time.LocalDateTime;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -39,6 +40,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public List<UserDto> getAllUsers() {
+		// System.out.println("Invoked : getAllUsers Method");
 		List<User> users = this.userRepository.findAll();
 		List<UserDto> allUserDto = users.stream().map(user -> this.EntityToDto(user)).collect(Collectors.toList());
 		return allUserDto;
@@ -51,9 +53,9 @@ public class UserServiceImpl implements UserService {
 			user = this.DtoToEntity(userDto);
 			Optional<User> userDetails = this.userRepository.findByEmail(user.getEmail());
 			if (userDetails.isPresent()) {
-				throw new InternalError("This Email ID '"+ userDetails.get().getEmail() + "' Already Exists!");
+				throw new InternalError("This Email ID '" + userDetails.get().getEmail() + "' Already Exists!");
 			}
-			user.setCreateDate(ZonedDateTime.now());
+			user.setCreateDate(LocalDateTime.now());
 			User savedUser = this.userRepository.save(user);
 			return this.EntityToDto(savedUser);
 
@@ -87,7 +89,6 @@ public class UserServiceImpl implements UserService {
 	public boolean deleteUser(final Integer userId) {
 		boolean flag = false;
 		try {
-
 			User user = this.userRepository.findById(userId)
 					.orElseThrow(() -> new ResourceNotFoundException("USER ", "ID ", userId));
 			this.userRepository.delete(user);
