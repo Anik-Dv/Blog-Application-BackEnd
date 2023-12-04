@@ -68,8 +68,8 @@ public class PostController {
 	 */
 	@PostMapping(value = "/user/{userId}/category/{categoryId}/post/create")
 	public ResponseEntity<?> createPost(final @RequestParam("postData") String postData,
-			final @RequestParam(value = "file", required = false) MultipartFile file, final @PathVariable("userId") Integer userId,
-			final @PathVariable("categoryId") Integer categoryId) {
+			final @RequestParam(value = "file", required = false) MultipartFile file,
+			final @PathVariable("userId") Integer userId, final @PathVariable("categoryId") Integer categoryId) {
 		final String METHOD_NAME = "createPost";
 		logger.info("Method Invoked: " + this.getClass().getName() + ":" + METHOD_NAME);
 		try {
@@ -96,15 +96,15 @@ public class PostController {
 	 * @return Status with update content
 	 */
 	@PutMapping(value = "/post/{postId}/update", consumes = "application/json")
-	public ResponseEntity<?> updatePost(final @RequestBody PostDto postDto, final @PathVariable Integer postId) {
+	public ResponseEntity<?> updatePost(final @RequestBody PostDto postdata, final @PathVariable Integer postId) {
 		final String METHOD_NAME = "updatePost";
 		logger.info("Method Invoked: " + this.getClass().getName() + ":" + METHOD_NAME);
 		try {
-			if (postDto == null || postId == null) {
+			if (postdata == null || postId == null) {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 						.body(new ApiResponse("Post ID " + postId + " does not exist.", false));
 			}
-			PostDto updatedPost = this.postService.updatePost(postDto, postId);
+			PostDto updatedPost = this.postService.updatePost(postdata, postId);
 			logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
 			return ResponseEntity.status(HttpStatus.OK).body(updatedPost);
 		} catch (InternalServerError e) {

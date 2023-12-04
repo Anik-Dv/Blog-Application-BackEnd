@@ -1,6 +1,5 @@
 package com.anikdv.blog.app.services;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -28,7 +27,8 @@ public interface PostService {
 	 * @return created post
 	 */
 	@CacheEvict(value = "posts", key = "#userId + #categoryId", allEntries = true)
-	PostDto createPost(final String posts, final Integer userId, final Integer categoryId, final String path, final MultipartFile file) throws Exception;
+	PostDto createPost(final String posts, final Integer userId, final Integer categoryId, final String path,
+			final MultipartFile file) throws Exception;
 
 	/**
 	 * For Update Post
