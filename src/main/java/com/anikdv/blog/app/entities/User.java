@@ -1,5 +1,6 @@
 package com.anikdv.blog.app.entities;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -29,8 +30,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Entity
-public class User {
+public class User implements Serializable {
 
+	private static final long serialVersionUID = 6225090273384677163L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "User_Id")
@@ -53,5 +55,9 @@ public class User {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JsonBackReference
 	private Set<Post> posts = new HashSet<>();
+
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@JsonBackReference
+	private Set<Comments> comments = new HashSet<>();
 
 }

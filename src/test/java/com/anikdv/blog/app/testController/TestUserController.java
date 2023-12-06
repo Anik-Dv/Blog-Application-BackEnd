@@ -85,10 +85,10 @@ public class TestUserController {
 	/**
 	 * Test For Error when Create an User
 	 *
-	 * @author AnikDV
 	 * @info Testing createUserTest02() Method
-	 * @throws InternalServerError Exception
-	 * @see Nagetive Scenario
+	 * @author AnikDV
+	 * @see Negative Scenario
+	 * @throws Exception
 	 */
 	@Test
 	void createUserRecordTest_Nagetive() throws Exception {
@@ -207,8 +207,7 @@ public class TestUserController {
 //	}
 
 	/**
-	 * Test For BadRequestException | When User Informations NULL or UserID
-	 * NULL
+	 * Test For BadRequestException | When User Informations NULL or UserID NULL
 	 *
 	 * @author AnikDV
 	 * @throws Exception

@@ -60,7 +60,7 @@ public interface UserService {
 	boolean deleteUser(final Integer userId);
 
 	/**
-	 * @param emailId
+	 * @param email
 	 * @return user
 	 */
 	@Cacheable(value = "users", key = "#email")

@@ -1,10 +1,9 @@
-/**
- *
- */
 package com.anikdv.blog.app.payloads;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -40,5 +39,8 @@ public class PostDto implements Serializable {
 	private CategoryDto category;
 	@NotBlank
 	private UserDto user;
+
+	@NotBlank
+	private Set<CommentsDto> comments = new HashSet<>();
 
 }

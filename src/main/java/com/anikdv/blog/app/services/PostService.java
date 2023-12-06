@@ -24,7 +24,11 @@ public interface PostService {
 	 * @param posts
 	 * @param categoryId
 	 * @param userId
+	 * @param commentId
+	 * @param path
+	 * @param file
 	 * @return created post
+	 * @throws Exception
 	 */
 	@CacheEvict(value = "posts", key = "#userId + #categoryId", allEntries = true)
 	PostDto createPost(final String posts, final Integer userId, final Integer categoryId, final String path,
@@ -43,6 +47,7 @@ public interface PostService {
 
 	/**
 	 * @param postId
+	 * @param path
 	 * @return if post deleted then return true/false
 	 */
 	@CacheEvict(cacheNames = "posts", key = "#postId", allEntries = true)

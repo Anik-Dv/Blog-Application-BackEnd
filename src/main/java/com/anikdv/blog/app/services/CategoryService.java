@@ -17,7 +17,7 @@ public interface CategoryService {
 	/**
 	 * create category
 	 *
-	 * @param categoryDto
+	 * @param category
 	 * @return created category
 	 */
 	@CacheEvict(value = "category", allEntries = true)
@@ -26,7 +26,7 @@ public interface CategoryService {
 	/**
 	 * update category
 	 *
-	 * @param categoryDto
+	 * @param category
 	 * @param categoryId
 	 * @return updated category
 	 */

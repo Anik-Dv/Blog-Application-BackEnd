@@ -23,6 +23,11 @@ public class GetAllDataFromCache {
 
 	private RedisCacheConfiguration configuration;
 
+	/**
+	 * @param pageNumber
+	 * @param pageSize
+	 * @return fetch all data from cache
+	 */
 	public List<PostDto> getAllDataCache(final Integer pageNumber, final Integer pageSize) {
 		int tempStartIndex = 0;
 		int tempEndIndex = 0;

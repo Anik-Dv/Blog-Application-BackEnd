@@ -1,6 +1,3 @@
-/**
- *
- */
 package com.anikdv.blog.app.exceptions;
 
 import java.io.FileNotFoundException;

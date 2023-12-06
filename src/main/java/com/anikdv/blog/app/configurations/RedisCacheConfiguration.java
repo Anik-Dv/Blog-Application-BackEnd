@@ -32,6 +32,9 @@ public class RedisCacheConfiguration {
 		return new LettuceConnectionFactory(configuration);
 	}
 
+	/**
+	 * @return RedisTemplate
+	 */
 	@Bean
 	public RedisTemplate<String, Object> redisTemplate() {
 

@@ -18,12 +18,15 @@ import org.springframework.web.multipart.MultipartFile;
 import com.anikdv.blog.app.configurations.ModelMapperConfiguration;
 import com.anikdv.blog.app.configurations.ObjectMapperConfig;
 import com.anikdv.blog.app.entities.Category;
+import com.anikdv.blog.app.entities.Comments;
 import com.anikdv.blog.app.entities.Post;
 import com.anikdv.blog.app.entities.User;
 import com.anikdv.blog.app.exceptions.ResourceNotFoundException;
+import com.anikdv.blog.app.payloads.CommentsDto;
 import com.anikdv.blog.app.payloads.PostDto;
 import com.anikdv.blog.app.payloads.PostResponse;
 import com.anikdv.blog.app.repositories.CategoryRepository;
+import com.anikdv.blog.app.repositories.CommentsRepository;
 import com.anikdv.blog.app.repositories.PostsRepository;
 import com.anikdv.blog.app.repositories.UserRepository;
 import com.anikdv.blog.app.services.FileService;
@@ -51,6 +54,9 @@ public class PostServiceImpl implements PostService {
 	private ModelMapperConfiguration mapperConfiguration;
 
 	@Autowired
+	private CommentsRepository commentsRepository;
+
+	@Autowired
 	private ObjectMapperConfig objectMapperConfig;
 
 	@Lazy
@@ -70,6 +76,11 @@ public class PostServiceImpl implements PostService {
 		PostDto postDto = objectMapperConfig.getObjectMapper().readValue(postData, PostDto.class);
 
 		Post postEntity = this.mapperConfiguration.modelMapper().map(postDto, Post.class);
+		// find comment
+		Set<CommentsDto> commentsDto = this.commentsRepository.findByPost(postDto);
+		Set<Comments> setOfComments = commentsDto.stream()
+				.map((comment) -> this.mapperConfiguration.modelMapper().map(comment, Comments.class))
+				.collect(Collectors.toSet());
 
 		// upload file in post
 		// FileService fileService = new FileServiceImpl();
@@ -81,6 +92,7 @@ public class PostServiceImpl implements PostService {
 		postEntity.setCreateDate(LocalDateTime.now());
 		postEntity.setUser(user);
 		postEntity.setCategory(category);
+		postEntity.setComments(setOfComments);
 		Post createdPost = this.postsRepository.save(postEntity);
 		return this.mapperConfiguration.modelMapper().map(createdPost, PostDto.class);
 	}
@@ -144,7 +156,7 @@ public class PostServiceImpl implements PostService {
 		Pageable pageable = PageRequest.of(pageNumber, pageSize, sortDiraction);
 		Page<Post> postOfPage = this.postsRepository.findAll(pageable);
 		List<Post> allPosts = postOfPage.getContent();
-		System.out.println("get all data from database");
+		// System.out.println("get all data from database");
 		List<PostDto> listOfPostDto = allPosts.stream()
 				.map((post) -> this.mapperConfiguration.modelMapper().map(post, PostDto.class))
 				.collect(Collectors.toList());

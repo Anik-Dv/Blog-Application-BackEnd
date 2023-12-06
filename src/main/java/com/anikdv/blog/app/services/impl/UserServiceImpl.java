@@ -1,18 +1,20 @@
 package com.anikdv.blog.app.services.impl;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.anikdv.blog.app.configurations.ModelMapperConfiguration;
+import com.anikdv.blog.app.entities.Comments;
 import com.anikdv.blog.app.entities.User;
 import com.anikdv.blog.app.exceptions.ResourceNotFoundException;
 import com.anikdv.blog.app.payloads.UserDto;
+import com.anikdv.blog.app.repositories.CommentsRepository;
 import com.anikdv.blog.app.repositories.UserRepository;
 import com.anikdv.blog.app.services.UserService;
 
@@ -26,6 +28,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private UserRepository userRepository;
+
+	@Autowired
+	private CommentsRepository commentsRepository;
 
 	@Autowired
 	private ModelMapperConfiguration modelMapperConfiguration;
@@ -51,11 +56,15 @@ public class UserServiceImpl implements UserService {
 		User user = null;
 		try {
 			user = this.DtoToEntity(userDto);
+
+			Set<Comments> comments = this.commentsRepository.findByUser(user);
 			Optional<User> userDetails = this.userRepository.findByEmail(user.getEmail());
+
 			if (userDetails.isPresent()) {
 				throw new InternalError("This Email ID '" + userDetails.get().getEmail() + "' Already Exists!");
 			}
 			user.setCreateDate(LocalDateTime.now());
+			user.setComments(comments);
 			User savedUser = this.userRepository.save(user);
 			return this.EntityToDto(savedUser);
 

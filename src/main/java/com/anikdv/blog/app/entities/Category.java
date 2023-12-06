@@ -1,5 +1,6 @@
 package com.anikdv.blog.app.entities;
 
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -25,8 +26,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Category {
+public class Category implements Serializable {
 
+	private static final long serialVersionUID = -3750515644499051145L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer categoryId;

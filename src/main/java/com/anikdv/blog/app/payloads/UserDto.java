@@ -47,5 +47,6 @@ public class UserDto implements Serializable {
 	private String image_url;
 	private String status;
 	private LocalDateTime createDate;
+	//private Set<CommentsDto> comments = new HashSet<>();
 
 }

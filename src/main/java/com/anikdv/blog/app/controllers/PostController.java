@@ -60,10 +60,10 @@ public class PostController {
 	/**
 	 * This Method For Create Post
 	 *
-	 * @param postDto
+	 * @param postData
 	 * @param categoryId
 	 * @param userId
-	 * @param MultipartFile -> (optional)
+	 * @param file       -> (optional)
 	 * @return StatusCode
 	 */
 	@PostMapping(value = "/user/{userId}/category/{categoryId}/post/create")
@@ -91,7 +91,7 @@ public class PostController {
 	/**
 	 * This Method For Update Post
 	 *
-	 * @param postDto
+	 * @param postdata
 	 * @param postId
 	 * @return Status with update content
 	 */
@@ -269,7 +269,6 @@ public class PostController {
 	/**
 	 * Upload Post Images
 	 * 
-	 * @param path
 	 * @param file
 	 * @param postId
 	 * @return status with file
@@ -311,7 +310,7 @@ public class PostController {
 	 * 
 	 * @param fileName
 	 * @param response
-	 * @throws IOException
+	 * @return file
 	 */
 	@GetMapping(value = "/post/file/{fileName}", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<?> getFileResource(final @PathVariable String fileName, HttpServletResponse response) {
@@ -336,6 +335,7 @@ public class PostController {
 	 * 
 	 * @param postId
 	 * @param fileName
+	 * @return status with message
 	 */
 	@DeleteMapping("/post/{postId}/file/{fileName}")
 	public ResponseEntity<?> deleteFileResourceFromPost(@PathVariable Integer postId, @PathVariable String fileName) {
