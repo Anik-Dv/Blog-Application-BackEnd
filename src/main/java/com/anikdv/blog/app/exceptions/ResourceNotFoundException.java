@@ -30,6 +30,17 @@ public class ResourceNotFoundException extends RuntimeException {
 	}
 
 	/**
+	 * @param resourceName
+	 * @param resourceField
+	 * @param resourceId
+	 */
+	public ResourceNotFoundException(final String resourceName, final String resourceField) {
+		super(String.format("%s Resource Not Found! %s ", resourceName, resourceField));
+		this.resourceName = resourceName;
+		this.resourceField = resourceField;
+	}
+
+	/**
 	 * @return the resourceName
 	 */
 	public String getResourceName() {

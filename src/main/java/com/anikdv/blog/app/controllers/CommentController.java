@@ -22,7 +22,7 @@ import com.anikdv.blog.app.services.CommentService;
 
 /**
  * @apiNote This is Comments REST API Controller
- * 
+ *
  * @author anikdv
  */
 @RestController
@@ -36,7 +36,7 @@ public class CommentController {
 
 	/**
 	 * This is Create Comment Controller
-	 * 
+	 *
 	 * @param comments
 	 * @param user_id
 	 * @param post_id
@@ -116,7 +116,7 @@ public class CommentController {
 
 	/**
 	 * This Method For Only This Post Fetch All Comments
-	 * 
+	 *
 	 * @param post_id
 	 * @return All Comments of Post
 	 */
@@ -136,7 +136,7 @@ public class CommentController {
 
 	/**
 	 * This Method For Only This User Fetch All Comments
-	 * 
+	 *
 	 * @param user_id
 	 * @return All Comments of User
 	 */
@@ -156,7 +156,7 @@ public class CommentController {
 
 	/**
 	 * This Method For Fetch All Comments
-	 * 
+	 *
 	 * @return All Comments | NOT NULL
 	 */
 	@GetMapping("/comments")
@@ -175,7 +175,7 @@ public class CommentController {
 
 	/**
 	 * This Method For Fetch Single Comments
-	 * 
+	 *
 	 * @param comment_id
 	 * @return Single Comment | NOT NULL
 	 */

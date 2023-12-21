@@ -11,7 +11,7 @@ import com.anikdv.blog.app.payloads.PostDto;
 
 /**
  * This is Comment Repository
- * 
+ *
  * @author anikdv
  */
 public interface CommentsRepository extends JpaRepository<Comments, Integer> {

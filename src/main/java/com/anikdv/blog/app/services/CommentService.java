@@ -9,14 +9,14 @@ import com.anikdv.blog.app.payloads.CommentsDto;
 
 /**
  * This is Comment Service Declaration
- * 
+ *
  * @author anikdv
  */
 public interface CommentService {
 
 	/**
 	 * This Method For Created Comment
-	 * 
+	 *
 	 * @param comment
 	 * @param user_id
 	 * @param post_id
@@ -27,7 +27,7 @@ public interface CommentService {
 
 	/**
 	 * This Method For Update Comment
-	 * 
+	 *
 	 * @param comment
 	 * @param comment_id
 	 * @param user_id
@@ -40,7 +40,7 @@ public interface CommentService {
 
 	/**
 	 * This Method For Delete Comment
-	 * 
+	 *
 	 * @param comment_id
 	 * @param user_id
 	 * @param post_id
@@ -51,7 +51,7 @@ public interface CommentService {
 
 	/**
 	 * This Method For Fetch All Comments
-	 * 
+	 *
 	 * @return List of Comments || NOT NULL
 	 */
 	@Cacheable(value = "comment")
@@ -59,7 +59,7 @@ public interface CommentService {
 
 	/**
 	 * This Method For Fetch Single Comment
-	 * 
+	 *
 	 * @param comment_id
 	 * @return Single Comment | NOT NULL
 	 */

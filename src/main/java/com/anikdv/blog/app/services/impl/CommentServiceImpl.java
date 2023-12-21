@@ -21,7 +21,7 @@ import com.anikdv.blog.app.services.CommentService;
 
 /**
  * This Is Comments Service Implementations
- * 
+ *
  * @author anikdv
  */
 @Service
@@ -102,7 +102,7 @@ public class CommentServiceImpl implements CommentService {
 
 	@Override
 	public List<CommentsDto> getAllCommentsByPost(Integer post_id) {
-		
+
 		Post post = this.postsRepository.findById(post_id)
 				.orElseThrow(() -> new ResourceNotFoundException("Post", "ID", post_id));
 		Set<Comments> postHasComments = post.getComments();
@@ -130,7 +130,7 @@ public class CommentServiceImpl implements CommentService {
 		List<Comments> comments = this.commentsRepository.findAll();
 		List<CommentsDto> commentResult = comments.stream()
 				.map((comment) -> this.mapperConfiguration.modelMapper().map(comment, CommentsDto.class))
-				.collect(Collectors.toList());		
+				.collect(Collectors.toList());
 		return commentResult;
 	}
 

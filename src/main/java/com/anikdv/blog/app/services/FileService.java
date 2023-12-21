@@ -9,7 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * @apiNote This is File Service Declaration
  * @author anikdv
- * 
+ *
  */
 public interface FileService {
 
@@ -32,7 +32,7 @@ public interface FileService {
 	/**
 	 * @param fileName
 	 * @param postId
-	 * @param path 
+	 * @param path
 	 * @return true/false | NOT NULL
 	 * @throws FileNotFoundException
 	 */

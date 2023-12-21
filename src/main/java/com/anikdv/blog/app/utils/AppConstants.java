@@ -2,9 +2,9 @@ package com.anikdv.blog.app.utils;
 
 /**
  * This is Application Constants Class.
- * 
+ *
  * @author AnikDV
- * 
+ *
  */
 public class AppConstants {
 
@@ -32,5 +32,10 @@ public class AppConstants {
 	 * This is Constant Key Cache
 	 */
 	public static final String CACHE_KEY = "posts";
+
+	/**
+	 * This is JWT Token Validity Time
+	 */
+	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
 }

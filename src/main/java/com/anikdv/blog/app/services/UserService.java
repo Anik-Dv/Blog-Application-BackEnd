@@ -15,7 +15,7 @@ public interface UserService {
 
 	/**
 	 * This Method For Create User
-	 * 
+	 *
 	 * @param user
 	 * @return created user
 	 */
@@ -24,7 +24,7 @@ public interface UserService {
 
 	/**
 	 * This Method For Update User
-	 * 
+	 *
 	 * @param user
 	 * @param userId
 	 * @return updated user
@@ -34,7 +34,7 @@ public interface UserService {
 
 	/**
 	 * This Method For Get Single User
-	 * 
+	 *
 	 * @param userId
 	 * @return single user
 	 */
@@ -43,7 +43,7 @@ public interface UserService {
 
 	/**
 	 * This Method For getting all User
-	 * 
+	 *
 	 * @param user
 	 * @return All users
 	 */
@@ -52,7 +52,7 @@ public interface UserService {
 
 	/**
 	 * This Method For Delete User
-	 * 
+	 *
 	 * @param userId
 	 * @return true/false
 	 */

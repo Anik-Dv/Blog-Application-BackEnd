@@ -37,7 +37,7 @@ public interface PostsRepository extends JpaRepository<Post, Integer> {
 
 	/**
 	 * For Searching Posts
-	 * 
+	 *
 	 * @param keyword
 	 * @return all posts of matched keywords
 	 */

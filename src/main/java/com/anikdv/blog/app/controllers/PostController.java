@@ -244,7 +244,7 @@ public class PostController {
 
 	/**
 	 * Search The Posts
-	 * 
+	 *
 	 * @param keyword
 	 *
 	 * @return all search posts | NOT NULL
@@ -268,7 +268,7 @@ public class PostController {
 
 	/**
 	 * Upload Post Images
-	 * 
+	 *
 	 * @param file
 	 * @param postId
 	 * @return status with file
@@ -307,7 +307,7 @@ public class PostController {
 
 	/**
 	 * Fetch Post Images
-	 * 
+	 *
 	 * @param fileName
 	 * @param response
 	 * @return file
@@ -332,7 +332,7 @@ public class PostController {
 
 	/**
 	 * Delete Post Images
-	 * 
+	 *
 	 * @param postId
 	 * @param fileName
 	 * @return status with message
