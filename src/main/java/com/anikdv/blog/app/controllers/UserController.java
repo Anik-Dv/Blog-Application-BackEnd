@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,8 @@ import com.anikdv.blog.app.payloads.ApiResponse;
 import com.anikdv.blog.app.payloads.UserDto;
 import com.anikdv.blog.app.services.UserService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 /**
@@ -41,17 +44,25 @@ public class UserController {
 	 * @param userDto
 	 * @return Status with created post | NOT NULL
 	 */
+	@Tag(name = "User API", description = "All Methods of User APIs")
+	@Operation(summary = "Create New User",
+    description = "Create an New User. The response is Create New User object with id, name, and other details.")
+	@PreAuthorize("hasRole('ADMIN')")
 	@PostMapping(value = "/create", consumes = "application/json")
-	public ResponseEntity<UserDto> createUser(final @Valid @RequestBody UserDto userDto) {
+	public ResponseEntity<?> createUser(final @Valid @RequestBody UserDto userDto) {
 		final String METHOD_NAME = "createUser";
 		logger.info("Method Invoked: " + this.getClass().getName() + ":" + METHOD_NAME);
+
 		try {
 			UserDto createdUser = this.userService.createUser(userDto);
+			logger.info("user id is : {} " + userDto.getUserid());
 			logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
 			return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
 		} catch (Exception e) {
 			logger.error(e.getMessage());
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+			e.printStackTrace();
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+					.body(new ApiResponse(e.getMessage() + "| Invalid Request!", false));
 		}
 	}
 
@@ -61,6 +72,10 @@ public class UserController {
 	 * @param userId
 	 * @return Status with updated user | NOT NULL
 	 */
+	@Tag(name = "User API", description = "All Methods of User APIs")
+	@Operation(summary = "Update an User",
+    description = "Update An Existing Users. The response is updated User object with id, name, Email And Other Details.")
+	@PreAuthorize("hasRole('ADMIN')")
 	@PutMapping(value = "/update/{userId}", consumes = "application/json")
 	public ResponseEntity<?> updateUser(final @Valid @RequestBody UserDto userDto, final @PathVariable Integer userId) {
 		final String METHOD_NAME = "updateUser";
@@ -89,6 +104,10 @@ public class UserController {
 	 * @param userId
 	 * @return Status with delete user True/False | NOT NULL
 	 */
+	@Tag(name = "User API", description = "All Methods of User APIs")
+	@Operation(summary = "Delete an User",
+    description = "Delete an existing User. The response is Message if User is Deleted Success or Not.")
+	@PreAuthorize("hasRole('ADMIN')")
 	@DeleteMapping(value = "/delete/{userId}")
 	public ResponseEntity<?> deleteUser(final @PathVariable Integer userId) {
 
@@ -115,6 +134,9 @@ public class UserController {
 	 *
 	 * @return All Users Resources | NOT NULL
 	 */
+	@Tag(name = "User API", description = "All Methods of User APIs")
+	@Operation(summary = "Get All Users",
+    description = "Get All existing Users. The response is List of All Users object with id, name, email and other details.")
 	@GetMapping(value = "/")
 	public ResponseEntity<List<?>> getAllUsers() {
 		final String METHOD_NAME = "getAllUsers";
@@ -136,6 +158,9 @@ public class UserController {
 	 * @param userId
 	 * @return Single Users Resources | NOT NULL
 	 */
+	@Tag(name = "User API", description = "All Methods of User APIs")
+	@Operation(summary = "Get Single User",
+    description = "Get Single User an existing Users. The response is User object with id, name, about, email with other details.")
 	@GetMapping(value = "/{userId}")
 	public ResponseEntity<?> getSingleUser(@PathVariable Integer userId) {
 		final String METHOD_NAME = "getSingleUser";

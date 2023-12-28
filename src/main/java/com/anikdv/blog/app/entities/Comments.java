@@ -1,8 +1,8 @@
 package com.anikdv.blog.app.entities;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,12 +21,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Comments implements Serializable {
-	private static final long serialVersionUID = -7492265083609901000L;
+public class Comments {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer comment_id;
+	private Integer commentId;
 
 	@Column(name = "commentDate", nullable = false)
 	private LocalDateTime createDate;
@@ -34,11 +33,11 @@ public class Comments implements Serializable {
 	@Column(length = 150, nullable = false)
 	private String Content;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(nullable = false, name = "user_Id")
 	private User user;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(nullable = false, name = "post_Id")
 	private Post post;
 }

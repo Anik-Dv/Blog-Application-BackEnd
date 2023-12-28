@@ -38,4 +38,14 @@ public class AppConstants {
 	 */
 	public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
+	/**
+	 * This is Constant key Admin User
+	 */
+	public static final Integer ADMIN_USER = 901;
+
+	/**
+	 * This is Constant key Normal User
+	 */
+	public static final Integer NORMAL_USER = 902;
+
 }

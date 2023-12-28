@@ -22,7 +22,6 @@ import com.anikdv.blog.app.entities.Comments;
 import com.anikdv.blog.app.entities.Post;
 import com.anikdv.blog.app.entities.User;
 import com.anikdv.blog.app.exceptions.ResourceNotFoundException;
-import com.anikdv.blog.app.payloads.CommentsDto;
 import com.anikdv.blog.app.payloads.PostDto;
 import com.anikdv.blog.app.payloads.PostResponse;
 import com.anikdv.blog.app.repositories.CategoryRepository;
@@ -76,14 +75,16 @@ public class PostServiceImpl implements PostService {
 		PostDto postDto = objectMapperConfig.getObjectMapper().readValue(postData, PostDto.class);
 
 		Post postEntity = this.mapperConfiguration.modelMapper().map(postDto, Post.class);
+
 		// find comment
-		Set<CommentsDto> commentsDto = this.commentsRepository.findByPost(postDto);
-		Set<Comments> setOfComments = commentsDto.stream()
+		// here i will get all comment entity
+		Set<Comments> comments = this.commentsRepository.findByPost(postEntity);
+		// fetch one by one comment from set
+		Set<Comments> setOfComments = comments.stream()
 				.map((comment) -> this.mapperConfiguration.modelMapper().map(comment, Comments.class))
 				.collect(Collectors.toSet());
 
-		// upload file in post
-		// FileService fileService = new FileServiceImpl();
+		// if any file exists then upload file in post
 		String uploadedFileName = this.fileService.fileUpoad(path, file);
 		if (!uploadedFileName.isEmpty() && uploadedFileName != null) {
 			postEntity.setImageName(uploadedFileName);
@@ -93,6 +94,7 @@ public class PostServiceImpl implements PostService {
 		postEntity.setUser(user);
 		postEntity.setCategory(category);
 		postEntity.setComments(setOfComments);
+
 		Post createdPost = this.postsRepository.save(postEntity);
 		return this.mapperConfiguration.modelMapper().map(createdPost, PostDto.class);
 	}

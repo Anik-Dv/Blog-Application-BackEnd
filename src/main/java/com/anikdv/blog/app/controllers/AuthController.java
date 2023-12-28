@@ -18,15 +18,21 @@ import org.springframework.web.bind.annotation.RestController;
 import com.anikdv.blog.app.payloads.ApiResponse;
 import com.anikdv.blog.app.payloads.JwtAuthRequest;
 import com.anikdv.blog.app.payloads.JwtAuthResponse;
+import com.anikdv.blog.app.payloads.UserDto;
 import com.anikdv.blog.app.security.JwtUtils;
+import com.anikdv.blog.app.services.UserService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 
 /**
  * This is User Authentication Controller
- * 
+ *
  * @author anikdv
  */
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("api/auth")
 public class AuthController {
 
 	private Logger logger = LoggerFactory.getLogger(AuthController.class);
@@ -40,14 +46,19 @@ public class AuthController {
 	@Autowired
 	private JwtUtils jwtUtils;
 
+	@Autowired
+	private UserService userService;
+
 	/**
 	 * This Method For User Login
 	 *
 	 * @param authRequest
 	 * @return user authorities
 	 */
+	@Tag(name = "Authentication User", description = "POST Methods of Login & Signin APIs")
+	@Operation(summary = "POST Method User Authentication Login", description = "Post Method User Authentication. The Response is an Access Token.")
 	@PostMapping("/login")
-	public ResponseEntity<?> loginHandler(@RequestBody JwtAuthRequest authRequest) {
+	public ResponseEntity<?> loginHandler(final @Valid @RequestBody JwtAuthRequest authRequest) {
 		final String METHOD_NAME = "loginHandler";
 		logger.info("Method Invoked: " + this.getClass().getName() + ":" + METHOD_NAME);
 		try {
@@ -66,33 +77,29 @@ public class AuthController {
 					.body(new ApiResponse("Invalid username or password!", false));
 		}
 	}
-//
-//	/**
-//	 * This Method For User Logout
-//	 *
-//	 * @param session
-//	 * @return Status with Response Method
-//	 */
-//	@GetMapping("/logout")
-//	public ResponseEntity<?> logoutHandler(final HttpSession session) {
-//		final String METHOD_NAME = "logoutHandler";
-//		logger.info("Method Invoked: " + this.getClass().getName() + ":" + METHOD_NAME);
-//		try {
-//			//logger.info("User Email Id : {}", user.getEmail());
-//			
-//			logger.info(":: Logout ::");
-//
-//	        // invalidate session
-//	        session.invalidate();
-//
-//			logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
-//			return ResponseEntity.status(HttpStatus.OK).body("");
-//		} catch (Exception e) {
-//			logger.error(e.getMessage());
-//			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-//					.body(new ApiResponse("Something Went Wrong! Please Try Again!", false));
-//		}
-//	}
+
+	/**
+	 * This Method For User Registration
+	 *
+	 * @param userDto
+	 * @return user authorities
+	 */
+	@Tag(name = "Authentication User", description = "POST Methods of Signin APIs")
+	@Operation(summary = "POST Method User Register", description = "Post Method User Register. The Response is Registered User Object and Other Details.")
+	@PostMapping("/signin")
+	public ResponseEntity<?> registrationHandler(final @Valid @RequestBody UserDto userDto) {
+		final String METHOD_NAME = "registrationHandler";
+		logger.info("Method Invoked: " + this.getClass().getName() + ":" + METHOD_NAME);
+		try {
+			UserDto registeredUser = this.userService.registrationUser(userDto);
+			logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
+			return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+					.body(new ApiResponse("Invalid User Credentials!", false));
+		}
+	}
 
 	/* This Method For Authenticate User */
 	private void doAuthentication(String username, String password) {

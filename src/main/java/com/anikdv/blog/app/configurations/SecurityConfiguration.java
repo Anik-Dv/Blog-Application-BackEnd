@@ -15,6 +15,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 import com.anikdv.blog.app.security.CustomUserDetailsService;
 import com.anikdv.blog.app.security.JwtAuthenticationEntryPoint;
@@ -27,6 +28,7 @@ import com.anikdv.blog.app.security.JwtAuthenticationFilter;
  */
 @Configuration
 @EnableWebSecurity
+@EnableWebMvc
 @EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfiguration {
 
@@ -37,6 +39,9 @@ public class SecurityConfiguration {
 	@Autowired
 	private JwtAuthenticationFilter filter;
 
+	private static final String[] PUBLIC_URL = { "api/auth/**", "api/posts/feed", "/api-docs", "/swagger-resources/**",
+			"/swagger-ui/**", "/webjars/**" };
+
 	/**
 	 * @param security
 	 * @throws Exception
@@ -45,7 +50,7 @@ public class SecurityConfiguration {
 	@Bean
 	public SecurityFilterChain configuration(HttpSecurity security) throws Exception {
 		security.csrf(csrf -> csrf.disable()).authorizeHttpRequests(
-				authorize -> authorize.requestMatchers("/auth/login").permitAll().anyRequest().authenticated());
+				authorize -> authorize.requestMatchers(PUBLIC_URL).permitAll().anyRequest().authenticated());
 		security.exceptionHandling(e -> e.authenticationEntryPoint(this.point))
 				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
@@ -73,5 +78,4 @@ public class SecurityConfiguration {
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-
 }

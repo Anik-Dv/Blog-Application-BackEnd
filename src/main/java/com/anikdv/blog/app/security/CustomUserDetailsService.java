@@ -12,7 +12,7 @@ import com.anikdv.blog.app.repositories.UserRepository;
 
 /**
  * This Is Class Load User Data
- * 
+ *
  * @author anikdv
  */
 @Service

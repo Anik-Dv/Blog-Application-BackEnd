@@ -12,9 +12,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * This is Jwt Authentication Entry Point
- * 
+ *
  * @author anikdv
- * 
+ *
  */
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {

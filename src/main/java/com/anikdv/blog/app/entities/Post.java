@@ -1,6 +1,5 @@
 package com.anikdv.blog.app.entities;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -33,9 +32,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Post implements Serializable {
-
-	private static final long serialVersionUID = 4386383408966200842L;
+public class Post {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -50,17 +47,17 @@ public class Post implements Serializable {
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime createDate;
 
-	@ManyToOne
-	@JoinColumn(nullable = false, name = "category_id")
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(nullable = false, name = "categoryId")
 	@JsonManagedReference
 	private Category category;
 
-	@ManyToOne
-	@JoinColumn(nullable = false, name = "user_id")
+	@ManyToOne(cascade = CascadeType.PERSIST)
+	@JoinColumn(nullable = false, name = "userid")
 	@JsonManagedReference
 	private User user;
 
-	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "post", cascade = { CascadeType.ALL }, orphanRemoval = true)
 	private Set<Comments> comments = new HashSet<>();
 
 }

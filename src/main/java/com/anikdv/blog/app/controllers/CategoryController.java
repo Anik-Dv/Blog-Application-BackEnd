@@ -21,6 +21,8 @@ import com.anikdv.blog.app.payloads.ApiResponse;
 import com.anikdv.blog.app.payloads.CategoryDto;
 import com.anikdv.blog.app.services.CategoryService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 
 /**
@@ -42,6 +44,9 @@ public class CategoryController {
 	 *
 	 * @return All categories | NOT NULL
 	 */
+	@Tag(name = "Category API", description = "All Methods of Category APIs")
+	@Operation(summary = "Get All Comments",
+    description = "Get All Comments. The Response is Get All Comments object details.")
 	@GetMapping("/")
 	public ResponseEntity<List<CategoryDto>> getAllCategory() {
 		final String METHOD_NAME = "getAllCategory";
@@ -63,6 +68,9 @@ public class CategoryController {
 	 * @param categoryId
 	 * @return single category | NOT NULL
 	 */
+	@Tag(name = "Category API", description = "All Methods of Category APIs")
+	@Operation(summary = "Get Category By Category ID",
+    description = "Get Single Category By Category ID. The Response is Category object details.")
 	@GetMapping("/{categoryId}")
 	public ResponseEntity<?> getSingleCategory(final @PathVariable Integer categoryId) {
 		final String METHOD_NAME = "getSingleCategory";
@@ -83,6 +91,9 @@ public class CategoryController {
 	 * @param categoryDto
 	 * @return created category | NOT NULL
 	 */
+	@Tag(name = "Category API", description = "All Methods of Category APIs")
+	@Operation(summary = "Get Comment By Comment ID",
+    description = "Get Comment By Comment ID. The Response is Comment object with Post details.")
 	@PostMapping(value = "/create", consumes = "application/json")
 	public ResponseEntity<?> createCategory(@Valid final @RequestBody CategoryDto categoryDto) {
 		final String METHOD_NAME = "createCategory";
@@ -105,6 +116,9 @@ public class CategoryController {
 	 * @param categoryId
 	 * @return updated category | NOT NULL
 	 */
+	@Tag(name = "Category API", description = "All Methods of Category APIs")
+	@Operation(summary = "Update An Existing Category.",
+    description = "Update an Existing Category. The Response is Updated Category object details.")
 	@PutMapping(value = "/update/{categoryId}", consumes = "application/json")
 	public ResponseEntity<?> updateCategory(@Valid final @RequestBody CategoryDto categoryDto,
 			final @PathVariable Integer categoryId) {
@@ -127,6 +141,9 @@ public class CategoryController {
 	 * @param categoryId
 	 * @return status with If Deleted True/False | NOT NULL
 	 */
+	@Tag(name = "Category API", description = "All Methods of Category APIs")
+	@Operation(summary = "Delete An Existing Category.",
+    description = "Delete an Existing Category. The Response is Updated Categroy object details.")
 	@DeleteMapping("/delete/{categoryId}")
 	public ResponseEntity<?> deleteCategory(final @PathVariable Integer categoryId) {
 		final String METHOD_NAME = "deleteCategory";

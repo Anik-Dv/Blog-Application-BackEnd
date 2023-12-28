@@ -20,6 +20,9 @@ import com.anikdv.blog.app.payloads.ApiResponse;
 import com.anikdv.blog.app.payloads.CommentsDto;
 import com.anikdv.blog.app.services.CommentService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
 /**
  * @apiNote This is Comments REST API Controller
  *
@@ -42,6 +45,9 @@ public class CommentController {
 	 * @param post_id
 	 * @return Status with created Comment | NOT NULL
 	 */
+	@Tag(name = "Comment API", description = "All Methods of Comment APIs")
+	@Operation(summary = "Create New Comment of Existing Post",
+    description = "Create an New Comment. The response is Create New Comment object With Post details.")
 	@PostMapping(value = "/post/{post_id}/user/{user_id}/comment", consumes = "application/json")
 	public ResponseEntity<?> createComment(@RequestBody CommentsDto comments, @PathVariable Integer user_id,
 			@PathVariable Integer post_id) {
@@ -65,6 +71,9 @@ public class CommentController {
 	 * @param comment_id
 	 * @return Updated Comment | NOT NULL
 	 */
+	@Tag(name = "Comment API", description = "All Methods of Comment APIs")
+	@Operation(summary = "Update an Existing Comment",
+    description = "Update An Existing Comment. The response is updated Comment object With Post details..")
 	@PutMapping(value = "/post/{post_id}/user/{user_id}/comment/{comment_id}", consumes = "application/json")
 	public ResponseEntity<?> updateComment(@RequestBody CommentsDto commentData, @PathVariable Integer post_id,
 			@PathVariable Integer user_id, @PathVariable Integer comment_id) {
@@ -91,6 +100,9 @@ public class CommentController {
 	 * @param post_id
 	 * @return Status Code | NOT NULL
 	 */
+	@Tag(name = "Comment API", description = "All Methods of Comment APIs")
+	@Operation(summary = "Delete an Comment",
+    description = "Delete an existing Comment. The response is Message if Comment is Deleted Success or Not.")
 	@DeleteMapping("/post/{post_id}/user/{user_id}/comment/{comment_id}")
 	public ResponseEntity<?> deleteComment(@PathVariable Integer comment_id, @PathVariable Integer user_id,
 			@PathVariable Integer post_id) {
@@ -120,6 +132,9 @@ public class CommentController {
 	 * @param post_id
 	 * @return All Comments of Post
 	 */
+	@Tag(name = "Comment API", description = "All Methods of Comment APIs")
+	@Operation(summary = "Get All Comments By Post",
+    description = "Get All Comments By Post. The response is List of All Comments object with Post details.")
 	@GetMapping("/post/{post_id}/comments")
 	public ResponseEntity<?> getAllCommentsByPost(@PathVariable Integer post_id) {
 		final String METHOD_NAME = "getAllCommentsByPost";
@@ -140,6 +155,9 @@ public class CommentController {
 	 * @param user_id
 	 * @return All Comments of User
 	 */
+	@Tag(name = "Comment API", description = "All Methods of Comment APIs")
+	@Operation(summary = "Get All Comments By User",
+    description = "Get All Comments By existing Users. The response is Get All Comments of Existing User.")
 	@GetMapping("/user/{user_id}/comments")
 	public ResponseEntity<?> getAllCommentsByUser(@PathVariable Integer user_id) {
 		final String METHOD_NAME = "getAllCommentsByPost";
@@ -159,6 +177,9 @@ public class CommentController {
 	 *
 	 * @return All Comments | NOT NULL
 	 */
+	@Tag(name = "Comment API", description = "All Methods of Comment APIs")
+	@Operation(summary = "Get All Comments",
+    description = "Get All Existing Comments. The response is Get All Comments.")
 	@GetMapping("/comments")
 	public ResponseEntity<?> getAllComments() {
 		final String METHOD_NAME = "getAllComments";
@@ -179,6 +200,9 @@ public class CommentController {
 	 * @param comment_id
 	 * @return Single Comment | NOT NULL
 	 */
+	@Tag(name = "Comment API", description = "All Methods of Comment APIs")
+	@Operation(summary = "Get Comment By Comment ID",
+    description = "Get Comment By Comment ID. The Response is Comment object with Post details.")
 	@GetMapping("/comment/{comment_id}")
 	public ResponseEntity<?> getComment(@PathVariable Integer comment_id) {
 		final String METHOD_NAME = "getComment";

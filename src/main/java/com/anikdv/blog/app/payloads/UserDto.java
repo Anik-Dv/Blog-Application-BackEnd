@@ -2,6 +2,8 @@ package com.anikdv.blog.app.payloads;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -12,7 +14,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.ToString;
 
 /**
  * This Model Class is DTO (Data Transfer Object)
@@ -21,19 +22,14 @@ import lombok.ToString;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Builder
 public class UserDto implements Serializable {
-
 	private static final long serialVersionUID = 6082824759048463498L;
 
-	private Integer userId;
-
+	private Integer userid;
 	@NotBlank
 	@Size(min = 4, max = 26, message = "You Name Is Must be Minimum 4 Chars and Maximum is 26 Chars!")
 	private String name;
-	@NotBlank
-	private String role;
 	@NotBlank
 	@Size(min = 16, max = 900, message = "About is Must be Minimum 16 Chars and Maximum is 900 Chars!")
 	private String about;
@@ -47,6 +43,6 @@ public class UserDto implements Serializable {
 	private String image_url;
 	private String status;
 	private LocalDateTime createDate;
-	//private Set<CommentsDto> comments = new HashSet<>();
 
+	private Set<RoleDto> roles = new HashSet<>();
 }

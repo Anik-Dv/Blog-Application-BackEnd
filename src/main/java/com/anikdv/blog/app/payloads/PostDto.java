@@ -18,7 +18,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class PostDto implements Serializable {
-
 	private static final long serialVersionUID = 6340156754117897222L;
 
 	private Integer postId;

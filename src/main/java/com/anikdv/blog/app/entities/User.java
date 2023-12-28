@@ -1,6 +1,5 @@
 package com.anikdv.blog.app.entities;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
@@ -21,10 +20,8 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -34,42 +31,43 @@ import lombok.Setter;
  *
  * @author AnikDV
  */
-
+@Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Entity
-public class User implements Serializable, UserDetails {
+@AllArgsConstructor
+public class User implements UserDetails {
+	private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 6225090273384677163L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "User_Id")
-	private int userId;
-	@Column(name = "User_Name")
+	@Column(name = "userid")
+	private Integer userid;
+
+	@Column(name = "UserName")
 	private String name;
 	@Column(length = 900)
 	private String about;
-	@Column(name = "Email_ID", nullable = false, unique = true)
+	@Column(name = "EmailId", nullable = false, unique = true)
 	private String email;
 	private String password;
 	private String image_url;
 	private String status;
 
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinTable(name = "USER_ROLE", joinColumns = @JoinColumn(name = "USER", referencedColumnName = "User_Id"), inverseJoinColumns = @JoinColumn(name = "ROLE", referencedColumnName = "ROLE_ID"))
-	private Set<Role> roles = new HashSet<Role>();
-
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 	private LocalDateTime createDate;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	@JsonBackReference
 	private Set<Post> posts = new HashSet<>();
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
 	@JsonBackReference
 	private Set<Comments> comments = new HashSet<>();
+
+	@OneToMany(mappedBy = "user" ,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	//@JoinTable(name = "USERROLE", joinColumns = @JoinColumn(name = "USER", referencedColumnName = "userid"), inverseJoinColumns = @JoinColumn(name = "ROLE", referencedColumnName = "ROLEID"))
+	private Set<Role> roles = new HashSet<>();
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -102,5 +100,4 @@ public class User implements Serializable, UserDetails {
 	public boolean isEnabled() {
 		return true;
 	}
-
 }

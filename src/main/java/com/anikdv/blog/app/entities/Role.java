@@ -4,33 +4,27 @@ import java.io.Serializable;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
 /**
  * This is a Role Entity
  */
 @Entity
 @Table(name = "Role")
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
+@Data
 public class Role implements Serializable {
 	private static final long serialVersionUID = 3361066834306567663L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "ROLE_ID")
+	@Column(name = "ROLEID")
 	private Integer id;
 
-	@Column(name = "ROLE_NAME")
+	@Column(name = "ROLENAME")
 	private String name;
 
+	@ManyToOne
+	private User user;
 }

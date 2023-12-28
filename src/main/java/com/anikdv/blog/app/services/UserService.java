@@ -14,6 +14,15 @@ import com.anikdv.blog.app.payloads.UserDto;
 public interface UserService {
 
 	/**
+	 * This Method For Registration User
+	 *
+	 * @param userDto
+	 * @return an new registered user
+	 */
+	@CacheEvict(value = "users", allEntries = true)
+	UserDto registrationUser(final UserDto userDto);
+
+	/**
 	 * This Method For Create User
 	 *
 	 * @param user

@@ -70,7 +70,7 @@ public class CommentServiceImpl implements CommentService {
 				.orElseThrow(() -> new ResourceNotFoundException("Comment", "ID", comment_id));
 
 		Comments updatedComment = null;
-		if (post.getPostId() == comment.getPost().getPostId() && user.getUserId() == comment.getUser().getUserId()) {
+		if (post.getPostId() == comment.getPost().getPostId() && user.getUserid() == comment.getUser().getUserid()) {
 			// then set new data
 			comment.setContent(commentData.getContent());
 			// save the comment
@@ -92,7 +92,7 @@ public class CommentServiceImpl implements CommentService {
 		Comments comments = this.commentsRepository.findById(comment_id)
 				.orElseThrow(() -> new ResourceNotFoundException("Comment", "ID", comment_id));
 
-		if (comments.getUser().getUserId() == user.getUserId() && comments.getPost().getPostId() == post.getPostId()) {
+		if (comments.getUser().getUserid() == user.getUserid() && comments.getPost().getPostId() == post.getPostId()) {
 			// delete comment
 			this.commentsRepository.delete(comments);
 			return flag = true;

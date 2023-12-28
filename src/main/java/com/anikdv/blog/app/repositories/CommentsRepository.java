@@ -5,9 +5,8 @@ import java.util.Set;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.anikdv.blog.app.entities.Comments;
+import com.anikdv.blog.app.entities.Post;
 import com.anikdv.blog.app.entities.User;
-import com.anikdv.blog.app.payloads.CommentsDto;
-import com.anikdv.blog.app.payloads.PostDto;
 
 /**
  * This is Comment Repository
@@ -30,6 +29,6 @@ public interface CommentsRepository extends JpaRepository<Comments, Integer> {
 	 * @param posts
 	 * @return comment
 	 */
-	Set<CommentsDto> findByPost(PostDto posts);
+	Set<Comments> findByPost(Post posts);
 
 }

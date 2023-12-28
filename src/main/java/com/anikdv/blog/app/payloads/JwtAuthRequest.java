@@ -3,7 +3,7 @@ package com.anikdv.blog.app.payloads;
 import lombok.Data;
 
 /**
- * 
+ *
  */
 @Data
 public class JwtAuthRequest {

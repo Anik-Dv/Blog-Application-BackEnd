@@ -26,7 +26,7 @@ public class JwtUtils {
 
 	/**
 	 * retrieve username from jwt token
-	 * 
+	 *
 	 * @param token
 	 * @return user name from token
 	 */
@@ -36,7 +36,7 @@ public class JwtUtils {
 
 	/**
 	 * retrieve expiration date from jwt token
-	 * 
+	 *
 	 * @param token
 	 * @return expiration date
 	 */
@@ -87,13 +87,13 @@ public class JwtUtils {
 	private String doGenerateToken(Map<String, Object> claims, String subject) {
 
 		return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + appConstants.JWT_TOKEN_VALIDITY * 1000))
+				.setExpiration(new Date(System.currentTimeMillis() + AppConstants.JWT_TOKEN_VALIDITY * 1000))
 				.signWith(SignatureAlgorithm.HS512, secret).compact();
 	}
 
 	/**
 	 * validate token
-	 * 
+	 *
 	 * @param token
 	 * @param userDetails
 	 * @return if is valid true|false

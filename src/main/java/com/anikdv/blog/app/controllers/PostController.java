@@ -34,6 +34,8 @@ import com.anikdv.blog.app.services.FileService;
 import com.anikdv.blog.app.services.PostService;
 import com.anikdv.blog.app.utils.AppConstants;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletResponse;
 
 /**
@@ -66,6 +68,9 @@ public class PostController {
 	 * @param file       -> (optional)
 	 * @return StatusCode
 	 */
+	@Tag(name = "Post API", description = "All Methods of Post APIs")
+	@Operation(summary = "Create an New Post",
+    description = "Create New Post an existing User. The response is Create New Post object with id, Post Title, content and other details.")
 	@PostMapping(value = "/user/{userId}/category/{categoryId}/post/create")
 	public ResponseEntity<?> createPost(final @RequestParam("postData") String postData,
 			final @RequestParam(value = "file", required = false) MultipartFile file,
@@ -84,7 +89,7 @@ public class PostController {
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse("Invalid Request!", false));
+			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage()+" | Invalid Request!", false));
 		}
 	}
 
@@ -95,6 +100,9 @@ public class PostController {
 	 * @param postId
 	 * @return Status with update content
 	 */
+	@Tag(name = "Post API", description = "All Methods of Post APIs")
+	@Operation(summary = "Update an Post",
+    description = "Update an existing Post. The response is updated Post object with id, Post Title, content and other details.")
 	@PutMapping(value = "/post/{postId}/update", consumes = "application/json")
 	public ResponseEntity<?> updatePost(final @RequestBody PostDto postdata, final @PathVariable Integer postId) {
 		final String METHOD_NAME = "updatePost";
@@ -120,6 +128,9 @@ public class PostController {
 	 * @param postId
 	 * @return Status with ApiResponse
 	 */
+	@Tag(name = "Post API", description = "All Methods of Post APIs")
+	@Operation(summary = "Delete an Post",
+    description = "Delete an existing Post. The response is Message if Post Deleted Success or Not.")
 	@DeleteMapping(value = "/post/{postId}")
 	public ResponseEntity<?> deletePost(final @PathVariable Integer postId) {
 		final String METHOD_NAME = "deletePost";
@@ -148,6 +159,9 @@ public class PostController {
 	 * @param userId
 	 * @return user all post | NOT NULL
 	 */
+	@Tag(name = "Post API", description = "All Methods of Post APIs")
+	@Operation(summary = "Get Post By User",
+    description = "Get Post By existing User. The response is Get All Posts of Existing User.")
 	@GetMapping(value = "/user/{userId}/posts")
 	public ResponseEntity<?> getPostByUserHandler(final @PathVariable Integer userId) {
 		final String METHOD_NAME = "getPostByUserHandler";
@@ -172,6 +186,9 @@ public class PostController {
 	 * @param categoryId
 	 * @return user all post | NOT NULL
 	 */
+	@Tag(name = "Post API", description = "All Methods of Post APIs")
+	@Operation(summary = "Get Post By Category",
+    description = "Get Post By existing Category. The response is Get All Posts of Existing Category.")
 	@GetMapping(value = "/category/{categoryId}/posts")
 	public ResponseEntity<?> getPostByCategoryHandler(final @PathVariable Integer categoryId) {
 		final String METHOD_NAME = "getPostByCategoryHandler";
@@ -200,6 +217,9 @@ public class PostController {
 	 * @param sortDir
 	 * @return All Posts
 	 */
+	@Tag(name = "Post API", description = "All Methods of Post APIs")
+	@Operation(summary = "Get All Posts",
+    description = "Get All Existing Posts. The response is Get All Posts.")
 	@GetMapping(value = "/posts/feed")
 	public ResponseEntity<?> getPosts(
 			final @RequestParam(value = "pageNumber", defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
@@ -223,6 +243,9 @@ public class PostController {
 	 * @param postId
 	 * @return post of given post ID
 	 */
+	@Tag(name = "Post API", description = "All Methods of Post APIs")
+	@Operation(summary = "Get Posts By Post ID",
+    description = "Get Posts By Post ID. The Response is Post object with id, Post Title, content and other details.")
 	@GetMapping(value = "/post/{postId}")
 	public ResponseEntity<?> getPostById(final @PathVariable Integer postId) {
 		final String METHOD_NAME = "getPostById";
@@ -249,6 +272,9 @@ public class PostController {
 	 *
 	 * @return all search posts | NOT NULL
 	 */
+	@Tag(name = "Post API", description = "All Methods of Post APIs")
+	@Operation(summary = "Get Post By Keywords",
+    description = "Get Posts By Keywords. The Response is Get All Post of Which is Matched Keyword By Any Post Title And Content.")
 	@GetMapping(value = "/search/post/{keyword}")
 	public ResponseEntity<?> searchPostHandler(final @PathVariable String keyword) {
 		final String METHOD_NAME = "searchPostHandler";
@@ -273,6 +299,9 @@ public class PostController {
 	 * @param postId
 	 * @return status with file
 	 */
+	@Tag(name = "Post API", description = "All Methods of Post APIs")
+	@Operation(summary = "Upload Post Images",
+    description = "Upload Post Images. The Response is Get Uploaded Images of Post.")
 	@PostMapping(value = "/post/upload/{postId}")
 	public ResponseEntity<?> uploadPostFile(final @PathVariable Integer postId,
 			@RequestParam("file") MultipartFile file) {
@@ -312,6 +341,9 @@ public class PostController {
 	 * @param response
 	 * @return file
 	 */
+	@Tag(name = "Post API", description = "All Methods of Post APIs")
+	@Operation(summary = "Get Post Images",
+    description = "Get Post Images. The Response is Get Images of Post.")
 	@GetMapping(value = "/post/file/{fileName}", produces = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<?> getFileResource(final @PathVariable String fileName, HttpServletResponse response) {
 		final String METHOD_NAME = "getFileResource";
@@ -337,6 +369,9 @@ public class PostController {
 	 * @param fileName
 	 * @return status with message
 	 */
+	@Tag(name = "Post API", description = "All Methods of Post APIs")
+	@Operation(summary = "Delete Post Images",
+    description = "Delete Post Images. The Response is Message if Post Images is Deleted Success or Not.")
 	@DeleteMapping("/post/{postId}/file/{fileName}")
 	public ResponseEntity<?> deleteFileResourceFromPost(@PathVariable Integer postId, @PathVariable String fileName) {
 		final String METHOD_NAME = "deleteFileResourceFromPost";

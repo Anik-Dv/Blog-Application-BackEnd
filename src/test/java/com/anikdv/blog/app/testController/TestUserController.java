@@ -56,8 +56,8 @@ public class TestUserController {
 	void createUserRecordTest_Positives() throws Exception {
 
 		// create an user
-		UserDto user = new UserDto(123, "anikdv", "user", "testing this method", "anik@gmail.com", "Anik1234",
-				"image.jpg", "active", LocalDateTime.now());
+		UserDto user = new UserDto(123, "anikdv", "testing this method", "anik@gmail.com", "Anik1234",
+				"image.jpg", "active", LocalDateTime.now(), null);
 
 		// Implement the mocking
 		when(this.service.createUser(ArgumentMatchers.any())).thenReturn(user);
@@ -94,8 +94,8 @@ public class TestUserController {
 	void createUserRecordTest_Nagetive() throws Exception {
 
 		// create an user
-		UserDto user = new UserDto(123, "anikdv", "user", "testing this method", "anik@gmail.com", "Anik1234",
-				"image.jpg", "active", LocalDateTime.now());
+		UserDto user = new UserDto(123, "anikdv", "testing this method", "anik@gmail.com", "Anik1234",
+				"image.jpg", "active", LocalDateTime.now(),null);
 
 		// Implement the mocking
 		when(this.service.createUser(ArgumentMatchers.any())).thenThrow(InternalServerError.class);
@@ -131,8 +131,8 @@ public class TestUserController {
 	@Test
 	void updateUserRecordTest_Positive() throws Exception {
 		Integer resourceId = 8;
-		UserDto updateUser = UserDto.builder().userId(resourceId).name("TestName").about("This is a Test About")
-				.email("test@gmail.com").role("TEST").password("TestPassword#1").status("active").build();
+		UserDto updateUser = UserDto.builder().userid(resourceId).name("TestName").about("This is a Test About")
+				.email("test@gmail.com").password("TestPassword#1").status("active").build();
 
 		// Implement the mocking
 		// when(this.service.getUserById(resourceId)).thenReturn(updateUser);
