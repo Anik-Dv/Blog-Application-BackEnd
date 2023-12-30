@@ -39,7 +39,7 @@ public class SecurityConfiguration {
 	@Autowired
 	private JwtAuthenticationFilter filter;
 
-	private static final String[] PUBLIC_URL = { "api/auth/**", "api/posts/feed", "/api-docs", "/swagger-resources/**",
+	private static final String[] PUBLIC_URL = { "api/auth/**", "/api-docs", "api/posts/feed", "/swagger-resources/**",
 			"/swagger-ui/**", "/webjars/**" };
 
 	/**

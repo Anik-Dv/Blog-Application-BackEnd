@@ -48,4 +48,9 @@ public class AppConstants {
 	 */
 	public static final Integer NORMAL_USER = 902;
 
+	/**
+	 * This is Constant key Authorization header
+	 */
+	public static final String AUTHORIZATION_HEADER = "Authorization";
+
 }
