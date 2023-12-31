@@ -34,7 +34,7 @@ public class SwaggerAPIConfiguration {
 	@Bean
 	public OpenAPI defineOpenApi() {
 		Server server = new Server();
-		server.setUrl("http://localhost:9090");
+		server.setUrl("blog-application-backend-production.up.railway.app");
 		server.setDescription("Development");
 
 		Contact myContact = new Contact();
