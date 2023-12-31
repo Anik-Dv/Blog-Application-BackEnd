@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GetAllDataFromCache.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SpringBoot-Blog-Application-BackEnd</a> &gt; <a href="index.source.html" class="el_package">com.anikdv.blog.app.utils</a> &gt; <span class="el_source">GetAllDataFromCache.java</span></div><h1>GetAllDataFromCache.java</h1><pre class="source lang-java linenums">package com.anikdv.blog.app.utils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map.Entry;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.data.redis.core.Cursor;
+import org.springframework.data.redis.core.ScanOptions;
+
+import com.anikdv.blog.app.configurations.RedisCacheConfiguration;
+import com.anikdv.blog.app.payloads.PostDto;
+import com.anikdv.blog.app.services.impl.PostServiceImpl;
+
+/**
+ * @see This Class for Fetch All Data From Cache
+ * @author anikdv
+ */
+<span class="nc" id="L20">public class GetAllDataFromCache {</span>
+
+<span class="nc" id="L22">	private static final Logger logger = LoggerFactory.getLogger(PostServiceImpl.class);</span>
+
+	private RedisCacheConfiguration configuration;
+
+	/**
+	 * @param pageNumber
+	 * @param pageSize
+	 * @return fetch all data from cache
+	 */
+	public List&lt;PostDto&gt; getAllDataCache(final Integer pageNumber, final Integer pageSize) {
+<span class="nc" id="L32">		int tempStartIndex = 0;</span>
+<span class="nc" id="L33">		int tempEndIndex = 0;</span>
+
+<span class="nc" id="L35">		List&lt;PostDto&gt; postsArr = new ArrayList&lt;&gt;();</span>
+
+<span class="nc" id="L37">		try (Cursor&lt;Entry&lt;Object, Object&gt;&gt; cursor = configuration.redisTemplate().opsForHash()</span>
+<span class="nc" id="L38">				.scan(AppConstants.CACHE_KEY, ScanOptions.scanOptions().match(&quot;*&quot;).build())) {</span>
+
+<span class="nc bnc" id="L40" title="All 2 branches missed.">			while (cursor.hasNext()) {</span>
+<span class="nc bnc" id="L41" title="All 4 branches missed.">				if (tempStartIndex &gt;= pageNumber &amp;&amp; tempEndIndex &lt; pageSize) {</span>
+<span class="nc" id="L42">					Entry&lt;Object, Object&gt; entry = cursor.next();</span>
+<span class="nc" id="L43">					PostDto postsDto = (PostDto) entry.getValue();</span>
+<span class="nc" id="L44">					postsArr.add(postsDto);</span>
+<span class="nc" id="L45">					tempStartIndex++;</span>
+<span class="nc" id="L46">					tempEndIndex++;</span>
+<span class="nc" id="L47">					continue;</span>
+				}
+
+<span class="nc bnc" id="L50" title="All 2 branches missed.">				if (tempEndIndex &gt;= pageSize) {</span>
+<span class="nc" id="L51">					break;</span>
+				}
+
+<span class="nc" id="L54">				tempStartIndex++;</span>
+<span class="nc" id="L55">				cursor.next();</span>
+			}
+
+<span class="nc" id="L58">		} catch (Exception e) {</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">			if (logger.isInfoEnabled()) {</span>
+<span class="nc" id="L60">				logger.info(&quot;Exception while fetching data from redis cache : &quot; + e);</span>
+			}
+<span class="nc" id="L62">		}</span>
+<span class="nc" id="L63">		return postsArr;</span>
+	}
+
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CommentServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SpringBoot-Blog-Application-BackEnd</a> &gt; <a href="index.source.html" class="el_package">com.anikdv.blog.app.services.impl</a> &gt; <span class="el_source">CommentServiceImpl.java</span></div><h1>CommentServiceImpl.java</h1><pre class="source lang-java linenums">package com.anikdv.blog.app.services.impl;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.anikdv.blog.app.configurations.ModelMapperConfiguration;
+import com.anikdv.blog.app.entities.Comments;
+import com.anikdv.blog.app.entities.Post;
+import com.anikdv.blog.app.entities.User;
+import com.anikdv.blog.app.exceptions.ResourceNotFoundException;
+import com.anikdv.blog.app.payloads.CommentsDto;
+import com.anikdv.blog.app.repositories.CommentsRepository;
+import com.anikdv.blog.app.repositories.PostsRepository;
+import com.anikdv.blog.app.repositories.UserRepository;
+import com.anikdv.blog.app.services.CommentService;
+
+/**
+ * This Is Comments Service Implementations
+ *
+ * @author anikdv
+ */
+@Service
+<span class="fc" id="L28">public class CommentServiceImpl implements CommentService {</span>
+
+	@Autowired
+	private CommentsRepository commentsRepository;
+
+	@Autowired
+	private PostsRepository postsRepository;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private ModelMapperConfiguration mapperConfiguration;
+
+	@Override
+	public CommentsDto createComment(CommentsDto comment, Integer user_id, Integer post_id) {
+		// find user
+<span class="nc" id="L45">		User user = this.userRepository.findById(user_id)</span>
+<span class="nc" id="L46">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;User&quot;, &quot;ID&quot;, user_id));</span>
+		// find post
+<span class="nc" id="L48">		Post post = this.postsRepository.findById(post_id)</span>
+<span class="nc" id="L49">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Post&quot;, &quot;ID&quot;, post_id));</span>
+
+<span class="nc" id="L51">		Comments comments = this.mapperConfiguration.modelMapper().map(comment, Comments.class);</span>
+<span class="nc" id="L52">		comments.setUser(user);</span>
+<span class="nc" id="L53">		comments.setPost(post);</span>
+<span class="nc" id="L54">		comments.setCreateDate(LocalDateTime.now());</span>
+
+<span class="nc" id="L56">		Comments createdComment = this.commentsRepository.save(comments);</span>
+<span class="nc" id="L57">		return this.mapperConfiguration.modelMapper().map(createdComment, CommentsDto.class);</span>
+	}
+
+	@Override
+	public CommentsDto updateComment(CommentsDto commentData, Integer comment_id, Integer user_id, Integer post_id) {
+		// find post
+<span class="nc" id="L63">		Post post = this.postsRepository.findById(post_id)</span>
+<span class="nc" id="L64">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Post&quot;, &quot;ID&quot;, post_id));</span>
+		// find user
+<span class="nc" id="L66">		User user = this.userRepository.findById(user_id)</span>
+<span class="nc" id="L67">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;User&quot;, &quot;ID&quot;, user_id));</span>
+		// find comment
+<span class="nc" id="L69">		Comments comment = this.commentsRepository.findById(comment_id)</span>
+<span class="nc" id="L70">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Comment&quot;, &quot;ID&quot;, comment_id));</span>
+
+<span class="nc" id="L72">		Comments updatedComment = null;</span>
+<span class="nc bnc" id="L73" title="All 4 branches missed.">		if (post.getPostId() == comment.getPost().getPostId() &amp;&amp; user.getUserid() == comment.getUser().getUserid()) {</span>
+			// then set new data
+<span class="nc" id="L75">			comment.setContent(commentData.getContent());</span>
+			// save the comment
+<span class="nc" id="L77">			updatedComment = this.commentsRepository.save(comment);</span>
+		}
+<span class="nc" id="L79">		return this.mapperConfiguration.modelMapper().map(updatedComment, CommentsDto.class);</span>
+	}
+
+	@Override
+	public boolean deleteComment(Integer comment_id, Integer user_id, Integer post_id) {
+<span class="nc" id="L84">		boolean flag = false;</span>
+		// find user
+<span class="nc" id="L86">		User user = this.userRepository.findById(user_id)</span>
+<span class="nc" id="L87">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;User&quot;, &quot;ID&quot;, user_id));</span>
+		// find post
+<span class="nc" id="L89">		Post post = this.postsRepository.findById(post_id)</span>
+<span class="nc" id="L90">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Post&quot;, &quot;ID&quot;, post_id));</span>
+		// find comments
+<span class="nc" id="L92">		Comments comments = this.commentsRepository.findById(comment_id)</span>
+<span class="nc" id="L93">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Comment&quot;, &quot;ID&quot;, comment_id));</span>
+
+<span class="nc bnc" id="L95" title="All 4 branches missed.">		if (comments.getUser().getUserid() == user.getUserid() &amp;&amp; comments.getPost().getPostId() == post.getPostId()) {</span>
+			// delete comment
+<span class="nc" id="L97">			this.commentsRepository.delete(comments);</span>
+<span class="nc" id="L98">			return flag = true;</span>
+		}
+<span class="nc" id="L100">		return flag;</span>
+	}
+
+	@Override
+	public List&lt;CommentsDto&gt; getAllCommentsByPost(Integer post_id) {
+
+<span class="nc" id="L106">		Post post = this.postsRepository.findById(post_id)</span>
+<span class="nc" id="L107">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Post&quot;, &quot;ID&quot;, post_id));</span>
+<span class="nc" id="L108">		Set&lt;Comments&gt; postHasComments = post.getComments();</span>
+
+<span class="nc" id="L110">		List&lt;CommentsDto&gt; commentResult = postHasComments.stream()</span>
+<span class="nc" id="L111">				.map((comment) -&gt; this.mapperConfiguration.modelMapper().map(comment, CommentsDto.class))</span>
+<span class="nc" id="L112">				.collect(Collectors.toList());</span>
+<span class="nc" id="L113">		return commentResult;</span>
+	}
+
+	@Override
+	public List&lt;CommentsDto&gt; getAllCommentsByUser(Integer user_id) {
+<span class="nc" id="L118">		User user = this.userRepository.findById(user_id)</span>
+<span class="nc" id="L119">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;User&quot;, &quot;ID&quot;, user_id));</span>
+<span class="nc" id="L120">		Set&lt;Comments&gt; userHasComments = user.getComments();</span>
+
+<span class="nc" id="L122">		List&lt;CommentsDto&gt; commentResult = userHasComments.stream()</span>
+<span class="nc" id="L123">				.map((comment) -&gt; this.mapperConfiguration.modelMapper().map(comment, CommentsDto.class))</span>
+<span class="nc" id="L124">				.collect(Collectors.toList());</span>
+<span class="nc" id="L125">		return commentResult;</span>
+	}
+
+	@Override
+	public List&lt;CommentsDto&gt; getAllComments() {
+<span class="nc" id="L130">		List&lt;Comments&gt; comments = this.commentsRepository.findAll();</span>
+<span class="nc" id="L131">		List&lt;CommentsDto&gt; commentResult = comments.stream()</span>
+<span class="nc" id="L132">				.map((comment) -&gt; this.mapperConfiguration.modelMapper().map(comment, CommentsDto.class))</span>
+<span class="nc" id="L133">				.collect(Collectors.toList());</span>
+<span class="nc" id="L134">		return commentResult;</span>
+	}
+
+	@Override
+	public CommentsDto getComment(Integer comment_id) {
+<span class="nc" id="L139">		Comments comment = this.commentsRepository.findById(comment_id)</span>
+<span class="nc" id="L140">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Comment&quot;, &quot;ID&quot;, comment_id));</span>
+<span class="nc" id="L141">		return this.mapperConfiguration.modelMapper().map(comment, CommentsDto.class);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

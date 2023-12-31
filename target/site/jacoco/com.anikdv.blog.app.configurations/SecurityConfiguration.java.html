@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SecurityConfiguration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SpringBoot-Blog-Application-BackEnd</a> &gt; <a href="index.source.html" class="el_package">com.anikdv.blog.app.configurations</a> &gt; <span class="el_source">SecurityConfiguration.java</span></div><h1>SecurityConfiguration.java</h1><pre class="source lang-java linenums">package com.anikdv.blog.app.configurations;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.ProviderManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+
+import com.anikdv.blog.app.security.CustomUserDetailsService;
+import com.anikdv.blog.app.security.JwtAuthenticationEntryPoint;
+import com.anikdv.blog.app.security.JwtAuthenticationFilter;
+
+/**
+ * This is Security Configuration
+ *
+ * @author anikdv
+ */
+@Configuration
+@EnableWebSecurity
+@EnableWebMvc
+@EnableMethodSecurity(prePostEnabled = true)
+<span class="fc" id="L33">public class SecurityConfiguration {</span>
+
+	@Autowired
+	private CustomUserDetailsService customUserDetailsService;
+	@Autowired
+	private JwtAuthenticationEntryPoint point;
+	@Autowired
+	private JwtAuthenticationFilter filter;
+
+<span class="fc" id="L42">	private static final String[] PUBLIC_URL = { &quot;api/auth/**&quot;, &quot;/api-docs&quot;, &quot;api/posts/feed&quot;, &quot;/swagger-resources/**&quot;,</span>
+			&quot;/swagger-ui/**&quot;, &quot;/webjars/**&quot; };
+
+	/**
+	 * @param security
+	 * @throws Exception
+	 * @return security
+	 */
+	@Bean
+	public SecurityFilterChain configuration(HttpSecurity security) throws Exception {
+<span class="fc" id="L52">		security.csrf(csrf -&gt; csrf.disable()).authorizeHttpRequests(</span>
+<span class="fc" id="L53">				authorize -&gt; authorize.requestMatchers(PUBLIC_URL).permitAll().anyRequest().authenticated());</span>
+<span class="fc" id="L54">		security.exceptionHandling(e -&gt; e.authenticationEntryPoint(this.point))</span>
+<span class="fc" id="L55">				.sessionManagement(session -&gt; session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));</span>
+
+<span class="fc" id="L57">		security.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);</span>
+<span class="fc" id="L58">		return security.build();</span>
+	}
+
+	/**
+	 * @param builder
+	 * @throws Exception
+	 * @return authenticationManager
+	 */
+	@Bean
+	public AuthenticationManager authenticationManager(AuthenticationManagerBuilder builder) throws Exception {
+<span class="fc" id="L68">		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();</span>
+<span class="fc" id="L69">		provider.setUserDetailsService(customUserDetailsService);</span>
+<span class="fc" id="L70">		provider.setPasswordEncoder(this.passwordEncoder());</span>
+<span class="fc" id="L71">		return new ProviderManager(provider);</span>
+	}
+
+	/**
+	 * @return BCryptPasswordEncoder;
+	 */
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+<span class="fc" id="L79">		return new BCryptPasswordEncoder();</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

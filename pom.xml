@@ -12,7 +12,7 @@
 	<groupId>com.anikdv.blog.app</groupId>
 	<artifactId>SpringBoot-Blog-Application-BackEnd</artifactId>
 	<version>1.0-SNAPSHOT</version>
-	<packaging>war</packaging>
+	<packaging>jar</packaging>
 	<name>SpringBoot-Blog-Application-BackEnd</name>
 	<description>This is a SpringBoot Blogging BackEnd APIs Application</description>
 	<properties>

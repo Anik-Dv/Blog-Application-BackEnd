@@ -1,0 +1,214 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SpringBoot-Blog-Application-BackEnd</a> &gt; <a href="index.source.html" class="el_package">com.anikdv.blog.app.services.impl</a> &gt; <span class="el_source">PostServiceImpl.java</span></div><h1>PostServiceImpl.java</h1><pre class="source lang-java linenums">package com.anikdv.blog.app.services.impl;
+
+import java.io.File;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.anikdv.blog.app.configurations.ModelMapperConfiguration;
+import com.anikdv.blog.app.configurations.ObjectMapperConfig;
+import com.anikdv.blog.app.entities.Category;
+import com.anikdv.blog.app.entities.Comments;
+import com.anikdv.blog.app.entities.Post;
+import com.anikdv.blog.app.entities.User;
+import com.anikdv.blog.app.exceptions.ResourceNotFoundException;
+import com.anikdv.blog.app.payloads.PostDto;
+import com.anikdv.blog.app.payloads.PostResponse;
+import com.anikdv.blog.app.repositories.CategoryRepository;
+import com.anikdv.blog.app.repositories.CommentsRepository;
+import com.anikdv.blog.app.repositories.PostsRepository;
+import com.anikdv.blog.app.repositories.UserRepository;
+import com.anikdv.blog.app.services.FileService;
+import com.anikdv.blog.app.services.PostService;
+import com.anikdv.blog.app.utils.GetAllDataFromCache;
+
+/**
+ * This is Implementation of Post Service
+ *
+ * @author AnikDV
+ */
+@Service
+<span class="fc" id="L41">public class PostServiceImpl implements PostService {</span>
+
+	@Autowired
+	private PostsRepository postsRepository;
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private CategoryRepository categoryRepository;
+
+	@Autowired
+	private ModelMapperConfiguration mapperConfiguration;
+
+	@Autowired
+	private CommentsRepository commentsRepository;
+
+	@Autowired
+	private ObjectMapperConfig objectMapperConfig;
+
+	@Lazy
+	@Autowired
+	private FileService fileService;
+
+	@Override
+	public PostDto createPost(String postData, Integer userId, Integer categoryId, String path, MultipartFile file)
+			throws Exception {
+
+<span class="nc" id="L69">		User user = this.userRepository.findById(userId)</span>
+<span class="nc" id="L70">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;USER&quot;, &quot;ID&quot;, userId));</span>
+<span class="nc" id="L71">		Category category = this.categoryRepository.findById(categoryId)</span>
+<span class="nc" id="L72">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Category&quot;, &quot;ID&quot;, categoryId));</span>
+
+		// convert string into json
+<span class="nc" id="L75">		PostDto postDto = objectMapperConfig.getObjectMapper().readValue(postData, PostDto.class);</span>
+
+<span class="nc" id="L77">		Post postEntity = this.mapperConfiguration.modelMapper().map(postDto, Post.class);</span>
+
+		// find comment
+		// here i will get all comment entity
+<span class="nc" id="L81">		Set&lt;Comments&gt; comments = this.commentsRepository.findByPost(postEntity);</span>
+		// fetch one by one comment from set
+<span class="nc" id="L83">		Set&lt;Comments&gt; setOfComments = comments.stream()</span>
+<span class="nc" id="L84">				.map((comment) -&gt; this.mapperConfiguration.modelMapper().map(comment, Comments.class))</span>
+<span class="nc" id="L85">				.collect(Collectors.toSet());</span>
+
+		// if any file exists then upload file in post
+<span class="nc" id="L88">		String uploadedFileName = this.fileService.fileUpoad(path, file);</span>
+<span class="nc bnc" id="L89" title="All 4 branches missed.">		if (!uploadedFileName.isEmpty() &amp;&amp; uploadedFileName != null) {</span>
+<span class="nc" id="L90">			postEntity.setImageName(uploadedFileName);</span>
+		}
+		// setup default properties
+<span class="nc" id="L93">		postEntity.setCreateDate(LocalDateTime.now());</span>
+<span class="nc" id="L94">		postEntity.setUser(user);</span>
+<span class="nc" id="L95">		postEntity.setCategory(category);</span>
+<span class="nc" id="L96">		postEntity.setComments(setOfComments);</span>
+
+<span class="nc" id="L98">		Post createdPost = this.postsRepository.save(postEntity);</span>
+<span class="nc" id="L99">		return this.mapperConfiguration.modelMapper().map(createdPost, PostDto.class);</span>
+	}
+
+	@Override
+	public PostDto updatePost(PostDto postDto, Integer postId) throws ResourceNotFoundException {
+
+<span class="nc" id="L105">		Post post = this.postsRepository.findById(postId)</span>
+<span class="nc" id="L106">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;POST&quot;, &quot;ID&quot;, postId));</span>
+
+		// set new value to old post
+<span class="nc" id="L109">		post.setTitle(postDto.getTitle());</span>
+<span class="nc" id="L110">		post.setContent(postDto.getContent());</span>
+<span class="nc" id="L111">		post.setTag(postDto.getTag());</span>
+
+<span class="nc" id="L113">		Post updatedPost = this.postsRepository.save(post);</span>
+<span class="nc" id="L114">		return this.mapperConfiguration.modelMapper().map(updatedPost, PostDto.class);</span>
+	}
+
+	@Override
+	public boolean deletePost(Integer postId, String path) {
+<span class="nc" id="L119">		boolean flag = false;</span>
+		try {
+<span class="nc" id="L121">			Post post = this.postsRepository.findById(postId)</span>
+<span class="nc" id="L122">					.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;POST&quot;, &quot;ID&quot;, postId));</span>
+
+<span class="nc" id="L124">			String filePath = path + File.separator + post.getImageName();</span>
+<span class="nc" id="L125">			File file = new File(filePath);</span>
+<span class="nc bnc" id="L126" title="All 2 branches missed.">			if (file.exists()) {</span>
+<span class="nc" id="L127">				file.delete();</span>
+			}
+<span class="nc" id="L129">			this.postsRepository.delete(post);</span>
+<span class="nc" id="L130">			return flag = true;</span>
+<span class="nc" id="L131">		} catch (ResourceNotFoundException e) {</span>
+<span class="nc" id="L132">			return flag;</span>
+		}
+	}
+
+	@Override
+	public PostDto getPostById(Integer postId) {
+<span class="nc" id="L138">		Post post = this.postsRepository.findById(postId)</span>
+<span class="nc" id="L139">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Post&quot;, &quot;ID&quot;, postId));</span>
+<span class="nc" id="L140">		return this.mapperConfiguration.modelMapper().map(post, PostDto.class);</span>
+
+	}
+
+	@Override
+	public PostResponse getPosts(Integer pageNumber, Integer pageSize, String sortBy, String sortDir)
+			throws ResourceNotFoundException {
+
+		// for get all data from cache
+<span class="nc" id="L149">		GetAllDataFromCache cache = new GetAllDataFromCache();</span>
+<span class="nc" id="L150">		cache.getAllDataCache(pageNumber, pageSize);</span>
+
+<span class="nc" id="L152">		Sort sortDiraction = null;</span>
+<span class="nc bnc" id="L153" title="All 2 branches missed.">		if (sortDir.equals(&quot;asc&quot;))</span>
+<span class="nc" id="L154">			sortDiraction = Sort.by(sortBy).ascending();</span>
+<span class="nc bnc" id="L155" title="All 2 branches missed.">		else if (sortDir.equals(&quot;desc&quot;))</span>
+<span class="nc" id="L156">			sortDiraction = Sort.by(sortBy).descending();</span>
+
+<span class="nc" id="L158">		Pageable pageable = PageRequest.of(pageNumber, pageSize, sortDiraction);</span>
+<span class="nc" id="L159">		Page&lt;Post&gt; postOfPage = this.postsRepository.findAll(pageable);</span>
+<span class="nc" id="L160">		List&lt;Post&gt; allPosts = postOfPage.getContent();</span>
+		// System.out.println(&quot;get all data from database&quot;);
+<span class="nc" id="L162">		List&lt;PostDto&gt; listOfPostDto = allPosts.stream()</span>
+<span class="nc" id="L163">				.map((post) -&gt; this.mapperConfiguration.modelMapper().map(post, PostDto.class))</span>
+<span class="nc" id="L164">				.collect(Collectors.toList());</span>
+
+<span class="nc" id="L166">		PostResponse postResponse = new PostResponse();</span>
+<span class="nc" id="L167">		postResponse.setContent(listOfPostDto);</span>
+<span class="nc" id="L168">		postResponse.setPageNumber(postOfPage.getNumber());</span>
+<span class="nc" id="L169">		postResponse.setPageContentSize(postOfPage.getSize());</span>
+<span class="nc" id="L170">		postResponse.setTotalPages(postOfPage.getTotalPages());</span>
+<span class="nc" id="L171">		postResponse.setTotalContent(postOfPage.getTotalElements());</span>
+<span class="nc" id="L172">		postResponse.setLastPage(postOfPage.isLast());</span>
+<span class="nc" id="L173">		return postResponse;</span>
+	}
+
+	@Override
+	public Set&lt;PostDto&gt; getPostByUser(Integer userId) {
+
+<span class="nc" id="L179">		User user = this.userRepository.findById(userId)</span>
+<span class="nc" id="L180">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;USER&quot;, &quot;ID&quot;, userId));</span>
+<span class="nc" id="L181">		Set&lt;Post&gt; userAllPosts = this.postsRepository.findByUser(user);</span>
+<span class="nc" id="L182">		Set&lt;PostDto&gt; posts = userAllPosts.stream()</span>
+<span class="nc" id="L183">				.map((p) -&gt; this.mapperConfiguration.modelMapper().map(p, PostDto.class)).collect(Collectors.toSet());</span>
+<span class="nc" id="L184">		return posts;</span>
+	}
+
+	@Override
+	public Set&lt;PostDto&gt; getPostByCategory(Integer categoryId) {
+
+<span class="nc" id="L190">		Category category = this.categoryRepository.findById(categoryId)</span>
+<span class="nc" id="L191">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Category&quot;, &quot;ID&quot;, categoryId));</span>
+<span class="nc" id="L192">		Set&lt;Post&gt; categoryAllPosts = this.postsRepository.findByCategory(category);</span>
+<span class="nc" id="L193">		Set&lt;PostDto&gt; posts = categoryAllPosts.stream()</span>
+<span class="nc" id="L194">				.map((p) -&gt; this.mapperConfiguration.modelMapper().map(p, PostDto.class)).collect(Collectors.toSet());</span>
+<span class="nc" id="L195">		return posts;</span>
+	}
+
+	@Override
+	public List&lt;PostDto&gt; searchPostByKeyword(String keyword) {
+<span class="nc" id="L200">		List&lt;PostDto&gt; resultOfPostDto = null;</span>
+		try {
+<span class="nc" id="L202">			List&lt;Post&gt; result = this.postsRepository.searchPosts(&quot;%&quot; + keyword + &quot;%&quot;);</span>
+<span class="nc" id="L203">			resultOfPostDto = result.stream()</span>
+<span class="nc" id="L204">					.map((post) -&gt; this.mapperConfiguration.modelMapper().map(post, PostDto.class))</span>
+<span class="nc" id="L205">					.collect(Collectors.toList());</span>
+<span class="nc" id="L206">			return resultOfPostDto;</span>
+<span class="nc" id="L207">		} catch (ResourceNotFoundException e) {</span>
+<span class="nc" id="L208">			e.printStackTrace();</span>
+		}
+<span class="nc" id="L210">		return resultOfPostDto;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

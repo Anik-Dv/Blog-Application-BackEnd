@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>CommentsDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SpringBoot-Blog-Application-BackEnd</a> &gt; <a href="index.source.html" class="el_package">com.anikdv.blog.app.payloads</a> &gt; <span class="el_source">CommentsDto.java</span></div><h1>CommentsDto.java</h1><pre class="source lang-java linenums">package com.anikdv.blog.app.payloads;
+
+import java.io.Serializable;
+import java.time.LocalDateTime;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
+
+/**
+ * This is Comments DTO
+ */
+<span class="nc bnc" id="L15" title="All 30 branches missed.">@Data</span>
+public class CommentsDto implements Serializable {
+	private static final long serialVersionUID = -3816259610003470315L;
+
+<span class="nc" id="L19">	private Integer commentId;</span>
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = &quot;yyyy-MM-dd HH:mm:ss&quot;)
+<span class="nc" id="L22">	private LocalDateTime createDate;</span>
+
+	@NotEmpty(message = &quot;Comment Content Must Not be Empty!&quot;)
+	@Size(min = 3, max = 130, message = &quot;Content Must be Minimum 3 Chars and Maximum 130 Chars!&quot;)
+<span class="nc" id="L26">	private String Content;</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

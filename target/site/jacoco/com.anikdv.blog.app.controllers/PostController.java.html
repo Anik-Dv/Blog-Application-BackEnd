@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PostController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SpringBoot-Blog-Application-BackEnd</a> &gt; <a href="index.source.html" class="el_package">com.anikdv.blog.app.controllers</a> &gt; <span class="el_source">PostController.java</span></div><h1>PostController.java</h1><pre class="source lang-java linenums">package com.anikdv.blog.app.controllers;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.List;
+import java.util.Set;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.util.StreamUtils;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.HttpServerErrorException.InternalServerError;
+import org.springframework.web.multipart.MultipartFile;
+
+import com.anikdv.blog.app.exceptions.ResourceNotFoundException;
+import com.anikdv.blog.app.payloads.ApiResponse;
+import com.anikdv.blog.app.payloads.PostDto;
+import com.anikdv.blog.app.payloads.PostResponse;
+import com.anikdv.blog.app.services.FileService;
+import com.anikdv.blog.app.services.PostService;
+import com.anikdv.blog.app.utils.AppConstants;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletResponse;
+
+/**
+ * This is Post Rest Controller
+ *
+ * @apiNote This is Post API Controller
+ * @author AnikDV
+ */
+@RestController
+@RequestMapping(&quot;/api&quot;)
+<span class="fc" id="L49">public class PostController {</span>
+
+<span class="fc" id="L51">	private Logger logger = LoggerFactory.getLogger(PostController.class);</span>
+
+	@Autowired
+	private PostService postService;
+
+	@Autowired
+	private FileService fileService;
+
+	@Value(&quot;${file.upload-dir}&quot;)
+	private String path;
+
+	/**
+	 * This Method For Create Post
+	 *
+	 * @param postData
+	 * @param categoryId
+	 * @param userId
+	 * @param file       -&gt; (optional)
+	 * @return StatusCode
+	 */
+	@Tag(name = &quot;Post API&quot;, description = &quot;All Methods of Post APIs&quot;)
+	@Operation(summary = &quot;Create an New Post&quot;,
+    description = &quot;Create New Post an existing User. The response is Create New Post object with id, Post Title, content and other details.&quot;)
+	@PostMapping(value = &quot;/user/{userId}/category/{categoryId}/post/create&quot;)
+	public ResponseEntity&lt;?&gt; createPost(final @RequestParam(&quot;postData&quot;) String postData,
+			final @RequestParam(value = &quot;file&quot;, required = false) MultipartFile file,
+			final @PathVariable(&quot;userId&quot;) Integer userId, final @PathVariable(&quot;categoryId&quot;) Integer categoryId) {
+<span class="nc" id="L78">		final String METHOD_NAME = &quot;createPost&quot;;</span>
+<span class="nc" id="L79">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+		try {
+<span class="nc bnc" id="L81" title="All 2 branches missed.">			if (postData.isEmpty()) {</span>
+<span class="nc" id="L82">				logger.error(&quot;Post Data Must Not be Empty!&quot;);</span>
+<span class="nc" id="L83">				return ResponseEntity.status(HttpStatus.NOT_FOUND)</span>
+<span class="nc" id="L84">						.body(new ApiResponse(&quot;Post Content Must Not be Empty!&quot;, false));</span>
+			}
+<span class="nc" id="L86">			PostDto createdPost = this.postService.createPost(postData, userId, categoryId, path, file);</span>
+<span class="nc" id="L87">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L88">			return ResponseEntity.status(HttpStatus.CREATED).body(createdPost);</span>
+<span class="nc" id="L89">		} catch (Exception e) {</span>
+<span class="nc" id="L90">			logger.error(e.getMessage());</span>
+<span class="nc" id="L91">			e.printStackTrace();</span>
+<span class="nc" id="L92">			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage()+&quot; | Invalid Request!&quot;, false));</span>
+		}
+	}
+
+	/**
+	 * This Method For Update Post
+	 *
+	 * @param postdata
+	 * @param postId
+	 * @return Status with update content
+	 */
+	@Tag(name = &quot;Post API&quot;, description = &quot;All Methods of Post APIs&quot;)
+	@Operation(summary = &quot;Update an Post&quot;,
+    description = &quot;Update an existing Post. The response is updated Post object with id, Post Title, content and other details.&quot;)
+	@PutMapping(value = &quot;/post/{postId}/update&quot;, consumes = &quot;application/json&quot;)
+	public ResponseEntity&lt;?&gt; updatePost(final @RequestBody PostDto postdata, final @PathVariable Integer postId) {
+<span class="nc" id="L108">		final String METHOD_NAME = &quot;updatePost&quot;;</span>
+<span class="nc" id="L109">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+		try {
+<span class="nc bnc" id="L111" title="All 4 branches missed.">			if (postdata == null || postId == null) {</span>
+<span class="nc" id="L112">				return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="nc" id="L113">						.body(new ApiResponse(&quot;Post ID &quot; + postId + &quot; does not exist.&quot;, false));</span>
+			}
+<span class="nc" id="L115">			PostDto updatedPost = this.postService.updatePost(postdata, postId);</span>
+<span class="nc" id="L116">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L117">			return ResponseEntity.status(HttpStatus.OK).body(updatedPost);</span>
+<span class="nc" id="L118">		} catch (InternalServerError e) {</span>
+<span class="nc" id="L119">			logger.error(e.getMessage());</span>
+<span class="nc" id="L120">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span>
+<span class="nc" id="L121">					.body(new ApiResponse(&quot;Something Went Wrong!.&quot;, false));</span>
+		}
+	}
+
+	/**
+	 * This Method For Delete Post
+	 *
+	 * @param postId
+	 * @return Status with ApiResponse
+	 */
+	@Tag(name = &quot;Post API&quot;, description = &quot;All Methods of Post APIs&quot;)
+	@Operation(summary = &quot;Delete an Post&quot;,
+    description = &quot;Delete an existing Post. The response is Message if Post Deleted Success or Not.&quot;)
+	@DeleteMapping(value = &quot;/post/{postId}&quot;)
+	public ResponseEntity&lt;?&gt; deletePost(final @PathVariable Integer postId) {
+<span class="nc" id="L136">		final String METHOD_NAME = &quot;deletePost&quot;;</span>
+<span class="nc" id="L137">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+
+		try {
+<span class="nc" id="L140">			boolean deletedPost = this.postService.deletePost(postId, path);</span>
+<span class="nc bnc" id="L141" title="All 2 branches missed.">			if (deletedPost) {</span>
+<span class="nc" id="L142">				logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L143">				return ResponseEntity.status(HttpStatus.OK)</span>
+<span class="nc" id="L144">						.body(new ApiResponse(&quot;Post has been Deleted Successfully!&quot;, deletedPost));</span>
+			} else {
+<span class="nc" id="L146">				return ResponseEntity.status(HttpStatus.NOT_FOUND)</span>
+<span class="nc" id="L147">						.body(new ApiResponse(&quot;Not Found Any Post!&quot;, deletedPost));</span>
+			}
+<span class="nc" id="L149">		} catch (ResourceNotFoundException e) {</span>
+<span class="nc" id="L150">			logger.error(e.getMessage());</span>
+<span class="nc" id="L151">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span>
+<span class="nc" id="L152">					.body(new ApiResponse(&quot;Something Went Wrong!&quot;, false));</span>
+		}
+	}
+
+	/**
+	 * This Method For Get All Posts Of User
+	 *
+	 * @param userId
+	 * @return user all post | NOT NULL
+	 */
+	@Tag(name = &quot;Post API&quot;, description = &quot;All Methods of Post APIs&quot;)
+	@Operation(summary = &quot;Get Post By User&quot;,
+    description = &quot;Get Post By existing User. The response is Get All Posts of Existing User.&quot;)
+	@GetMapping(value = &quot;/user/{userId}/posts&quot;)
+	public ResponseEntity&lt;?&gt; getPostByUserHandler(final @PathVariable Integer userId) {
+<span class="nc" id="L167">		final String METHOD_NAME = &quot;getPostByUserHandler&quot;;</span>
+<span class="nc" id="L168">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+		try {
+<span class="nc bnc" id="L170" title="All 2 branches missed.">			if (userId == null) {</span>
+<span class="nc" id="L171">				return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="nc" id="L172">						.body(new ApiResponse(&quot;User ID &quot; + userId + &quot; does not exist.&quot;, false));</span>
+			}
+<span class="nc" id="L174">			Set&lt;PostDto&gt; posts = this.postService.getPostByUser(userId);</span>
+<span class="nc" id="L175">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L176">			return ResponseEntity.status(HttpStatus.FOUND).body(posts);</span>
+<span class="nc" id="L177">		} catch (ResourceNotFoundException e) {</span>
+<span class="nc" id="L178">			logger.error(e.getMessage());</span>
+<span class="nc" id="L179">			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(&quot;User Not Have Any Posts!&quot;, false));</span>
+		}
+	}
+
+	/**
+	 * This Method For Get All Posts Of Category
+	 *
+	 * @param categoryId
+	 * @return user all post | NOT NULL
+	 */
+	@Tag(name = &quot;Post API&quot;, description = &quot;All Methods of Post APIs&quot;)
+	@Operation(summary = &quot;Get Post By Category&quot;,
+    description = &quot;Get Post By existing Category. The response is Get All Posts of Existing Category.&quot;)
+	@GetMapping(value = &quot;/category/{categoryId}/posts&quot;)
+	public ResponseEntity&lt;?&gt; getPostByCategoryHandler(final @PathVariable Integer categoryId) {
+<span class="nc" id="L194">		final String METHOD_NAME = &quot;getPostByCategoryHandler&quot;;</span>
+<span class="nc" id="L195">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+		try {
+<span class="nc bnc" id="L197" title="All 2 branches missed.">			if (categoryId == null) {</span>
+<span class="nc" id="L198">				return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="nc" id="L199">						.body(new ApiResponse(&quot;Category ID &quot; + categoryId + &quot; does not exist.&quot;, false));</span>
+			}
+<span class="nc" id="L201">			Set&lt;PostDto&gt; posts = this.postService.getPostByCategory(categoryId);</span>
+<span class="nc" id="L202">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L203">			return ResponseEntity.status(HttpStatus.FOUND).body(posts);</span>
+<span class="nc" id="L204">		} catch (ResourceNotFoundException e) {</span>
+<span class="nc" id="L205">			logger.error(e.getMessage());</span>
+<span class="nc" id="L206">			return ResponseEntity.status(HttpStatus.NOT_FOUND)</span>
+<span class="nc" id="L207">					.body(new ApiResponse(&quot;Category Not Have Any Posts!&quot;, false));</span>
+		}
+	}
+
+	/**
+	 * Getting All Posts
+	 *
+	 * @param pageNumber
+	 * @param pageContentSize
+	 * @param sortBy
+	 * @param sortDir
+	 * @return All Posts
+	 */
+	@Tag(name = &quot;Post API&quot;, description = &quot;All Methods of Post APIs&quot;)
+	@Operation(summary = &quot;Get All Posts&quot;,
+    description = &quot;Get All Existing Posts. The response is Get All Posts.&quot;)
+	@GetMapping(value = &quot;/posts/feed&quot;)
+	public ResponseEntity&lt;?&gt; getPosts(
+			final @RequestParam(value = &quot;pageNumber&quot;, defaultValue = AppConstants.PAGE_NUMBER, required = false) Integer pageNumber,
+			final @RequestParam(value = &quot;pageContentSize&quot;, defaultValue = AppConstants.PAGE_CONTENT_SIZE, required = false) Integer pageContentSize,
+			final @RequestParam(value = &quot;sortBy&quot;, defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
+			final @RequestParam(value = &quot;sortDir&quot;, defaultValue = AppConstants.SORT_DIR, required = false) String sortDir) {
+<span class="nc" id="L229">		final String METHOD_NAME = &quot;getPosts&quot;;</span>
+<span class="nc" id="L230">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+		try {
+<span class="nc" id="L232">			PostResponse posts = this.postService.getPosts(pageNumber, pageContentSize, sortBy, sortDir);</span>
+<span class="nc" id="L233">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L234">			return ResponseEntity.status(HttpStatus.FOUND).body(posts);</span>
+<span class="nc" id="L235">		} catch (ResourceNotFoundException e) {</span>
+<span class="nc" id="L236">			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(&quot;Not Found Any Posts!&quot;, false));</span>
+		}
+	}
+
+	/**
+	 * This Method For Get Post of Given ID
+	 *
+	 * @param postId
+	 * @return post of given post ID
+	 */
+	@Tag(name = &quot;Post API&quot;, description = &quot;All Methods of Post APIs&quot;)
+	@Operation(summary = &quot;Get Posts By Post ID&quot;,
+    description = &quot;Get Posts By Post ID. The Response is Post object with id, Post Title, content and other details.&quot;)
+	@GetMapping(value = &quot;/post/{postId}&quot;)
+	public ResponseEntity&lt;?&gt; getPostById(final @PathVariable Integer postId) {
+<span class="nc" id="L251">		final String METHOD_NAME = &quot;getPostById&quot;;</span>
+<span class="nc" id="L252">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+		try {
+<span class="nc bnc" id="L254" title="All 2 branches missed.">			if (postId == null) {</span>
+<span class="nc" id="L255">				return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="nc" id="L256">						.body(new ApiResponse(&quot;Post ID &quot; + postId + &quot; does not Empty!&quot;, false));</span>
+			}
+<span class="nc" id="L258">			PostDto post = this.postService.getPostById(postId);</span>
+<span class="nc" id="L259">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L260">			return ResponseEntity.status(HttpStatus.FOUND).body(post);</span>
+<span class="nc" id="L261">		} catch (ResourceNotFoundException e) {</span>
+<span class="nc" id="L262">			logger.error(e.getMessage());</span>
+<span class="nc" id="L263">			return ResponseEntity.status(HttpStatus.NOT_FOUND)</span>
+<span class="nc" id="L264">					.body(new ApiResponse(&quot;Not Found Any Post ID &quot; + postId, false));</span>
+		}
+	}
+
+	/**
+	 * Search The Posts
+	 *
+	 * @param keyword
+	 *
+	 * @return all search posts | NOT NULL
+	 */
+	@Tag(name = &quot;Post API&quot;, description = &quot;All Methods of Post APIs&quot;)
+	@Operation(summary = &quot;Get Post By Keywords&quot;,
+    description = &quot;Get Posts By Keywords. The Response is Get All Post of Which is Matched Keyword By Any Post Title And Content.&quot;)
+	@GetMapping(value = &quot;/search/post/{keyword}&quot;)
+	public ResponseEntity&lt;?&gt; searchPostHandler(final @PathVariable String keyword) {
+<span class="nc" id="L280">		final String METHOD_NAME = &quot;searchPostHandler&quot;;</span>
+<span class="nc" id="L281">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+		try {
+<span class="nc" id="L283">			List&lt;PostDto&gt; result = this.postService.searchPostByKeyword(keyword);</span>
+<span class="nc bnc" id="L284" title="All 2 branches missed.">			if (result.isEmpty()) {</span>
+<span class="nc" id="L285">				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(&quot;Not Found Any Posts!&quot;, false));</span>
+			}
+<span class="nc" id="L287">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L288">			return ResponseEntity.status(HttpStatus.FOUND).body(result);</span>
+<span class="nc" id="L289">		} catch (ResourceNotFoundException e) {</span>
+<span class="nc" id="L290">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span>
+<span class="nc" id="L291">					.body(new ApiResponse(&quot;Something Went Wrong!&quot;, false));</span>
+		}
+	}
+
+	/**
+	 * Upload Post Images
+	 *
+	 * @param file
+	 * @param postId
+	 * @return status with file
+	 */
+	@Tag(name = &quot;Post API&quot;, description = &quot;All Methods of Post APIs&quot;)
+	@Operation(summary = &quot;Upload Post Images&quot;,
+    description = &quot;Upload Post Images. The Response is Get Uploaded Images of Post.&quot;)
+	@PostMapping(value = &quot;/post/upload/{postId}&quot;)
+	public ResponseEntity&lt;?&gt; uploadPostFile(final @PathVariable Integer postId,
+			@RequestParam(&quot;file&quot;) MultipartFile file) {
+<span class="nc" id="L308">		final String METHOD_NAME = &quot;uploadPostFile&quot;;</span>
+<span class="nc" id="L309">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+		// find previous post
+<span class="nc" id="L311">		PostDto post = this.postService.getPostById(postId);</span>
+
+<span class="nc bnc" id="L313" title="All 2 branches missed.">		if (file.isEmpty()) {</span>
+<span class="nc" id="L314">			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(&quot;File Is Must Not Empty!&quot;, false));</span>
+		}
+
+		// upload the file
+		String fileName;
+		try {
+<span class="nc" id="L320">			fileName = this.fileService.fileUpoad(path, file);</span>
+<span class="nc" id="L321">		} catch (Exception e) {</span>
+<span class="nc" id="L322">			logger.error(e.getMessage());</span>
+<span class="nc" id="L323">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span>
+<span class="nc" id="L324">					.body(new ApiResponse(&quot;Post Images Not Uploaded!&quot;, false));</span>
+<span class="nc" id="L325">		}</span>
+
+		// set new property
+<span class="nc" id="L328">		post.setImageName(fileName);</span>
+		// then this update post
+<span class="nc" id="L330">		PostDto postDto = this.postService.updatePost(post, postId);</span>
+
+<span class="nc" id="L332">		logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L333">		return ResponseEntity.status(HttpStatus.OK).body(postDto);</span>
+
+	}
+
+	/**
+	 * Fetch Post Images
+	 *
+	 * @param fileName
+	 * @param response
+	 * @return file
+	 */
+	@Tag(name = &quot;Post API&quot;, description = &quot;All Methods of Post APIs&quot;)
+	@Operation(summary = &quot;Get Post Images&quot;,
+    description = &quot;Get Post Images. The Response is Get Images of Post.&quot;)
+	@GetMapping(value = &quot;/post/file/{fileName}&quot;, produces = MediaType.MULTIPART_FORM_DATA_VALUE)
+	public ResponseEntity&lt;?&gt; getFileResource(final @PathVariable String fileName, HttpServletResponse response) {
+<span class="nc" id="L349">		final String METHOD_NAME = &quot;getFileResource&quot;;</span>
+<span class="nc" id="L350">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+		try {
+<span class="nc" id="L352">			InputStream fileResource = this.fileService.getFileResource(path, fileName);</span>
+<span class="nc" id="L353">			response.setContentType(MediaType.IMAGE_JPEG_VALUE);</span>
+<span class="nc" id="L354">			StreamUtils.copy(fileResource, response.getOutputStream());</span>
+<span class="nc" id="L355">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L356">			return ResponseEntity.ok()</span>
+<span class="nc" id="L357">					.header(HttpHeaders.CONTENT_DISPOSITION, &quot;attachment; filename=\&quot;&quot; + fileName + &quot;\&quot;&quot;)</span>
+<span class="nc" id="L358">					.contentType(MediaType.valueOf(response.getContentType())).build();</span>
+<span class="nc" id="L359">		} catch (IOException e) {</span>
+<span class="nc" id="L360">			logger.error(e.getMessage());</span>
+<span class="nc" id="L361">			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(&quot;File Is Not Found!&quot;);</span>
+		}
+	}
+
+	/**
+	 * Delete Post Images
+	 *
+	 * @param postId
+	 * @param fileName
+	 * @return status with message
+	 */
+	@Tag(name = &quot;Post API&quot;, description = &quot;All Methods of Post APIs&quot;)
+	@Operation(summary = &quot;Delete Post Images&quot;,
+    description = &quot;Delete Post Images. The Response is Message if Post Images is Deleted Success or Not.&quot;)
+	@DeleteMapping(&quot;/post/{postId}/file/{fileName}&quot;)
+	public ResponseEntity&lt;?&gt; deleteFileResourceFromPost(@PathVariable Integer postId, @PathVariable String fileName) {
+<span class="nc" id="L377">		final String METHOD_NAME = &quot;deleteFileResourceFromPost&quot;;</span>
+<span class="nc" id="L378">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+
+		try {
+<span class="nc" id="L381">			boolean deleteFileResource = this.fileService.deleteFileResource(postId, path, fileName);</span>
+<span class="nc bnc" id="L382" title="All 2 branches missed.">			if (!deleteFileResource) {</span>
+<span class="nc" id="L383">				return ResponseEntity.status(HttpStatus.OK)</span>
+<span class="nc" id="L384">						.body(new ApiResponse(&quot;File Not Found!&quot;, deleteFileResource));</span>
+			}
+
+<span class="nc" id="L387">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L388">			return ResponseEntity.status(HttpStatus.OK)</span>
+<span class="nc" id="L389">					.body(new ApiResponse(&quot;File Was Deleted Successfully!&quot;, deleteFileResource));</span>
+<span class="nc" id="L390">		} catch (Exception e) {</span>
+<span class="nc" id="L391">			logger.error(e.getMessage());</span>
+<span class="nc" id="L392">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span>
+<span class="nc" id="L393">					.body(new ApiResponse(&quot;File Was Not Deleted!&quot;, false));</span>
+
+		}
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

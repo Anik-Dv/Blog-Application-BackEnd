@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RedisCacheConfiguration.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SpringBoot-Blog-Application-BackEnd</a> &gt; <a href="index.source.html" class="el_package">com.anikdv.blog.app.configurations</a> &gt; <span class="el_source">RedisCacheConfiguration.java</span></div><h1>RedisCacheConfiguration.java</h1><pre class="source lang-java linenums">package com.anikdv.blog.app.configurations;
+
+import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
+import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.connection.RedisStandaloneConfiguration;
+import org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.serializer.GenericToStringSerializer;
+import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
+
+/**
+ * Configuring Redis Cache
+ *
+ * @author anikdv
+ */
+
+@Configuration
+@EnableCaching
+<span class="fc" id="L22">public class RedisCacheConfiguration {</span>
+
+	@Bean
+	LettuceConnectionFactory connectionFactory() {
+<span class="fc" id="L26">		RedisProperties properties = properties();</span>
+
+<span class="fc" id="L28">		RedisStandaloneConfiguration configuration = new RedisStandaloneConfiguration();</span>
+<span class="fc" id="L29">		configuration.setHostName(properties.getHost());</span>
+<span class="fc" id="L30">		configuration.setPort(properties.getPort());</span>
+
+<span class="fc" id="L32">		return new LettuceConnectionFactory(configuration);</span>
+	}
+
+	/**
+	 * @return RedisTemplate
+	 */
+	@Bean
+	public RedisTemplate&lt;String, Object&gt; redisTemplate() {
+
+<span class="fc" id="L41">		RedisTemplate&lt;String, Object&gt; template = new RedisTemplate&lt;&gt;();</span>
+<span class="fc" id="L42">		template.setConnectionFactory(connectionFactory());</span>
+<span class="fc" id="L43">		template.setKeySerializer(new JdkSerializationRedisSerializer());</span>
+<span class="fc" id="L44">		template.setValueSerializer(new GenericToStringSerializer&lt;&gt;(Object.class));</span>
+//		template.setHashKeySerializer(new JdkSerializationRedisSerializer());
+//		template.setValueSerializer(new JdkSerializationRedisSerializer());
+//		template.setEnableTransactionSupport(true);
+<span class="fc" id="L48">		return template;</span>
+	}
+
+	@Bean
+	@Primary
+	RedisProperties properties() {
+<span class="fc" id="L54">		return new RedisProperties();</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

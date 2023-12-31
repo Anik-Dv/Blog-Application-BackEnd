@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserServiceImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SpringBoot-Blog-Application-BackEnd</a> &gt; <a href="index.source.html" class="el_package">com.anikdv.blog.app.services.impl</a> &gt; <span class="el_source">UserServiceImpl.java</span></div><h1>UserServiceImpl.java</h1><pre class="source lang-java linenums">package com.anikdv.blog.app.services.impl;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.anikdv.blog.app.configurations.ModelMapperConfiguration;
+import com.anikdv.blog.app.entities.Comments;
+import com.anikdv.blog.app.entities.Role;
+import com.anikdv.blog.app.entities.User;
+import com.anikdv.blog.app.exceptions.ResourceNotFoundException;
+import com.anikdv.blog.app.payloads.UserDto;
+import com.anikdv.blog.app.repositories.CommentsRepository;
+import com.anikdv.blog.app.repositories.RoleRepository;
+import com.anikdv.blog.app.repositories.UserRepository;
+import com.anikdv.blog.app.services.UserService;
+import com.anikdv.blog.app.utils.AppConstants;
+
+/**
+ * @info This Class is implements userService interface
+ * @author AnikDV
+ * @category Service
+ */
+@Service
+<span class="fc" id="L31">public class UserServiceImpl implements UserService {</span>
+
+	@Autowired
+	private UserRepository userRepository;
+
+	@Autowired
+	private CommentsRepository commentsRepository;
+
+	@Autowired
+	private ModelMapperConfiguration modelMapperConfiguration;
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	@Autowired
+	private RoleRepository roleRepository;
+
+	@Override
+	public UserDto getUserById(final Integer userId) {
+<span class="nc" id="L50">		User user = this.userRepository.findById(userId)</span>
+<span class="nc" id="L51">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;USER &quot;, &quot;ID &quot;, userId));</span>
+
+<span class="nc" id="L53">		return this.EntityToDto(user);</span>
+	}
+
+	@Override
+	public List&lt;UserDto&gt; getAllUsers() {
+<span class="nc" id="L58">		List&lt;User&gt; users = this.userRepository.findAll();</span>
+<span class="nc" id="L59">		List&lt;UserDto&gt; allUserDto = users.stream().map(user -&gt; this.EntityToDto(user)).collect(Collectors.toList());</span>
+<span class="nc" id="L60">		return allUserDto;</span>
+	}
+
+	@Override
+	public UserDto createUser(final UserDto userDto) {
+<span class="nc" id="L65">		User user = this.DtoToEntity(userDto);</span>
+<span class="nc" id="L66">		System.out.println(user.toString());</span>
+
+<span class="nc" id="L68">		Set&lt;Comments&gt; comments = this.commentsRepository.findByUser(user);</span>
+<span class="nc" id="L69">		Optional&lt;User&gt; userDetails = this.userRepository.findByEmail(user.getEmail());</span>
+
+<span class="nc bnc" id="L71" title="All 2 branches missed.">		if (userDetails.isPresent()) {</span>
+<span class="nc" id="L72">			throw new InternalError(&quot;This Email ID '&quot; + userDetails.get().getEmail() + &quot;' Already Exists!&quot;);</span>
+		}
+<span class="nc" id="L74">		user.setPassword(this.passwordEncoder.encode(user.getPassword()));</span>
+<span class="nc" id="L75">		user.setCreateDate(LocalDateTime.now());</span>
+<span class="nc" id="L76">		user.setComments(comments);</span>
+<span class="nc" id="L77">		User savedUser = this.userRepository.save(user);</span>
+<span class="nc" id="L78">		System.out.println(user);</span>
+<span class="nc" id="L79">		return this.EntityToDto(savedUser);</span>
+	}
+
+	@Override
+	public UserDto updateUser(final UserDto userDto, Integer userId) {
+
+		// search user form resource
+<span class="nc" id="L86">		User user = this.userRepository.findById(userId)</span>
+<span class="nc" id="L87">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;USER&quot;, &quot;ID &quot;, userId));</span>
+
+		// set user new informations
+<span class="nc" id="L90">		user.setName(userDto.getName());</span>
+<span class="nc" id="L91">		user.setAbout(userDto.getAbout());</span>
+<span class="nc" id="L92">		user.setStatus(userDto.getStatus());</span>
+<span class="nc" id="L93">		user.setImage_url(userDto.getImage_url());</span>
+
+		// if user put something then update
+<span class="nc bnc" id="L96" title="All 4 branches missed.">		if (userDto.getPassword() != null || !userDto.getPassword().isEmpty()) {</span>
+<span class="nc" id="L97">			user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));</span>
+		}
+		// if user Given something For update
+<span class="nc bnc" id="L100" title="All 4 branches missed.">		if (userDto.getEmail() != null || !userDto.getEmail().isEmpty()) {</span>
+<span class="nc" id="L101">			user.setEmail(userDto.getEmail());</span>
+		}
+
+		// otherwise keep as it as
+<span class="nc" id="L105">		user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));</span>
+<span class="nc" id="L106">		user.setEmail(user.getEmail());</span>
+
+		// update the user
+<span class="nc" id="L109">		User updatedUser = this.userRepository.save(user);</span>
+<span class="nc" id="L110">		return this.EntityToDto(updatedUser);</span>
+	}
+
+	@Override
+	public boolean deleteUser(final Integer userId) {
+<span class="nc" id="L115">		boolean flag = false;</span>
+		try {
+<span class="nc" id="L117">			User user = this.userRepository.findById(userId)</span>
+<span class="nc" id="L118">					.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;USER &quot;, &quot;ID &quot;, userId));</span>
+<span class="nc" id="L119">			this.userRepository.delete(user);</span>
+<span class="nc" id="L120">			flag = true;</span>
+<span class="nc" id="L121">			return flag;</span>
+<span class="nc" id="L122">		} catch (ResourceNotFoundException e) {</span>
+<span class="nc" id="L123">			e.getMessage();</span>
+<span class="nc" id="L124">			return flag;</span>
+		}
+	}
+
+	/**
+	 * DtoToEntity convert object an DTO To Entity
+	 *
+	 * @param userDto object
+	 * @return fully mapped instance of {@code destinationType}
+	 */
+	public User DtoToEntity(final UserDto userDto) {
+<span class="nc" id="L135">		return this.modelMapperConfiguration.modelMapper().map(userDto, User.class);</span>
+	}
+
+	/**
+	 * EntityToDto {@code source} convert object an Entity To DTO
+	 *
+	 * @param user object
+	 * @return fully mapped instance of {@code destinationType}
+	 */
+	public UserDto EntityToDto(final User user) {
+<span class="nc" id="L145">		return this.modelMapperConfiguration.modelMapper().map(user, UserDto.class);</span>
+	}
+
+	@Override
+	public Optional&lt;UserDto&gt; findByEmail(String emailId) {
+<span class="nc" id="L150">		Optional&lt;User&gt; userDetails = this.userRepository.findByEmail(emailId);</span>
+<span class="nc" id="L151">		Optional&lt;UserDto&gt; userDto = Optional</span>
+<span class="nc" id="L152">				.of(this.modelMapperConfiguration.modelMapper().map(userDetails, UserDto.class));</span>
+<span class="nc" id="L153">		return userDto;</span>
+	}
+
+	@Override
+	public UserDto registrationUser(UserDto userDto) {
+<span class="nc" id="L158">		User user = this.modelMapperConfiguration.modelMapper().map(userDto, User.class);</span>
+
+		// setting properties
+<span class="nc" id="L161">		user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));</span>
+<span class="nc" id="L162">		user.setCreateDate(LocalDateTime.now());</span>
+		// user as normal
+<span class="nc" id="L164">		Role role = this.roleRepository.findById(AppConstants.NORMAL_USER).get();</span>
+<span class="nc" id="L165">		user.getRoles().add(role);</span>
+<span class="nc" id="L166">		User registeredUser = this.userRepository.save(user);</span>
+<span class="nc" id="L167">		return this.modelMapperConfiguration.modelMapper().map(registeredUser, UserDto.class);</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

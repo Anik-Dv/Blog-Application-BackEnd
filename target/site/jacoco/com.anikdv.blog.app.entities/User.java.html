@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>User.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SpringBoot-Blog-Application-BackEnd</a> &gt; <a href="index.source.html" class="el_package">com.anikdv.blog.app.entities</a> &gt; <span class="el_source">User.java</span></div><h1>User.java</h1><pre class="source lang-java linenums">package com.anikdv.blog.app.entities;
+
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+/**
+ * This is User Entity
+ *
+ * @author AnikDV
+ */
+@Entity
+@Getter
+<span class="nc" id="L36">@Setter</span>
+<span class="fc" id="L37">@NoArgsConstructor</span>
+<span class="nc" id="L38">@AllArgsConstructor</span>
+public class User implements UserDetails {
+	private static final long serialVersionUID = 1L;
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = &quot;userid&quot;)
+<span class="nc" id="L45">	private Integer userid;</span>
+
+	@Column(name = &quot;UserName&quot;)
+<span class="nc" id="L48">	private String name;</span>
+	@Column(length = 900)
+<span class="nc" id="L50">	private String about;</span>
+	@Column(name = &quot;EmailId&quot;, nullable = false, unique = true)
+<span class="nc" id="L52">	private String email;</span>
+<span class="nc" id="L53">	private String password;</span>
+<span class="nc" id="L54">	private String image_url;</span>
+<span class="nc" id="L55">	private String status;</span>
+
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = &quot;yyyy-MM-dd HH:mm:ss&quot;)
+<span class="nc" id="L58">	private LocalDateTime createDate;</span>
+
+<span class="pc" id="L60">	@OneToMany(mappedBy = &quot;user&quot;, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)</span>
+	@JsonBackReference
+<span class="nc" id="L62">	private Set&lt;Post&gt; posts = new HashSet&lt;&gt;();</span>
+
+<span class="pc" id="L64">	@OneToMany(mappedBy = &quot;user&quot;, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)</span>
+	@JsonBackReference
+<span class="nc" id="L66">	private Set&lt;Comments&gt; comments = new HashSet&lt;&gt;();</span>
+
+<span class="pc" id="L68">	@OneToMany(mappedBy = &quot;user&quot; ,cascade = CascadeType.ALL, fetch = FetchType.EAGER)</span>
+	//@JoinTable(name = &quot;USERROLE&quot;, joinColumns = @JoinColumn(name = &quot;USER&quot;, referencedColumnName = &quot;userid&quot;), inverseJoinColumns = @JoinColumn(name = &quot;ROLE&quot;, referencedColumnName = &quot;ROLEID&quot;))
+<span class="nc" id="L70">	private Set&lt;Role&gt; roles = new HashSet&lt;&gt;();</span>
+
+	@Override
+	public Collection&lt;? extends GrantedAuthority&gt; getAuthorities() {
+<span class="nc" id="L74">		Set&lt;SimpleGrantedAuthority&gt; Authorities = this.roles.stream()</span>
+<span class="nc" id="L75">				.map((role) -&gt; new SimpleGrantedAuthority(role.getName())).collect(Collectors.toSet());</span>
+<span class="nc" id="L76">		return Authorities;</span>
+	}
+
+	@Override
+	public String getUsername() {
+<span class="nc" id="L81">		return this.email;</span>
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+<span class="nc" id="L86">		return true;</span>
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+<span class="nc" id="L91">		return true;</span>
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+<span class="nc" id="L96">		return true;</span>
+	}
+
+	@Override
+	public boolean isEnabled() {
+<span class="nc" id="L101">		return true;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

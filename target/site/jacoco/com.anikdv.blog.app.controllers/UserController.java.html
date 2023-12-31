@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">SpringBoot-Blog-Application-BackEnd</a> &gt; <a href="index.source.html" class="el_package">com.anikdv.blog.app.controllers</a> &gt; <span class="el_source">UserController.java</span></div><h1>UserController.java</h1><pre class="source lang-java linenums">package com.anikdv.blog.app.controllers;
+
+import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.anikdv.blog.app.exceptions.ResourceNotFoundException;
+import com.anikdv.blog.app.payloads.ApiResponse;
+import com.anikdv.blog.app.payloads.UserDto;
+import com.anikdv.blog.app.services.UserService;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
+
+/**
+ * @apiNote This is User REST API Controller
+ * @author AnikDV
+ */
+@RestController
+@RequestMapping(&quot;/api/user&quot;)
+<span class="fc" id="L35">public class UserController {</span>
+
+<span class="fc" id="L37">	private Logger logger = LoggerFactory.getLogger(UserController.class);</span>
+
+	@Autowired
+	private UserService userService;
+
+	/**
+	 * @info This Method for create new user
+	 * @param userDto
+	 * @return Status with created post | NOT NULL
+	 */
+	@Tag(name = &quot;User API&quot;, description = &quot;All Methods of User APIs&quot;)
+	@Operation(summary = &quot;Create New User&quot;,
+    description = &quot;Create an New User. The response is Create New User object with id, name, and other details.&quot;)
+	@PreAuthorize(&quot;hasRole('ADMIN')&quot;)
+	@PostMapping(value = &quot;/create&quot;, consumes = &quot;application/json&quot;)
+	public ResponseEntity&lt;?&gt; createUser(final @Valid @RequestBody UserDto userDto) {
+<span class="nc" id="L53">		final String METHOD_NAME = &quot;createUser&quot;;</span>
+<span class="nc" id="L54">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+
+		try {
+<span class="nc" id="L57">			UserDto createdUser = this.userService.createUser(userDto);</span>
+<span class="nc" id="L58">			logger.info(&quot;user id is : {} &quot; + userDto.getUserid());</span>
+<span class="nc" id="L59">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L60">			return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);</span>
+<span class="nc" id="L61">		} catch (Exception e) {</span>
+<span class="nc" id="L62">			logger.error(e.getMessage());</span>
+<span class="nc" id="L63">			e.printStackTrace();</span>
+<span class="nc" id="L64">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span>
+<span class="nc" id="L65">					.body(new ApiResponse(e.getMessage() + &quot;| Invalid Request!&quot;, false));</span>
+		}
+	}
+
+	/**
+	 * @info This Method For Update User
+	 * @param userDto
+	 * @param userId
+	 * @return Status with updated user | NOT NULL
+	 */
+	@Tag(name = &quot;User API&quot;, description = &quot;All Methods of User APIs&quot;)
+	@Operation(summary = &quot;Update an User&quot;,
+    description = &quot;Update An Existing Users. The response is updated User object with id, name, Email And Other Details.&quot;)
+	@PreAuthorize(&quot;hasRole('ADMIN')&quot;)
+	@PutMapping(value = &quot;/update/{userId}&quot;, consumes = &quot;application/json&quot;)
+	public ResponseEntity&lt;?&gt; updateUser(final @Valid @RequestBody UserDto userDto, final @PathVariable Integer userId) {
+<span class="nc" id="L81">		final String METHOD_NAME = &quot;updateUser&quot;;</span>
+<span class="nc" id="L82">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+		try {
+
+<span class="nc bnc" id="L85" title="All 4 branches missed.">			if (userDto == null || userId == null) {</span>
+<span class="nc" id="L86">				return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="nc" id="L87">						.body(new ApiResponse(&quot;User or ID must not be Empty!&quot;, false));</span>
+			}
+
+<span class="nc" id="L90">			UserDto updatedUser = this.userService.updateUser(userDto, userId);</span>
+<span class="nc" id="L91">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L92">			return ResponseEntity.status(HttpStatus.OK).body(updatedUser);</span>
+
+<span class="nc" id="L94">		} catch (ResourceNotFoundException e) {</span>
+<span class="nc" id="L95">			logger.error(e.getMessage());</span>
+<span class="nc" id="L96">			return ResponseEntity.status(HttpStatus.NOT_FOUND)</span>
+<span class="nc" id="L97">					.body(new ApiResponse(&quot;User ID &quot; + userId + &quot; does not exist.&quot;, false));</span>
+		}
+	}
+
+	/**
+	 * This Method For Delete User
+	 *
+	 * @param userId
+	 * @return Status with delete user True/False | NOT NULL
+	 */
+	@Tag(name = &quot;User API&quot;, description = &quot;All Methods of User APIs&quot;)
+	@Operation(summary = &quot;Delete an User&quot;,
+    description = &quot;Delete an existing User. The response is Message if User is Deleted Success or Not.&quot;)
+	@PreAuthorize(&quot;hasRole('ADMIN')&quot;)
+	@DeleteMapping(value = &quot;/delete/{userId}&quot;)
+	public ResponseEntity&lt;?&gt; deleteUser(final @PathVariable Integer userId) {
+
+<span class="nc" id="L114">		final String METHOD_NAME = &quot;deleteUser&quot;;</span>
+<span class="nc" id="L115">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+
+		try {
+<span class="nc" id="L118">			boolean deleteUser = this.userService.deleteUser(userId);</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">			if (deleteUser) {</span>
+<span class="nc" id="L120">				logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L121">				return ResponseEntity.status(HttpStatus.OK).body(new ApiResponse(&quot;User Deleted Successfully&quot;, true));</span>
+			} else {
+<span class="nc" id="L123">				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(&quot;User Not Found!&quot;, false));</span>
+			}
+<span class="nc" id="L125">		} catch (ResourceNotFoundException e) {</span>
+<span class="nc" id="L126">			logger.error(&quot;User Can't Deleted&quot;);</span>
+<span class="nc" id="L127">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span>
+<span class="nc" id="L128">					.body(new ApiResponse(&quot;Something Went Wrong!&quot;, false));</span>
+		}
+	}
+
+	/**
+	 * This Method For Get All Users
+	 *
+	 * @return All Users Resources | NOT NULL
+	 */
+	@Tag(name = &quot;User API&quot;, description = &quot;All Methods of User APIs&quot;)
+	@Operation(summary = &quot;Get All Users&quot;,
+    description = &quot;Get All existing Users. The response is List of All Users object with id, name, email and other details.&quot;)
+	@GetMapping(value = &quot;/&quot;)
+	public ResponseEntity&lt;List&lt;?&gt;&gt; getAllUsers() {
+<span class="nc" id="L142">		final String METHOD_NAME = &quot;getAllUsers&quot;;</span>
+<span class="nc" id="L143">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+
+		try {
+<span class="nc" id="L146">			List&lt;UserDto&gt; allUsers = this.userService.getAllUsers();</span>
+<span class="nc" id="L147">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L148">			return ResponseEntity.status(HttpStatus.FOUND).body(allUsers);</span>
+<span class="nc" id="L149">		} catch (ResourceNotFoundException e) {</span>
+<span class="nc" id="L150">			logger.error(e.getMessage());</span>
+<span class="nc" id="L151">			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();</span>
+		}
+	}
+
+	/**
+	 * This Method For Get Single User
+	 *
+	 * @param userId
+	 * @return Single Users Resources | NOT NULL
+	 */
+	@Tag(name = &quot;User API&quot;, description = &quot;All Methods of User APIs&quot;)
+	@Operation(summary = &quot;Get Single User&quot;,
+    description = &quot;Get Single User an existing Users. The response is User object with id, name, about, email with other details.&quot;)
+	@GetMapping(value = &quot;/{userId}&quot;)
+	public ResponseEntity&lt;?&gt; getSingleUser(@PathVariable Integer userId) {
+<span class="nc" id="L166">		final String METHOD_NAME = &quot;getSingleUser&quot;;</span>
+<span class="nc" id="L167">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+
+		try {
+<span class="nc" id="L170">			UserDto singleUser = this.userService.getUserById(userId);</span>
+<span class="nc" id="L171">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L172">			return ResponseEntity.status(HttpStatus.FOUND).body(singleUser);</span>
+
+<span class="nc" id="L174">		} catch (ResourceNotFoundException e) {</span>
+<span class="nc" id="L175">			logger.error(e.getMessage());</span>
+<span class="nc" id="L176">			return ResponseEntity.status(HttpStatus.NOT_FOUND)</span>
+<span class="nc" id="L177">					.body(new ApiResponse(e.getMessage() + &quot; | Invalided User Id!&quot;, false));</span>
+		}
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
