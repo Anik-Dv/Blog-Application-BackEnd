@@ -6,6 +6,8 @@ import java.io.InputStream;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.anikdv.blog.app.exceptions.ResourceNotFoundException;
+
 /**
  * @apiNote This is File Service Declaration
  * @author anikdv
@@ -35,7 +37,9 @@ public interface FileService {
 	 * @param path
 	 * @return true/false | NOT NULL
 	 * @throws FileNotFoundException
+	 * @throws Exception
+	 * @throws ResourceNotFoundException
 	 */
-	boolean deleteFileResource(final Integer postId, final String path, final String fileName) throws FileNotFoundException;
+	boolean deleteFileResource(final Integer postId, final String path, final String fileName) throws FileNotFoundException, ResourceNotFoundException, Exception;
 
 }

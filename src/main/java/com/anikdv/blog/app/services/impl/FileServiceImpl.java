@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.anikdv.blog.app.exceptions.ResourceNotFoundException;
 import com.anikdv.blog.app.payloads.PostDto;
 import com.anikdv.blog.app.services.FileService;
 import com.anikdv.blog.app.services.PostService;
@@ -63,7 +64,7 @@ public class FileServiceImpl implements FileService {
 	}
 
 	@Override
-	public boolean deleteFileResource(Integer postId, String path, String fileName) throws FileNotFoundException {
+	public boolean deleteFileResource(Integer postId, String path, String fileName) throws ResourceNotFoundException, Exception {
 		PostDto post = this.postService.getPostById(postId);
 		if (post.getImageName().equals(fileName)) {
 			String filePath = path + File.separator + fileName;
@@ -73,7 +74,7 @@ public class FileServiceImpl implements FileService {
 				postFile.delete();
 			}
 			// update that post again
-			this.postService.updatePost(post, postId);
+			this.postService.updatePost(post, postId, post.getUser().getUserid());
 			return true;
 		}
 		return false;

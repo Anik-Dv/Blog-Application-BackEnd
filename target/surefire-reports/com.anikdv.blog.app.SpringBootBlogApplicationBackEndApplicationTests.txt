@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.anikdv.blog.app.SpringBootBlogApplicationBackEndApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 90.614 s - in com.anikdv.blog.app.SpringBootBlogApplicationBackEndApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 47.926 s - in com.anikdv.blog.app.SpringBootBlogApplicationBackEndApplicationTests

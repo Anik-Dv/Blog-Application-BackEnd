@@ -34,6 +34,7 @@ public interface PostService {
 	PostDto createPost(final String posts, final Integer userId, final Integer categoryId, final String path,
 			final MultipartFile file) throws Exception;
 
+
 	/**
 	 * For Update Post
 	 *
@@ -41,9 +42,10 @@ public interface PostService {
 	 * @param postId
 	 * @return Updated Post
 	 * @throws ResourceNotFoundException
+	 * @throws Exception
 	 */
 	@CacheEvict(value = "posts", allEntries = true)
-	PostDto updatePost(final PostDto posts, final Integer postId) throws ResourceNotFoundException;
+	PostDto updatePost(final PostDto posts, final Integer postId, final Integer userId) throws ResourceNotFoundException, Exception;
 
 	/**
 	 * @param postId

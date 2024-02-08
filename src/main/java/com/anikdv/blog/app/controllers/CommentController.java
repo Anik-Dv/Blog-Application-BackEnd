@@ -65,6 +65,8 @@ public class CommentController {
 	}
 
 	/**
+	 * This is Update Comments Controller
+	 *
 	 * @param commentData
 	 * @param post_id
 	 * @param user_id
@@ -95,6 +97,8 @@ public class CommentController {
 	}
 
 	/**
+	 * This is Delete Comments Controller
+	 *
 	 * @param comment_id
 	 * @param user_id
 	 * @param post_id
@@ -127,14 +131,14 @@ public class CommentController {
 	}
 
 	/**
-	 * This Method For Only This Post Fetch All Comments
+	 * This Method For Get Specific Post Fetch All Comments
 	 *
 	 * @param post_id
 	 * @return All Comments of Post
 	 */
 	@Tag(name = "Comment API", description = "All Methods of Comment APIs")
 	@Operation(summary = "Get All Comments By Post",
-    description = "Get All Comments By Post. The response is List of All Comments object with Post details.")
+    description = "Get All Comments For Specific Post. The response is List of All Comments object with Post details.")
 	@GetMapping("/post/{post_id}/comments")
 	public ResponseEntity<?> getAllCommentsByPost(@PathVariable Integer post_id) {
 		final String METHOD_NAME = "getAllCommentsByPost";
@@ -142,7 +146,7 @@ public class CommentController {
 		try {
 			List<CommentsDto> allCommentsByPost = this.commentService.getAllCommentsByPost(post_id);
 			LOGGER.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
-			return ResponseEntity.status(HttpStatus.FOUND).body(allCommentsByPost);
+			return ResponseEntity.status(HttpStatus.OK).body(allCommentsByPost);
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), false));

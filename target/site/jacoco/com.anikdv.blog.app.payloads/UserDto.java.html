@@ -5,6 +5,10 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
@@ -19,31 +23,57 @@ import lombok.Setter;
  * This Model Class is DTO (Data Transfer Object)
  */
 @Getter
-<span class="nc" id="L22">@Setter</span>
-<span class="nc" id="L23">@NoArgsConstructor</span>
-<span class="nc" id="L24">@AllArgsConstructor</span>
-<span class="nc" id="L25">@Builder</span>
+<span class="nc" id="L26">@Setter</span>
+<span class="nc" id="L27">@NoArgsConstructor</span>
+<span class="nc" id="L28">@AllArgsConstructor</span>
+<span class="nc" id="L29">@Builder</span>
 public class UserDto implements Serializable {
 	private static final long serialVersionUID = 6082824759048463498L;
 
-<span class="nc" id="L29">	private Integer userid;</span>
+<span class="nc" id="L33">	private Integer userid;</span>
 	@NotBlank
 	@Size(min = 4, max = 26, message = &quot;You Name Is Must be Minimum 4 Chars and Maximum is 26 Chars!&quot;)
-<span class="nc" id="L32">	private String name;</span>
-	@NotBlank
+<span class="nc" id="L36">	private String name;</span>
+	
 	@Size(min = 16, max = 900, message = &quot;About is Must be Minimum 16 Chars and Maximum is 900 Chars!&quot;)
-<span class="nc" id="L35">	private String about;</span>
+<span class="nc" id="L39">	private String about;</span>
 	@Email(regexp = &quot;^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$&quot;, message = &quot;Email Address is Not Valid!&quot;)
 	@NotBlank
-<span class="nc" id="L38">	private String email;</span>
+<span class="nc" id="L42">	private String email;</span>
 	@NotBlank
 	@Pattern(regexp = &quot;^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$&quot;, message = &quot;Minimum eight characters, at least one upper case letter, one number and one special character&quot;)
 	@Size(min = 8, max = 20)
-<span class="nc" id="L42">	private String password;</span>
-<span class="nc" id="L43">	private String image_url;</span>
-<span class="nc" id="L44">	private String status;</span>
-<span class="nc" id="L45">	private LocalDateTime createDate;</span>
+	private String password;
+	@NotBlank
+	@Pattern(regexp = &quot;^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$&quot;, message = &quot;Minimum eight characters, at least one upper case letter, one number and one special character&quot;)
+	@Size(min = 8, max = 20)
+	private String comfirmPassword;
+<span class="nc" id="L51">	private String image_Name;</span>
+<span class="nc" id="L52">	private String status;</span>
+	
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = &quot;yyyy-MM-dd HH:mm:ss&quot;)
+<span class="nc" id="L55">	private LocalDateTime createDate;</span>
 
-<span class="nc" id="L47">	private Set&lt;RoleDto&gt; roles = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L57">	private Set&lt;RoleDto&gt; roles = new HashSet&lt;&gt;();</span>
+	
+	@JsonIgnore
+	public String getPassword() {
+<span class="nc" id="L61">		return this.password;</span>
+	}
+	
+	@JsonIgnore
+	public String getComfirmPassword() {
+<span class="nc" id="L66">		return this.comfirmPassword;</span>
+	}
+	
+	@JsonProperty
+	public void setPassword(String password) {
+<span class="nc" id="L71">		this.password=password;</span>
+<span class="nc" id="L72">	}</span>
+	
+	@JsonProperty
+	public void setComfirmPassword(String comfirmPassword) {
+<span class="nc" id="L76">		this.comfirmPassword = comfirmPassword;</span>
+<span class="nc" id="L77">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

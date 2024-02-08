@@ -65,6 +65,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 	}
 
 	/**
+	 * This is Update Comments Controller 
+	 * 
 	 * @param commentData
 	 * @param post_id
 	 * @param user_id
@@ -77,24 +79,26 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 	@PutMapping(value = &quot;/post/{post_id}/user/{user_id}/comment/{comment_id}&quot;, consumes = &quot;application/json&quot;)
 	public ResponseEntity&lt;?&gt; updateComment(@RequestBody CommentsDto commentData, @PathVariable Integer post_id,
 			@PathVariable Integer user_id, @PathVariable Integer comment_id) {
-<span class="nc" id="L80">		final String METHOD_NAME = &quot;updateComment&quot;;</span>
-<span class="nc" id="L81">		LOGGER.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L82">		final String METHOD_NAME = &quot;updateComment&quot;;</span>
+<span class="nc" id="L83">		LOGGER.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
 		try {
-<span class="nc bnc" id="L83" title="All 6 branches missed.">			if (post_id == null || user_id == null || comment_id == null) {</span>
-<span class="nc" id="L84">				return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
-<span class="nc" id="L85">						.body(new ApiResponse(post_id + user_id + comment_id + &quot; does not exist.&quot;, false));</span>
+<span class="nc bnc" id="L85" title="All 6 branches missed.">			if (post_id == null || user_id == null || comment_id == null) {</span>
+<span class="nc" id="L86">				return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="nc" id="L87">						.body(new ApiResponse(post_id + user_id + comment_id + &quot; does not exist.&quot;, false));</span>
 			}
-<span class="nc" id="L87">			CommentsDto updateComment = this.commentService.updateComment(commentData, comment_id, user_id, post_id);</span>
+<span class="nc" id="L89">			CommentsDto updateComment = this.commentService.updateComment(commentData, comment_id, user_id, post_id);</span>
 
-<span class="nc" id="L89">			LOGGER.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
-<span class="nc" id="L90">			return ResponseEntity.status(HttpStatus.OK).body(updateComment);</span>
-<span class="nc" id="L91">		} catch (Exception e) {</span>
-<span class="nc" id="L92">			LOGGER.error(e.getMessage());</span>
-<span class="nc" id="L93">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), false));</span>
+<span class="nc" id="L91">			LOGGER.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L92">			return ResponseEntity.status(HttpStatus.OK).body(updateComment);</span>
+<span class="nc" id="L93">		} catch (Exception e) {</span>
+<span class="nc" id="L94">			LOGGER.error(e.getMessage());</span>
+<span class="nc" id="L95">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), false));</span>
 		}
 	}
 
 	/**
+	 * This is Delete Comments Controller
+	 * 
 	 * @param comment_id
 	 * @param user_id
 	 * @param post_id
@@ -106,46 +110,46 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 	@DeleteMapping(&quot;/post/{post_id}/user/{user_id}/comment/{comment_id}&quot;)
 	public ResponseEntity&lt;?&gt; deleteComment(@PathVariable Integer comment_id, @PathVariable Integer user_id,
 			@PathVariable Integer post_id) {
-<span class="nc" id="L109">		final String METHOD_NAME = &quot;deleteComment&quot;;</span>
-<span class="nc" id="L110">		LOGGER.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L113">		final String METHOD_NAME = &quot;deleteComment&quot;;</span>
+<span class="nc" id="L114">		LOGGER.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
 		try {
-<span class="nc" id="L112">			boolean deleteComment = this.commentService.deleteComment(comment_id, user_id, post_id);</span>
-<span class="nc" id="L113">			LOGGER.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
-<span class="nc bnc" id="L114" title="All 2 branches missed.">			if (deleteComment) {</span>
-<span class="nc" id="L115">				LOGGER.info(&quot;Comment Id :&quot; + comment_id + &quot; Was Deleted Successfully&quot;);</span>
-<span class="nc" id="L116">				return ResponseEntity.status(HttpStatus.OK)</span>
-<span class="nc" id="L117">						.body(new ApiResponse(&quot;Comment Was Deleted Successfully.&quot;, deleteComment));</span>
-			} else {
-<span class="nc" id="L119">				LOGGER.info(&quot;Comment Id :&quot; + comment_id + &quot; Not Deleted!&quot;);</span>
+<span class="nc" id="L116">			boolean deleteComment = this.commentService.deleteComment(comment_id, user_id, post_id);</span>
+<span class="nc" id="L117">			LOGGER.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc bnc" id="L118" title="All 2 branches missed.">			if (deleteComment) {</span>
+<span class="nc" id="L119">				LOGGER.info(&quot;Comment Id :&quot; + comment_id + &quot; Was Deleted Successfully&quot;);</span>
 <span class="nc" id="L120">				return ResponseEntity.status(HttpStatus.OK)</span>
-<span class="nc" id="L121">						.body(new ApiResponse(&quot;Comment Has Not Deleted!&quot;, deleteComment));</span>
+<span class="nc" id="L121">						.body(new ApiResponse(&quot;Comment Was Deleted Successfully.&quot;, deleteComment));</span>
+			} else {
+<span class="nc" id="L123">				LOGGER.info(&quot;Comment Id :&quot; + comment_id + &quot; Not Deleted!&quot;);</span>
+<span class="nc" id="L124">				return ResponseEntity.status(HttpStatus.OK)</span>
+<span class="nc" id="L125">						.body(new ApiResponse(&quot;Comment Has Not Deleted!&quot;, deleteComment));</span>
 			}
-<span class="nc" id="L123">		} catch (Exception e) {</span>
-<span class="nc" id="L124">			LOGGER.error(e.getMessage());</span>
-<span class="nc" id="L125">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), false));</span>
+<span class="nc" id="L127">		} catch (Exception e) {</span>
+<span class="nc" id="L128">			LOGGER.error(e.getMessage());</span>
+<span class="nc" id="L129">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), false));</span>
 		}
 	}
 
 	/**
-	 * This Method For Only This Post Fetch All Comments
+	 * This Method For Get Specific Post Fetch All Comments
 	 *
 	 * @param post_id
 	 * @return All Comments of Post
 	 */
 	@Tag(name = &quot;Comment API&quot;, description = &quot;All Methods of Comment APIs&quot;)
 	@Operation(summary = &quot;Get All Comments By Post&quot;,
-    description = &quot;Get All Comments By Post. The response is List of All Comments object with Post details.&quot;)
+    description = &quot;Get All Comments For Specific Post. The response is List of All Comments object with Post details.&quot;)
 	@GetMapping(&quot;/post/{post_id}/comments&quot;)
 	public ResponseEntity&lt;?&gt; getAllCommentsByPost(@PathVariable Integer post_id) {
-<span class="nc" id="L140">		final String METHOD_NAME = &quot;getAllCommentsByPost&quot;;</span>
-<span class="nc" id="L141">		LOGGER.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L144">		final String METHOD_NAME = &quot;getAllCommentsByPost&quot;;</span>
+<span class="nc" id="L145">		LOGGER.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
 		try {
-<span class="nc" id="L143">			List&lt;CommentsDto&gt; allCommentsByPost = this.commentService.getAllCommentsByPost(post_id);</span>
-<span class="nc" id="L144">			LOGGER.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
-<span class="nc" id="L145">			return ResponseEntity.status(HttpStatus.FOUND).body(allCommentsByPost);</span>
-<span class="nc" id="L146">		} catch (Exception e) {</span>
-<span class="nc" id="L147">			LOGGER.error(e.getMessage());</span>
-<span class="nc" id="L148">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), false));</span>
+<span class="nc" id="L147">			List&lt;CommentsDto&gt; allCommentsByPost = this.commentService.getAllCommentsByPost(post_id);</span>
+<span class="nc" id="L148">			LOGGER.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L149">			return ResponseEntity.status(HttpStatus.OK).body(allCommentsByPost);</span>
+<span class="nc" id="L150">		} catch (Exception e) {</span>
+<span class="nc" id="L151">			LOGGER.error(e.getMessage());</span>
+<span class="nc" id="L152">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), false));</span>
 		}
 	}
 
@@ -160,15 +164,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
     description = &quot;Get All Comments By existing Users. The response is Get All Comments of Existing User.&quot;)
 	@GetMapping(&quot;/user/{user_id}/comments&quot;)
 	public ResponseEntity&lt;?&gt; getAllCommentsByUser(@PathVariable Integer user_id) {
-<span class="nc" id="L163">		final String METHOD_NAME = &quot;getAllCommentsByPost&quot;;</span>
-<span class="nc" id="L164">		LOGGER.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L167">		final String METHOD_NAME = &quot;getAllCommentsByPost&quot;;</span>
+<span class="nc" id="L168">		LOGGER.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
 		try {
-<span class="nc" id="L166">			List&lt;CommentsDto&gt; allCommentsByUser = this.commentService.getAllCommentsByUser(user_id);</span>
-<span class="nc" id="L167">			LOGGER.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
-<span class="nc" id="L168">			return ResponseEntity.status(HttpStatus.FOUND).body(allCommentsByUser);</span>
-<span class="nc" id="L169">		} catch (Exception e) {</span>
-<span class="nc" id="L170">			LOGGER.error(e.getMessage());</span>
-<span class="nc" id="L171">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), false));</span>
+<span class="nc" id="L170">			List&lt;CommentsDto&gt; allCommentsByUser = this.commentService.getAllCommentsByUser(user_id);</span>
+<span class="nc" id="L171">			LOGGER.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L172">			return ResponseEntity.status(HttpStatus.FOUND).body(allCommentsByUser);</span>
+<span class="nc" id="L173">		} catch (Exception e) {</span>
+<span class="nc" id="L174">			LOGGER.error(e.getMessage());</span>
+<span class="nc" id="L175">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), false));</span>
 		}
 	}
 
@@ -182,15 +186,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
     description = &quot;Get All Existing Comments. The response is Get All Comments.&quot;)
 	@GetMapping(&quot;/comments&quot;)
 	public ResponseEntity&lt;?&gt; getAllComments() {
-<span class="nc" id="L185">		final String METHOD_NAME = &quot;getAllComments&quot;;</span>
-<span class="nc" id="L186">		LOGGER.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L189">		final String METHOD_NAME = &quot;getAllComments&quot;;</span>
+<span class="nc" id="L190">		LOGGER.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
 		try {
-<span class="nc" id="L188">			List&lt;CommentsDto&gt; allCommentsByPost = this.commentService.getAllComments();</span>
-<span class="nc" id="L189">			LOGGER.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
-<span class="nc" id="L190">			return ResponseEntity.status(HttpStatus.FOUND).body(allCommentsByPost);</span>
-<span class="nc" id="L191">		} catch (Exception e) {</span>
-<span class="nc" id="L192">			LOGGER.error(e.getMessage());</span>
-<span class="nc" id="L193">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), false));</span>
+<span class="nc" id="L192">			List&lt;CommentsDto&gt; allCommentsByPost = this.commentService.getAllComments();</span>
+<span class="nc" id="L193">			LOGGER.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L194">			return ResponseEntity.status(HttpStatus.FOUND).body(allCommentsByPost);</span>
+<span class="nc" id="L195">		} catch (Exception e) {</span>
+<span class="nc" id="L196">			LOGGER.error(e.getMessage());</span>
+<span class="nc" id="L197">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), false));</span>
 		}
 	}
 
@@ -205,15 +209,15 @@ import io.swagger.v3.oas.annotations.tags.Tag;
     description = &quot;Get Comment By Comment ID. The Response is Comment object with Post details.&quot;)
 	@GetMapping(&quot;/comment/{comment_id}&quot;)
 	public ResponseEntity&lt;?&gt; getComment(@PathVariable Integer comment_id) {
-<span class="nc" id="L208">		final String METHOD_NAME = &quot;getComment&quot;;</span>
-<span class="nc" id="L209">		LOGGER.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L212">		final String METHOD_NAME = &quot;getComment&quot;;</span>
+<span class="nc" id="L213">		LOGGER.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
 		try {
-<span class="nc" id="L211">			CommentsDto comment = this.commentService.getComment(comment_id);</span>
-<span class="nc" id="L212">			LOGGER.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
-<span class="nc" id="L213">			return ResponseEntity.status(HttpStatus.FOUND).body(comment);</span>
-<span class="nc" id="L214">		} catch (Exception e) {</span>
-<span class="nc" id="L215">			LOGGER.error(e.getMessage());</span>
-<span class="nc" id="L216">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), false));</span>
+<span class="nc" id="L215">			CommentsDto comment = this.commentService.getComment(comment_id);</span>
+<span class="nc" id="L216">			LOGGER.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L217">			return ResponseEntity.status(HttpStatus.FOUND).body(comment);</span>
+<span class="nc" id="L218">		} catch (Exception e) {</span>
+<span class="nc" id="L219">			LOGGER.error(e.getMessage());</span>
+<span class="nc" id="L220">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ApiResponse(e.getMessage(), false));</span>
 		}
 	}
 

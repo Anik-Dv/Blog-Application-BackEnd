@@ -24,4 +24,6 @@ public class CommentsDto implements Serializable {
 	@NotEmpty(message = "Comment Content Must Not be Empty!")
 	@Size(min = 3, max = 130, message = "Content Must be Minimum 3 Chars and Maximum 130 Chars!")
 	private String Content;
+
+	private UserDto user;
 }

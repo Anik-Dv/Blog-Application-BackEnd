@@ -99,16 +99,21 @@ public class PostServiceImpl implements PostService {
 		return this.mapperConfiguration.modelMapper().map(createdPost, PostDto.class);
 	}
 
+
 	@Override
-	public PostDto updatePost(PostDto postDto, Integer postId) throws ResourceNotFoundException {
+	public PostDto updatePost(PostDto postDto, Integer postId, Integer userId) throws Exception {
 
 		Post post = this.postsRepository.findById(postId)
 				.orElseThrow(() -> new ResourceNotFoundException("POST", "ID", postId));
 
-		// set new value to old post
-		post.setTitle(postDto.getTitle());
-		post.setContent(postDto.getContent());
-		post.setTag(postDto.getTag());
+		if(post.getUser().getUserid()==userId) {
+			// set new value to old post
+			post.setTitle(postDto.getTitle());
+			post.setContent(postDto.getContent());
+			post.setTag(postDto.getTag());
+		} else {
+			throw new Exception("You Information Are Not Valid!");
+		}
 
 		Post updatedPost = this.postsRepository.save(post);
 		return this.mapperConfiguration.modelMapper().map(updatedPost, PostDto.class);

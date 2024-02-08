@@ -55,7 +55,7 @@ import jakarta.validation.Valid;
 		try {
 <span class="nc" id="L56">			List&lt;CategoryDto&gt; categories = this.categoryService.getCategories();</span>
 <span class="nc" id="L57">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
-<span class="nc" id="L58">			return ResponseEntity.status(HttpStatus.FOUND).body(categories);</span>
+<span class="nc" id="L58">			return ResponseEntity.status(HttpStatus.OK).body(categories);</span>
 <span class="nc" id="L59">		} catch (ResourceNotFoundException e) {</span>
 <span class="nc" id="L60">			logger.error(e.getMessage());</span>
 <span class="nc" id="L61">			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();</span>
@@ -78,7 +78,7 @@ import jakarta.validation.Valid;
 		try {
 <span class="nc" id="L79">			CategoryDto singleCategory = this.categoryService.getSingleCategory(categoryId);</span>
 <span class="nc" id="L80">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
-<span class="nc" id="L81">			return ResponseEntity.status(HttpStatus.FOUND).body(singleCategory);</span>
+<span class="nc" id="L81">			return ResponseEntity.status(HttpStatus.OK).body(singleCategory);</span>
 <span class="nc" id="L82">		} catch (ResourceNotFoundException e) {</span>
 <span class="nc" id="L83">			logger.error(e.getMessage());</span>
 <span class="nc" id="L84">			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(&quot;Category Not Found!&quot;, false));</span>

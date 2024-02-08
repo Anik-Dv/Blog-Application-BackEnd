@@ -55,7 +55,7 @@ public class CategoryController {
 		try {
 			List<CategoryDto> categories = this.categoryService.getCategories();
 			logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
-			return ResponseEntity.status(HttpStatus.FOUND).body(categories);
+			return ResponseEntity.status(HttpStatus.OK).body(categories);
 		} catch (ResourceNotFoundException e) {
 			logger.error(e.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
@@ -78,7 +78,7 @@ public class CategoryController {
 		try {
 			CategoryDto singleCategory = this.categoryService.getSingleCategory(categoryId);
 			logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
-			return ResponseEntity.status(HttpStatus.FOUND).body(singleCategory);
+			return ResponseEntity.status(HttpStatus.OK).body(singleCategory);
 		} catch (ResourceNotFoundException e) {
 			logger.error(e.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("Category Not Found!", false));

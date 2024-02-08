@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.anikdv.blog.app.configurations.ModelMapperConfiguration;
+import com.anikdv.blog.app.entities.User;
 import com.anikdv.blog.app.payloads.ApiResponse;
 import com.anikdv.blog.app.payloads.JwtAuthRequest;
 import com.anikdv.blog.app.payloads.JwtAuthResponse;
@@ -32,10 +34,10 @@ import jakarta.validation.Valid;
  * @author anikdv
  */
 @RestController
-@RequestMapping(&quot;api/auth&quot;)
-<span class="fc" id="L36">public class AuthController {</span>
+@RequestMapping(&quot;/api/auth&quot;)
+<span class="fc" id="L38">public class AuthController {</span>
 
-<span class="fc" id="L38">	private Logger logger = LoggerFactory.getLogger(AuthController.class);</span>
+<span class="fc" id="L40">	private Logger logger = LoggerFactory.getLogger(AuthController.class);</span>
 
 	@Autowired
 	private UserDetailsService userDetailsService;
@@ -48,6 +50,9 @@ import jakarta.validation.Valid;
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private ModelMapperConfiguration mapperConfiguration;
 
 	/**
 	 * This Method For User Login
@@ -59,22 +64,25 @@ import jakarta.validation.Valid;
 	@Operation(summary = &quot;POST Method User Authentication Login&quot;, description = &quot;Post Method User Authentication. The Response is an Access Token.&quot;)
 	@PostMapping(&quot;/login&quot;)
 	public ResponseEntity&lt;?&gt; loginHandler(final @Valid @RequestBody JwtAuthRequest authRequest) {
-<span class="nc" id="L62">		final String METHOD_NAME = &quot;loginHandler&quot;;</span>
-<span class="nc" id="L63">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L67">		final String METHOD_NAME = &quot;loginHandler&quot;;</span>
+<span class="nc" id="L68">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
 		try {
-<span class="nc" id="L65">			this.doAuthentication(authRequest.getUsername(), authRequest.getPassword());</span>
-<span class="nc" id="L66">			UserDetails userDetails = this.userDetailsService.loadUserByUsername(authRequest.getUsername());</span>
-<span class="nc" id="L67">			logger.info(&quot;user details {} :&quot;, userDetails);</span>
-<span class="nc" id="L68">			String token = this.jwtUtils.generateToken(userDetails);</span>
+<span class="nc" id="L70">			this.doAuthentication(authRequest.getUsername(), authRequest.getPassword());</span>
+<span class="nc" id="L71">			UserDetails userDetails = this.userDetailsService.loadUserByUsername(authRequest.getUsername());</span>
+			//logger.info(&quot;user details {} :&quot;, userDetails);
+<span class="nc" id="L73">			String token = this.jwtUtils.generateToken(userDetails);</span>
 			// setting jwt response
-<span class="nc" id="L70">			JwtAuthResponse response = new JwtAuthResponse();</span>
-<span class="nc" id="L71">			response.setToken(token);</span>
-<span class="nc" id="L72">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
-<span class="nc" id="L73">			return ResponseEntity.status(HttpStatus.OK).body(response);</span>
-<span class="nc" id="L74">		} catch (Exception e) {</span>
-<span class="nc" id="L75">			logger.error(e.getMessage());</span>
-<span class="nc" id="L76">			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)</span>
-<span class="nc" id="L77">					.body(new ApiResponse(&quot;Invalid username or password!&quot;, false));</span>
+<span class="nc" id="L75">			JwtAuthResponse response = new JwtAuthResponse();</span>
+			// set current user in response
+<span class="nc" id="L77">			UserDto currentUser = this.mapperConfiguration.modelMapper().map((User)userDetails, UserDto.class);</span>
+<span class="nc" id="L78">			response.setToken(token);</span>
+<span class="nc" id="L79">			response.setCurrentUser(currentUser);</span>
+<span class="nc" id="L80">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L81">			return ResponseEntity.status(HttpStatus.OK).body(response);</span>
+<span class="nc" id="L82">		} catch (Exception e) {</span>
+<span class="nc" id="L83">			logger.error(e.getMessage());</span>
+<span class="nc" id="L84">			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)</span>
+<span class="nc" id="L85">					.body(new ApiResponse(&quot;Invalid username or password!&quot;, false));</span>
 		}
 	}
 
@@ -88,30 +96,34 @@ import jakarta.validation.Valid;
 	@Operation(summary = &quot;POST Method User Register&quot;, description = &quot;Post Method User Register. The Response is Registered User Object and Other Details.&quot;)
 	@PostMapping(&quot;/signin&quot;)
 	public ResponseEntity&lt;?&gt; registrationHandler(final @Valid @RequestBody UserDto userDto) {
-<span class="nc" id="L91">		final String METHOD_NAME = &quot;registrationHandler&quot;;</span>
-<span class="nc" id="L92">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L99">		final String METHOD_NAME = &quot;registrationHandler&quot;;</span>
+<span class="nc" id="L100">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
 		try {
-<span class="nc" id="L94">			UserDto registeredUser = this.userService.registrationUser(userDto);</span>
-<span class="nc" id="L95">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
-<span class="nc" id="L96">			return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);</span>
-<span class="nc" id="L97">		} catch (Exception e) {</span>
-<span class="nc" id="L98">			logger.error(e.getMessage());</span>
-<span class="nc" id="L99">			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)</span>
-<span class="nc" id="L100">					.body(new ApiResponse(&quot;Invalid User Credentials!&quot;, false));</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">			if(userDto.getPassword().equals(userDto.getComfirmPassword())) {</span>
+<span class="nc" id="L103">				logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L104">				UserDto registeredUser = this.userService.registrationUser(userDto);</span>
+<span class="nc" id="L105">				 return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);</span>
+			} else {
+<span class="nc" id="L107">				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(&quot;You Password &amp; Comfirm Password Is Not Matched!&quot;);</span>
+			}			
+<span class="nc" id="L109">		} catch (Exception e) {</span>
+<span class="nc" id="L110">			logger.error(e.getMessage());</span>
+<span class="nc" id="L111">			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)</span>
+<span class="nc" id="L112">					.body(new ApiResponse(&quot;Invalid User Credentials!&quot;, false));</span>
 		}
 	}
 
 	/* This Method For Authenticate User */
 	private void doAuthentication(String username, String password) {
-<span class="nc" id="L106">		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,</span>
+<span class="nc" id="L118">		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,</span>
 				password);
 		try {
-<span class="nc" id="L109">			this.manager.authenticate(authenticationToken);</span>
-<span class="nc" id="L110">		} catch (BadCredentialsException ex) {</span>
-<span class="nc" id="L111">			logger.error(&quot;Invalid Username or Password!&quot;);</span>
-<span class="nc" id="L112">			throw new BadCredentialsException(&quot;Invalid Username or Password!&quot;);</span>
-<span class="nc" id="L113">		}</span>
-<span class="nc" id="L114">	}</span>
+<span class="nc" id="L121">			this.manager.authenticate(authenticationToken);</span>
+<span class="nc" id="L122">		} catch (BadCredentialsException ex) {</span>
+<span class="nc" id="L123">			logger.error(&quot;Invalid Username or Password!&quot;);</span>
+<span class="nc" id="L124">			throw new BadCredentialsException(&quot;Invalid Username or Password!&quot;);</span>
+<span class="nc" id="L125">		}</span>
+<span class="nc" id="L126">	}</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

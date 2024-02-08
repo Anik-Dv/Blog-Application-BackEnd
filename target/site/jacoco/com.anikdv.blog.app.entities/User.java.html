@@ -51,54 +51,55 @@ public class User implements UserDetails {
 	@Column(name = &quot;EmailId&quot;, nullable = false, unique = true)
 <span class="nc" id="L52">	private String email;</span>
 <span class="nc" id="L53">	private String password;</span>
-<span class="nc" id="L54">	private String image_url;</span>
-<span class="nc" id="L55">	private String status;</span>
+<span class="nc" id="L54">	private String comfirmPassword;</span>
+<span class="nc" id="L55">	private String image_Name;</span>
+<span class="nc" id="L56">	private String status;</span>
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = &quot;yyyy-MM-dd HH:mm:ss&quot;)
-<span class="nc" id="L58">	private LocalDateTime createDate;</span>
+<span class="nc" id="L59">	private LocalDateTime createDate;</span>
 
-<span class="pc" id="L60">	@OneToMany(mappedBy = &quot;user&quot;, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)</span>
+<span class="pc" id="L61">	@OneToMany(mappedBy = &quot;user&quot;, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)</span>
 	@JsonBackReference
-<span class="nc" id="L62">	private Set&lt;Post&gt; posts = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L63">	private Set&lt;Post&gt; posts = new HashSet&lt;&gt;();</span>
 
-<span class="pc" id="L64">	@OneToMany(mappedBy = &quot;user&quot;, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)</span>
+<span class="pc" id="L65">	@OneToMany(mappedBy = &quot;user&quot;, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)</span>
 	@JsonBackReference
-<span class="nc" id="L66">	private Set&lt;Comments&gt; comments = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L67">	private Set&lt;Comments&gt; comments = new HashSet&lt;&gt;();</span>
 
-<span class="pc" id="L68">	@OneToMany(mappedBy = &quot;user&quot; ,cascade = CascadeType.ALL, fetch = FetchType.EAGER)</span>
+<span class="pc" id="L69">	@OneToMany(mappedBy = &quot;user&quot; ,cascade = CascadeType.ALL, fetch = FetchType.EAGER)</span>
 	//@JoinTable(name = &quot;USERROLE&quot;, joinColumns = @JoinColumn(name = &quot;USER&quot;, referencedColumnName = &quot;userid&quot;), inverseJoinColumns = @JoinColumn(name = &quot;ROLE&quot;, referencedColumnName = &quot;ROLEID&quot;))
-<span class="nc" id="L70">	private Set&lt;Role&gt; roles = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L71">	private Set&lt;Role&gt; roles = new HashSet&lt;&gt;();</span>
 
 	@Override
 	public Collection&lt;? extends GrantedAuthority&gt; getAuthorities() {
-<span class="nc" id="L74">		Set&lt;SimpleGrantedAuthority&gt; Authorities = this.roles.stream()</span>
-<span class="nc" id="L75">				.map((role) -&gt; new SimpleGrantedAuthority(role.getName())).collect(Collectors.toSet());</span>
-<span class="nc" id="L76">		return Authorities;</span>
+<span class="nc" id="L75">		Set&lt;SimpleGrantedAuthority&gt; Authorities = this.roles.stream()</span>
+<span class="nc" id="L76">				.map((role) -&gt; new SimpleGrantedAuthority(role.getName())).collect(Collectors.toSet());</span>
+<span class="nc" id="L77">		return Authorities;</span>
 	}
 
 	@Override
 	public String getUsername() {
-<span class="nc" id="L81">		return this.email;</span>
+<span class="nc" id="L82">		return this.email;</span>
 	}
 
 	@Override
 	public boolean isAccountNonExpired() {
-<span class="nc" id="L86">		return true;</span>
+<span class="nc" id="L87">		return true;</span>
 	}
 
 	@Override
 	public boolean isAccountNonLocked() {
-<span class="nc" id="L91">		return true;</span>
+<span class="nc" id="L92">		return true;</span>
 	}
 
 	@Override
 	public boolean isCredentialsNonExpired() {
-<span class="nc" id="L96">		return true;</span>
+<span class="nc" id="L97">		return true;</span>
 	}
 
 	@Override
 	public boolean isEnabled() {
-<span class="nc" id="L101">		return true;</span>
+<span class="nc" id="L102">		return true;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

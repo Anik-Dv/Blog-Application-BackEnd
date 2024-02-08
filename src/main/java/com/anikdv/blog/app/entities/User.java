@@ -51,7 +51,8 @@ public class User implements UserDetails {
 	@Column(name = "EmailId", nullable = false, unique = true)
 	private String email;
 	private String password;
-	private String image_url;
+	private String comfirmPassword;
+	private String image_Name;
 	private String status;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")

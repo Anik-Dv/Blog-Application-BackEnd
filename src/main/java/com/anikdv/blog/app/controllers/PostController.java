@@ -93,18 +93,21 @@ public class PostController {
 		}
 	}
 
+
 	/**
 	 * This Method For Update Post
 	 *
 	 * @param postdata
 	 * @param postId
 	 * @return Status with update content
+	 * @throws ResourceNotFoundException
+	 * @throws Exception
 	 */
 	@Tag(name = "Post API", description = "All Methods of Post APIs")
 	@Operation(summary = "Update an Post",
     description = "Update an existing Post. The response is updated Post object with id, Post Title, content and other details.")
-	@PutMapping(value = "/post/{postId}/update", consumes = "application/json")
-	public ResponseEntity<?> updatePost(final @RequestBody PostDto postdata, final @PathVariable Integer postId) {
+	@PutMapping(value = "/post/{postId}/user/{userId}/update", consumes = "application/json")
+	public ResponseEntity<?> updatePost(final @RequestBody PostDto postdata, final @PathVariable Integer postId, final @PathVariable Integer userId) throws ResourceNotFoundException, Exception {
 		final String METHOD_NAME = "updatePost";
 		logger.info("Method Invoked: " + this.getClass().getName() + ":" + METHOD_NAME);
 		try {
@@ -112,7 +115,7 @@ public class PostController {
 				return ResponseEntity.status(HttpStatus.BAD_REQUEST)
 						.body(new ApiResponse("Post ID " + postId + " does not exist.", false));
 			}
-			PostDto updatedPost = this.postService.updatePost(postdata, postId);
+			PostDto updatedPost = this.postService.updatePost(postdata, postId, userId);
 			logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
 			return ResponseEntity.status(HttpStatus.OK).body(updatedPost);
 		} catch (InternalServerError e) {
@@ -173,7 +176,7 @@ public class PostController {
 			}
 			Set<PostDto> posts = this.postService.getPostByUser(userId);
 			logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
-			return ResponseEntity.status(HttpStatus.FOUND).body(posts);
+			return ResponseEntity.status(HttpStatus.OK).body(posts);
 		} catch (ResourceNotFoundException e) {
 			logger.error(e.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("User Not Have Any Posts!", false));
@@ -200,7 +203,7 @@ public class PostController {
 			}
 			Set<PostDto> posts = this.postService.getPostByCategory(categoryId);
 			logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
-			return ResponseEntity.status(HttpStatus.FOUND).body(posts);
+			return ResponseEntity.status(HttpStatus.OK).body(posts);
 		} catch (ResourceNotFoundException e) {
 			logger.error(e.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -231,7 +234,7 @@ public class PostController {
 		try {
 			PostResponse posts = this.postService.getPosts(pageNumber, pageContentSize, sortBy, sortDir);
 			logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
-			return ResponseEntity.status(HttpStatus.FOUND).body(posts);
+			return ResponseEntity.status(HttpStatus.OK).body(posts);
 		} catch (ResourceNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("Not Found Any Posts!", false));
 		}
@@ -257,7 +260,7 @@ public class PostController {
 			}
 			PostDto post = this.postService.getPostById(postId);
 			logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
-			return ResponseEntity.status(HttpStatus.FOUND).body(post);
+			return ResponseEntity.status(HttpStatus.OK).body(post);
 		} catch (ResourceNotFoundException e) {
 			logger.error(e.getMessage());
 			return ResponseEntity.status(HttpStatus.NOT_FOUND)
@@ -285,7 +288,7 @@ public class PostController {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse("Not Found Any Posts!", false));
 			}
 			logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
-			return ResponseEntity.status(HttpStatus.FOUND).body(result);
+			return ResponseEntity.status(HttpStatus.OK).body(result);
 		} catch (ResourceNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
 					.body(new ApiResponse("Something Went Wrong!", false));
@@ -298,13 +301,15 @@ public class PostController {
 	 * @param file
 	 * @param postId
 	 * @return status with file
+	 * @throws Exception
+	 * @throws ResourceNotFoundException
 	 */
 	@Tag(name = "Post API", description = "All Methods of Post APIs")
 	@Operation(summary = "Upload Post Images",
     description = "Upload Post Images. The Response is Get Uploaded Images of Post.")
 	@PostMapping(value = "/post/upload/{postId}")
 	public ResponseEntity<?> uploadPostFile(final @PathVariable Integer postId,
-			@RequestParam("file") MultipartFile file) {
+			@RequestParam("file") MultipartFile file) throws ResourceNotFoundException, Exception {
 		final String METHOD_NAME = "uploadPostFile";
 		logger.info("Method Invoked: " + this.getClass().getName() + ":" + METHOD_NAME);
 		// find previous post
@@ -327,7 +332,7 @@ public class PostController {
 		// set new property
 		post.setImageName(fileName);
 		// then this update post
-		PostDto postDto = this.postService.updatePost(post, postId);
+		PostDto postDto = this.postService.updatePost(post, postId, post.getUser().getUserid());
 
 		logger.info("Response The Method: " + this.getClass().getName() + ":" + METHOD_NAME);
 		return ResponseEntity.status(HttpStatus.OK).body(postDto);

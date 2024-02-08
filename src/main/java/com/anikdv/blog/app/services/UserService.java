@@ -38,8 +38,22 @@ public interface UserService {
 	 * @param userId
 	 * @return updated user
 	 */
+	@CacheEvict(value = "users", allEntries = true, key = "#userId")
+	UserDto updateUserAvater(final UserDto user, Integer userId);
+
+
+	/**
+	 * This Method For Update User
+	 *
+	 * @param user
+	 * @param userId
+	 * @return updated user
+	 * @throws Exception
+	 */
 	@CacheEvict(value = "users", allEntries = true)
-	UserDto updateUser(final UserDto user, Integer userId);
+	UserDto updateUserDetails(final UserDto user, Integer userId) throws Exception;
+
+
 
 	/**
 	 * This Method For Get Single User

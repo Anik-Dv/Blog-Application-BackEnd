@@ -90,7 +90,7 @@ import com.anikdv.blog.app.utils.AppConstants;
 <span class="nc" id="L90">		user.setName(userDto.getName());</span>
 <span class="nc" id="L91">		user.setAbout(userDto.getAbout());</span>
 <span class="nc" id="L92">		user.setStatus(userDto.getStatus());</span>
-<span class="nc" id="L93">		user.setImage_url(userDto.getImage_url());</span>
+<span class="nc" id="L93">		user.setImage_Name(userDto.getImage_Name());</span>
 
 		// if user put something then update
 <span class="nc bnc" id="L96" title="All 4 branches missed.">		if (userDto.getPassword() != null || !userDto.getPassword().isEmpty()) {</span>
@@ -154,17 +154,19 @@ import com.anikdv.blog.app.utils.AppConstants;
 	}
 
 	@Override
-	public UserDto registrationUser(UserDto userDto) {
+	public UserDto registrationUser(UserDto userDto)  {
 <span class="nc" id="L158">		User user = this.modelMapperConfiguration.modelMapper().map(userDto, User.class);</span>
 
 		// setting properties
 <span class="nc" id="L161">		user.setPassword(this.passwordEncoder.encode(userDto.getPassword()));</span>
-<span class="nc" id="L162">		user.setCreateDate(LocalDateTime.now());</span>
+<span class="nc" id="L162">		user.setComfirmPassword(this.passwordEncoder.encode(userDto.getComfirmPassword()));</span>
+<span class="nc" id="L163">		user.setCreateDate(LocalDateTime.now());</span>
 		// user as normal
-<span class="nc" id="L164">		Role role = this.roleRepository.findById(AppConstants.NORMAL_USER).get();</span>
-<span class="nc" id="L165">		user.getRoles().add(role);</span>
-<span class="nc" id="L166">		User registeredUser = this.userRepository.save(user);</span>
-<span class="nc" id="L167">		return this.modelMapperConfiguration.modelMapper().map(registeredUser, UserDto.class);</span>
+<span class="nc" id="L165">		Role role = this.roleRepository.findById(AppConstants.NORMAL_USER).get();</span>
+<span class="nc" id="L166">		user.getRoles().add(role);</span>
+<span class="nc" id="L167">		User registeredUser = this.userRepository.save(user);</span>
+		
+<span class="nc" id="L169">		return this.modelMapperConfiguration.modelMapper().map(registeredUser, UserDto.class);</span>
 	}
 
 }
