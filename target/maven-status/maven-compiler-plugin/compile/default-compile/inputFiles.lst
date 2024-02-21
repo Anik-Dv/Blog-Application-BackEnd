@@ -1,3 +1,7 @@
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 00e972f (update project for production setup)
 D:\GitHub\blog-clone-repo\Blog-Application-BackEnd-master\Blog-Application-BackEnd-master\src\main\java\com\anikdv\blog\app\services\impl\FileServiceImpl.java
 D:\GitHub\blog-clone-repo\Blog-Application-BackEnd-master\Blog-Application-BackEnd-master\src\main\java\com\anikdv\blog\app\utils\AppConstants.java
 D:\GitHub\blog-clone-repo\Blog-Application-BackEnd-master\Blog-Application-BackEnd-master\src\main\java\com\anikdv\blog\app\services\impl\UserServiceImpl.java
@@ -47,3 +51,57 @@ D:\GitHub\blog-clone-repo\Blog-Application-BackEnd-master\Blog-Application-BackE
 D:\GitHub\blog-clone-repo\Blog-Application-BackEnd-master\Blog-Application-BackEnd-master\src\main\java\com\anikdv\blog\app\payloads\JwtAuthRequest.java
 D:\GitHub\blog-clone-repo\Blog-Application-BackEnd-master\Blog-Application-BackEnd-master\src\main\java\com\anikdv\blog\app\repositories\RoleRepository.java
 D:\GitHub\blog-clone-repo\Blog-Application-BackEnd-master\Blog-Application-BackEnd-master\src\main\java\com\anikdv\blog\app\controllers\CategoryController.java
+<<<<<<< HEAD
+=======
+=======
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/utils/GetAllDataFromCache.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/configurations/RedisCacheConfiguration.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/services/impl/CommentServiceImpl.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/exceptions/GlobalExceptionHandler.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/SpringBootBlogApplicationBackEndApplication.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/controllers/CommentController.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/security/JwtUtils.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/payloads/JwtAuthResponse.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/services/FileService.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/security/JwtAuthenticationFilter.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/services/CategoryService.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/entities/Role.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/entities/Post.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/payloads/PostResponse.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/services/PostService.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/repositories/UserRepository.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/payloads/JwtAuthRequest.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/payloads/CategoryDto.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/controllers/PostController.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/payloads/PostDto.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/utils/AppConstants.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/ServletInitializer.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/repositories/PostsRepository.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/payloads/UserDto.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/services/impl/UserServiceImpl.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/payloads/ApiResponse.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/security/JwtAuthenticationEntryPoint.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/configurations/SwaggerAPIConfiguration.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/security/CustomUserDetailsService.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/entities/Comments.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/repositories/RoleRepository.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/services/impl/FileServiceImpl.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/entities/User.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/configurations/ModelMapperConfiguration.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/controllers/CategoryController.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/services/UserService.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/services/CommentService.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/repositories/CommentsRepository.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/controllers/UserController.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/configurations/SecurityConfiguration.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/exceptions/ResourceNotFoundException.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/repositories/CategoryRepository.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/payloads/RoleDto.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/payloads/CommentsDto.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/configurations/ObjectMapperConfig.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/entities/Category.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/controllers/AuthController.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/services/impl/CategoryServiceImpl.java
+/home/anikdv/git/app/Blog-Application/src/main/java/com/anikdv/blog/app/services/impl/PostServiceImpl.java
+>>>>>>> 8095d6e (update project for production setup)
+>>>>>>> 00e972f (update project for production setup)

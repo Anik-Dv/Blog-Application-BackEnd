@@ -13,14 +13,31 @@ SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.exceptions,ResourceNotFo
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.payloads,UserDto,120,0,0,0,18,0,23,0,23,0
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.payloads,ApiResponse,23,0,0,0,4,0,5,0,5,0
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.payloads,PostResponse,45,0,0,0,8,0,13,0,13,0
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 00e972f (update project for production setup)
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.payloads,CategoryDto,32,0,0,0,6,0,7,0,7,0
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.payloads,JwtAuthRequest,115,0,22,0,3,0,20,0,9,0
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.payloads,JwtAuthResponse,115,0,22,0,3,0,20,0,9,0
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.payloads,CommentsDto,155,0,30,0,4,0,26,0,11,0
+<<<<<<< HEAD
+=======
+=======
+SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.payloads,JwtAuthRequest,115,0,22,0,3,0,20,0,9,0
+SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.payloads,CategoryDto,32,0,0,0,6,0,7,0,7,0
+SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.payloads,JwtAuthResponse,115,0,22,0,3,0,20,0,9,0
+SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.payloads,CommentsDto,195,0,38,0,5,0,32,0,13,0
+>>>>>>> 8095d6e (update project for production setup)
+>>>>>>> 00e972f (update project for production setup)
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.payloads,PostDto,71,0,0,0,12,0,19,0,19,0
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.payloads,RoleDto,115,0,22,0,3,0,20,0,9,0
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.payloads,UserDto.UserDtoBuilder,99,0,0,0,1,0,13,0,13,0
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.controllers,CategoryController,217,7,2,0,46,2,6,1,5,1
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 00e972f (update project for production setup)
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.controllers,PostController,615,7,20,0,130,2,21,1,11,1
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.controllers,CommentController,325,7,8,0,65,2,11,2,7,2
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.controllers,AuthController,147,7,2,0,33,2,4,1,3,1
@@ -34,6 +51,24 @@ SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.services.impl,CommentSer
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.services.impl,CategoryServiceImpl,158,3,0,0,31,1,11,1,11,1
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.configurations,ModelMapperConfiguration,0,7,0,0,0,2,0,2,0,2
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.configurations,SecurityConfiguration,0,214,0,0,0,23,0,10,0,10
+<<<<<<< HEAD
+=======
+=======
+SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.controllers,PostController,619,7,20,0,130,2,21,1,11,1
+SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.controllers,CommentController,325,7,8,0,65,2,11,2,7,2
+SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.controllers,AuthController,147,7,2,0,33,2,4,1,3,1
+SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.controllers,UserController,383,7,8,0,83,2,11,1,7,1
+SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.utils,GetAllDataFromCache,73,0,10,0,24,0,8,0,3,0
+SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.utils,AppConstants,3,7,0,0,1,2,1,1,1,1
+SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.services.impl,PostServiceImpl,461,3,12,0,84,1,26,1,20,1
+SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.services.impl,FileServiceImpl,103,3,10,0,24,1,8,1,3,1
+SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.services.impl,UserServiceImpl,399,3,18,0,74,1,24,1,15,1
+SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.services.impl,CommentServiceImpl,360,3,8,0,54,1,25,1,21,1
+SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.services.impl,CategoryServiceImpl,158,3,0,0,31,1,11,1,11,1
+SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.configurations,ModelMapperConfiguration,0,7,0,0,0,2,0,2,0,2
+SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.configurations,SecurityConfiguration,0,226,0,0,0,23,0,10,0,10
+>>>>>>> 8095d6e (update project for production setup)
+>>>>>>> 00e972f (update project for production setup)
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.configurations,SwaggerAPIConfiguration,0,68,0,0,0,14,0,3,0,3
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.configurations,ObjectMapperConfig,0,19,0,0,0,5,0,2,0,2
 SpringBoot-Blog-Application-BackEnd,com.anikdv.blog.app.configurations,RedisCacheConfiguration,0,52,0,0,0,13,0,4,0,4

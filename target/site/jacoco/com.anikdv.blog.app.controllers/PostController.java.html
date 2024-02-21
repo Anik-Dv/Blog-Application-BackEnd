@@ -92,7 +92,15 @@ import jakarta.servlet.http.HttpServletResponse;
 <span class="nc" id="L92">			return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ApiResponse(e.getMessage()+&quot; | Invalid Request!&quot;, false));</span>
 		}
 	}
+<<<<<<< HEAD
 	
+=======
+<<<<<<< HEAD
+	
+=======
+
+>>>>>>> 8095d6e (update project for production setup)
+>>>>>>> 00e972f (update project for production setup)
 
 	/**
 	 * This Method For Update Post
@@ -100,10 +108,22 @@ import jakarta.servlet.http.HttpServletResponse;
 	 * @param postdata
 	 * @param postId
 	 * @return Status with update content
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+	 * @throws ResourceNotFoundException
+	 * @throws Exception
+>>>>>>> 8095d6e (update project for production setup)
+>>>>>>> 00e972f (update project for production setup)
 	 */
 	@Tag(name = &quot;Post API&quot;, description = &quot;All Methods of Post APIs&quot;)
 	@Operation(summary = &quot;Update an Post&quot;,
     description = &quot;Update an existing Post. The response is updated Post object with id, Post Title, content and other details.&quot;)
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 00e972f (update project for production setup)
 	@PutMapping(value = &quot;/post/{postId}/update&quot;, consumes = &quot;application/json&quot;)
 	public ResponseEntity&lt;?&gt; updatePost(final @RequestBody PostDto postdata, final @PathVariable Integer postId) {
 <span class="nc" id="L109">		final String METHOD_NAME = &quot;updatePost&quot;;</span>
@@ -120,6 +140,27 @@ import jakarta.servlet.http.HttpServletResponse;
 <span class="nc" id="L120">			logger.error(e.getMessage());</span>
 <span class="nc" id="L121">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span>
 <span class="nc" id="L122">					.body(new ApiResponse(&quot;Something Went Wrong!.&quot;, false));</span>
+<<<<<<< HEAD
+=======
+=======
+	@PutMapping(value = &quot;/post/{postId}/user/{userId}/update&quot;, consumes = &quot;application/json&quot;)
+	public ResponseEntity&lt;?&gt; updatePost(final @RequestBody PostDto postdata, final @PathVariable Integer postId, final @PathVariable Integer userId) throws ResourceNotFoundException, Exception {
+<span class="nc" id="L111">		final String METHOD_NAME = &quot;updatePost&quot;;</span>
+<span class="nc" id="L112">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+		try {
+<span class="nc bnc" id="L114" title="All 4 branches missed.">			if (postdata == null || postId == null) {</span>
+<span class="nc" id="L115">				return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="nc" id="L116">						.body(new ApiResponse(&quot;Post ID &quot; + postId + &quot; does not exist.&quot;, false));</span>
+			}
+<span class="nc" id="L118">			PostDto updatedPost = this.postService.updatePost(postdata, postId, userId);</span>
+<span class="nc" id="L119">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L120">			return ResponseEntity.status(HttpStatus.OK).body(updatedPost);</span>
+<span class="nc" id="L121">		} catch (InternalServerError e) {</span>
+<span class="nc" id="L122">			logger.error(e.getMessage());</span>
+<span class="nc" id="L123">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span>
+<span class="nc" id="L124">					.body(new ApiResponse(&quot;Something Went Wrong!.&quot;, false));</span>
+>>>>>>> 8095d6e (update project for production setup)
+>>>>>>> 00e972f (update project for production setup)
 		}
 	}
 
@@ -134,6 +175,10 @@ import jakarta.servlet.http.HttpServletResponse;
     description = &quot;Delete an existing Post. The response is Message if Post Deleted Success or Not.&quot;)
 	@DeleteMapping(value = &quot;/post/{postId}&quot;)
 	public ResponseEntity&lt;?&gt; deletePost(final @PathVariable Integer postId) {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 00e972f (update project for production setup)
 <span class="nc" id="L137">		final String METHOD_NAME = &quot;deletePost&quot;;</span>
 <span class="nc" id="L138">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
 
@@ -151,6 +196,28 @@ import jakarta.servlet.http.HttpServletResponse;
 <span class="nc" id="L151">			logger.error(e.getMessage());</span>
 <span class="nc" id="L152">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span>
 <span class="nc" id="L153">					.body(new ApiResponse(&quot;Something Went Wrong!&quot;, false));</span>
+<<<<<<< HEAD
+=======
+=======
+<span class="nc" id="L139">		final String METHOD_NAME = &quot;deletePost&quot;;</span>
+<span class="nc" id="L140">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+
+		try {
+<span class="nc" id="L143">			boolean deletedPost = this.postService.deletePost(postId, path);</span>
+<span class="nc bnc" id="L144" title="All 2 branches missed.">			if (deletedPost) {</span>
+<span class="nc" id="L145">				logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L146">				return ResponseEntity.status(HttpStatus.OK)</span>
+<span class="nc" id="L147">						.body(new ApiResponse(&quot;Post has been Deleted Successfully!&quot;, deletedPost));</span>
+			} else {
+<span class="nc" id="L149">				return ResponseEntity.status(HttpStatus.NOT_FOUND)</span>
+<span class="nc" id="L150">						.body(new ApiResponse(&quot;Not Found Any Post!&quot;, deletedPost));</span>
+			}
+<span class="nc" id="L152">		} catch (ResourceNotFoundException e) {</span>
+<span class="nc" id="L153">			logger.error(e.getMessage());</span>
+<span class="nc" id="L154">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span>
+<span class="nc" id="L155">					.body(new ApiResponse(&quot;Something Went Wrong!&quot;, false));</span>
+>>>>>>> 8095d6e (update project for production setup)
+>>>>>>> 00e972f (update project for production setup)
 		}
 	}
 
@@ -165,6 +232,10 @@ import jakarta.servlet.http.HttpServletResponse;
     description = &quot;Get Post By existing User. The response is Get All Posts of Existing User.&quot;)
 	@GetMapping(value = &quot;/user/{userId}/posts&quot;)
 	public ResponseEntity&lt;?&gt; getPostByUserHandler(final @PathVariable Integer userId) {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 00e972f (update project for production setup)
 <span class="nc" id="L168">		final String METHOD_NAME = &quot;getPostByUserHandler&quot;;</span>
 <span class="nc" id="L169">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
 		try {
@@ -178,6 +249,24 @@ import jakarta.servlet.http.HttpServletResponse;
 <span class="nc" id="L178">		} catch (ResourceNotFoundException e) {</span>
 <span class="nc" id="L179">			logger.error(e.getMessage());</span>
 <span class="nc" id="L180">			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(&quot;User Not Have Any Posts!&quot;, false));</span>
+<<<<<<< HEAD
+=======
+=======
+<span class="nc" id="L170">		final String METHOD_NAME = &quot;getPostByUserHandler&quot;;</span>
+<span class="nc" id="L171">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+		try {
+<span class="nc bnc" id="L173" title="All 2 branches missed.">			if (userId == null) {</span>
+<span class="nc" id="L174">				return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="nc" id="L175">						.body(new ApiResponse(&quot;User ID &quot; + userId + &quot; does not exist.&quot;, false));</span>
+			}
+<span class="nc" id="L177">			Set&lt;PostDto&gt; posts = this.postService.getPostByUser(userId);</span>
+<span class="nc" id="L178">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L179">			return ResponseEntity.status(HttpStatus.OK).body(posts);</span>
+<span class="nc" id="L180">		} catch (ResourceNotFoundException e) {</span>
+<span class="nc" id="L181">			logger.error(e.getMessage());</span>
+<span class="nc" id="L182">			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(&quot;User Not Have Any Posts!&quot;, false));</span>
+>>>>>>> 8095d6e (update project for production setup)
+>>>>>>> 00e972f (update project for production setup)
 		}
 	}
 
@@ -192,6 +281,10 @@ import jakarta.servlet.http.HttpServletResponse;
     description = &quot;Get Post By existing Category. The response is Get All Posts of Existing Category.&quot;)
 	@GetMapping(value = &quot;/category/{categoryId}/posts&quot;)
 	public ResponseEntity&lt;?&gt; getPostByCategoryHandler(final @PathVariable Integer categoryId) {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 00e972f (update project for production setup)
 <span class="nc" id="L195">		final String METHOD_NAME = &quot;getPostByCategoryHandler&quot;;</span>
 <span class="nc" id="L196">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
 		try {
@@ -206,6 +299,25 @@ import jakarta.servlet.http.HttpServletResponse;
 <span class="nc" id="L206">			logger.error(e.getMessage());</span>
 <span class="nc" id="L207">			return ResponseEntity.status(HttpStatus.NOT_FOUND)</span>
 <span class="nc" id="L208">					.body(new ApiResponse(&quot;Category Not Have Any Posts!&quot;, false));</span>
+<<<<<<< HEAD
+=======
+=======
+<span class="nc" id="L197">		final String METHOD_NAME = &quot;getPostByCategoryHandler&quot;;</span>
+<span class="nc" id="L198">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+		try {
+<span class="nc bnc" id="L200" title="All 2 branches missed.">			if (categoryId == null) {</span>
+<span class="nc" id="L201">				return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="nc" id="L202">						.body(new ApiResponse(&quot;Category ID &quot; + categoryId + &quot; does not exist.&quot;, false));</span>
+			}
+<span class="nc" id="L204">			Set&lt;PostDto&gt; posts = this.postService.getPostByCategory(categoryId);</span>
+<span class="nc" id="L205">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L206">			return ResponseEntity.status(HttpStatus.OK).body(posts);</span>
+<span class="nc" id="L207">		} catch (ResourceNotFoundException e) {</span>
+<span class="nc" id="L208">			logger.error(e.getMessage());</span>
+<span class="nc" id="L209">			return ResponseEntity.status(HttpStatus.NOT_FOUND)</span>
+<span class="nc" id="L210">					.body(new ApiResponse(&quot;Category Not Have Any Posts!&quot;, false));</span>
+>>>>>>> 8095d6e (update project for production setup)
+>>>>>>> 00e972f (update project for production setup)
 		}
 	}
 
@@ -227,6 +339,10 @@ import jakarta.servlet.http.HttpServletResponse;
 			final @RequestParam(value = &quot;pageContentSize&quot;, defaultValue = AppConstants.PAGE_CONTENT_SIZE, required = false) Integer pageContentSize,
 			final @RequestParam(value = &quot;sortBy&quot;, defaultValue = AppConstants.SORT_BY, required = false) String sortBy,
 			final @RequestParam(value = &quot;sortDir&quot;, defaultValue = AppConstants.SORT_DIR, required = false) String sortDir) {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 00e972f (update project for production setup)
 <span class="nc" id="L230">		final String METHOD_NAME = &quot;getPosts&quot;;</span>
 <span class="nc" id="L231">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
 		try {
@@ -235,6 +351,19 @@ import jakarta.servlet.http.HttpServletResponse;
 <span class="nc" id="L235">			return ResponseEntity.status(HttpStatus.OK).body(posts);</span>
 <span class="nc" id="L236">		} catch (ResourceNotFoundException e) {</span>
 <span class="nc" id="L237">			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(&quot;Not Found Any Posts!&quot;, false));</span>
+<<<<<<< HEAD
+=======
+=======
+<span class="nc" id="L232">		final String METHOD_NAME = &quot;getPosts&quot;;</span>
+<span class="nc" id="L233">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+		try {
+<span class="nc" id="L235">			PostResponse posts = this.postService.getPosts(pageNumber, pageContentSize, sortBy, sortDir);</span>
+<span class="nc" id="L236">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L237">			return ResponseEntity.status(HttpStatus.OK).body(posts);</span>
+<span class="nc" id="L238">		} catch (ResourceNotFoundException e) {</span>
+<span class="nc" id="L239">			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(&quot;Not Found Any Posts!&quot;, false));</span>
+>>>>>>> 8095d6e (update project for production setup)
+>>>>>>> 00e972f (update project for production setup)
 		}
 	}
 
@@ -249,6 +378,10 @@ import jakarta.servlet.http.HttpServletResponse;
     description = &quot;Get Posts By Post ID. The Response is Post object with id, Post Title, content and other details.&quot;)
 	@GetMapping(value = &quot;/post/{postId}&quot;)
 	public ResponseEntity&lt;?&gt; getPostById(final @PathVariable Integer postId) {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 00e972f (update project for production setup)
 <span class="nc" id="L252">		final String METHOD_NAME = &quot;getPostById&quot;;</span>
 <span class="nc" id="L253">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
 		try {
@@ -263,6 +396,25 @@ import jakarta.servlet.http.HttpServletResponse;
 <span class="nc" id="L263">			logger.error(e.getMessage());</span>
 <span class="nc" id="L264">			return ResponseEntity.status(HttpStatus.NOT_FOUND)</span>
 <span class="nc" id="L265">					.body(new ApiResponse(&quot;Not Found Any Post ID &quot; + postId, false));</span>
+<<<<<<< HEAD
+=======
+=======
+<span class="nc" id="L254">		final String METHOD_NAME = &quot;getPostById&quot;;</span>
+<span class="nc" id="L255">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+		try {
+<span class="nc bnc" id="L257" title="All 2 branches missed.">			if (postId == null) {</span>
+<span class="nc" id="L258">				return ResponseEntity.status(HttpStatus.BAD_REQUEST)</span>
+<span class="nc" id="L259">						.body(new ApiResponse(&quot;Post ID &quot; + postId + &quot; does not Empty!&quot;, false));</span>
+			}
+<span class="nc" id="L261">			PostDto post = this.postService.getPostById(postId);</span>
+<span class="nc" id="L262">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L263">			return ResponseEntity.status(HttpStatus.OK).body(post);</span>
+<span class="nc" id="L264">		} catch (ResourceNotFoundException e) {</span>
+<span class="nc" id="L265">			logger.error(e.getMessage());</span>
+<span class="nc" id="L266">			return ResponseEntity.status(HttpStatus.NOT_FOUND)</span>
+<span class="nc" id="L267">					.body(new ApiResponse(&quot;Not Found Any Post ID &quot; + postId, false));</span>
+>>>>>>> 8095d6e (update project for production setup)
+>>>>>>> 00e972f (update project for production setup)
 		}
 	}
 
@@ -278,6 +430,10 @@ import jakarta.servlet.http.HttpServletResponse;
     description = &quot;Get Posts By Keywords. The Response is Get All Post of Which is Matched Keyword By Any Post Title And Content.&quot;)
 	@GetMapping(value = &quot;/search/post/{keyword}&quot;)
 	public ResponseEntity&lt;?&gt; searchPostHandler(final @PathVariable String keyword) {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 00e972f (update project for production setup)
 <span class="nc" id="L281">		final String METHOD_NAME = &quot;searchPostHandler&quot;;</span>
 <span class="nc" id="L282">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
 		try {
@@ -290,6 +446,23 @@ import jakarta.servlet.http.HttpServletResponse;
 <span class="nc" id="L290">		} catch (ResourceNotFoundException e) {</span>
 <span class="nc" id="L291">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span>
 <span class="nc" id="L292">					.body(new ApiResponse(&quot;Something Went Wrong!&quot;, false));</span>
+<<<<<<< HEAD
+=======
+=======
+<span class="nc" id="L283">		final String METHOD_NAME = &quot;searchPostHandler&quot;;</span>
+<span class="nc" id="L284">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+		try {
+<span class="nc" id="L286">			List&lt;PostDto&gt; result = this.postService.searchPostByKeyword(keyword);</span>
+<span class="nc bnc" id="L287" title="All 2 branches missed.">			if (result.isEmpty()) {</span>
+<span class="nc" id="L288">				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(&quot;Not Found Any Posts!&quot;, false));</span>
+			}
+<span class="nc" id="L290">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L291">			return ResponseEntity.status(HttpStatus.OK).body(result);</span>
+<span class="nc" id="L292">		} catch (ResourceNotFoundException e) {</span>
+<span class="nc" id="L293">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span>
+<span class="nc" id="L294">					.body(new ApiResponse(&quot;Something Went Wrong!&quot;, false));</span>
+>>>>>>> 8095d6e (update project for production setup)
+>>>>>>> 00e972f (update project for production setup)
 		}
 	}
 
@@ -299,12 +472,24 @@ import jakarta.servlet.http.HttpServletResponse;
 	 * @param file
 	 * @param postId
 	 * @return status with file
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+	 * @throws Exception
+	 * @throws ResourceNotFoundException
+>>>>>>> 8095d6e (update project for production setup)
+>>>>>>> 00e972f (update project for production setup)
 	 */
 	@Tag(name = &quot;Post API&quot;, description = &quot;All Methods of Post APIs&quot;)
 	@Operation(summary = &quot;Upload Post Images&quot;,
     description = &quot;Upload Post Images. The Response is Get Uploaded Images of Post.&quot;)
 	@PostMapping(value = &quot;/post/upload/{postId}&quot;)
 	public ResponseEntity&lt;?&gt; uploadPostFile(final @PathVariable Integer postId,
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 00e972f (update project for production setup)
 			@RequestParam(&quot;file&quot;) MultipartFile file) {
 <span class="nc" id="L309">		final String METHOD_NAME = &quot;uploadPostFile&quot;;</span>
 <span class="nc" id="L310">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
@@ -313,11 +498,28 @@ import jakarta.servlet.http.HttpServletResponse;
 
 <span class="nc bnc" id="L314" title="All 2 branches missed.">		if (file.isEmpty()) {</span>
 <span class="nc" id="L315">			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(&quot;File Is Must Not Empty!&quot;, false));</span>
+<<<<<<< HEAD
+=======
+=======
+			@RequestParam(&quot;file&quot;) MultipartFile file) throws ResourceNotFoundException, Exception {
+<span class="nc" id="L313">		final String METHOD_NAME = &quot;uploadPostFile&quot;;</span>
+<span class="nc" id="L314">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+		// find previous post
+<span class="nc" id="L316">		PostDto post = this.postService.getPostById(postId);</span>
+
+<span class="nc bnc" id="L318" title="All 2 branches missed.">		if (file.isEmpty()) {</span>
+<span class="nc" id="L319">			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ApiResponse(&quot;File Is Must Not Empty!&quot;, false));</span>
+>>>>>>> 8095d6e (update project for production setup)
+>>>>>>> 00e972f (update project for production setup)
 		}
 
 		// upload the file
 		String fileName;
 		try {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 00e972f (update project for production setup)
 <span class="nc" id="L321">			fileName = this.fileService.fileUpoad(path, file);</span>
 <span class="nc" id="L322">		} catch (Exception e) {</span>
 <span class="nc" id="L323">			logger.error(e.getMessage());</span>
@@ -332,6 +534,25 @@ import jakarta.servlet.http.HttpServletResponse;
 
 <span class="nc" id="L333">		logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
 <span class="nc" id="L334">		return ResponseEntity.status(HttpStatus.OK).body(postDto);</span>
+<<<<<<< HEAD
+=======
+=======
+<span class="nc" id="L325">			fileName = this.fileService.fileUpoad(path, file);</span>
+<span class="nc" id="L326">		} catch (Exception e) {</span>
+<span class="nc" id="L327">			logger.error(e.getMessage());</span>
+<span class="nc" id="L328">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span>
+<span class="nc" id="L329">					.body(new ApiResponse(&quot;Post Images Not Uploaded!&quot;, false));</span>
+<span class="nc" id="L330">		}</span>
+
+		// set new property
+<span class="nc" id="L333">		post.setImageName(fileName);</span>
+		// then this update post
+<span class="nc" id="L335">		PostDto postDto = this.postService.updatePost(post, postId, post.getUser().getUserid());</span>
+
+<span class="nc" id="L337">		logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L338">		return ResponseEntity.status(HttpStatus.OK).body(postDto);</span>
+>>>>>>> 8095d6e (update project for production setup)
+>>>>>>> 00e972f (update project for production setup)
 
 	}
 
@@ -347,6 +568,10 @@ import jakarta.servlet.http.HttpServletResponse;
     description = &quot;Get Post Images. The Response is Get Images of Post.&quot;)
 	@GetMapping(value = &quot;/post/file/{fileName}&quot;, produces = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity&lt;?&gt; getFileResource(final @PathVariable String fileName, HttpServletResponse response) {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 00e972f (update project for production setup)
 <span class="nc" id="L350">		final String METHOD_NAME = &quot;getFileResource&quot;;</span>
 <span class="nc" id="L351">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
 		try {
@@ -360,6 +585,24 @@ import jakarta.servlet.http.HttpServletResponse;
 <span class="nc" id="L360">		} catch (IOException e) {</span>
 <span class="nc" id="L361">			logger.error(e.getMessage());</span>
 <span class="nc" id="L362">			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(&quot;File Is Not Found!&quot;);</span>
+<<<<<<< HEAD
+=======
+=======
+<span class="nc" id="L354">		final String METHOD_NAME = &quot;getFileResource&quot;;</span>
+<span class="nc" id="L355">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+		try {
+<span class="nc" id="L357">			InputStream fileResource = this.fileService.getFileResource(path, fileName);</span>
+<span class="nc" id="L358">			response.setContentType(MediaType.IMAGE_JPEG_VALUE);</span>
+<span class="nc" id="L359">			StreamUtils.copy(fileResource, response.getOutputStream());</span>
+<span class="nc" id="L360">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L361">			return ResponseEntity.ok()</span>
+<span class="nc" id="L362">					.header(HttpHeaders.CONTENT_DISPOSITION, &quot;attachment; filename=\&quot;&quot; + fileName + &quot;\&quot;&quot;)</span>
+<span class="nc" id="L363">					.contentType(MediaType.valueOf(response.getContentType())).build();</span>
+<span class="nc" id="L364">		} catch (IOException e) {</span>
+<span class="nc" id="L365">			logger.error(e.getMessage());</span>
+<span class="nc" id="L366">			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(&quot;File Is Not Found!&quot;);</span>
+>>>>>>> 8095d6e (update project for production setup)
+>>>>>>> 00e972f (update project for production setup)
 		}
 	}
 
@@ -375,6 +618,10 @@ import jakarta.servlet.http.HttpServletResponse;
     description = &quot;Delete Post Images. The Response is Message if Post Images is Deleted Success or Not.&quot;)
 	@DeleteMapping(&quot;/post/{postId}/file/{fileName}&quot;)
 	public ResponseEntity&lt;?&gt; deleteFileResourceFromPost(@PathVariable Integer postId, @PathVariable String fileName) {
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+>>>>>>> 00e972f (update project for production setup)
 <span class="nc" id="L378">		final String METHOD_NAME = &quot;deleteFileResourceFromPost&quot;;</span>
 <span class="nc" id="L379">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
 
@@ -392,6 +639,28 @@ import jakarta.servlet.http.HttpServletResponse;
 <span class="nc" id="L392">			logger.error(e.getMessage());</span>
 <span class="nc" id="L393">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span>
 <span class="nc" id="L394">					.body(new ApiResponse(&quot;File Was Not Deleted!&quot;, false));</span>
+<<<<<<< HEAD
+=======
+=======
+<span class="nc" id="L382">		final String METHOD_NAME = &quot;deleteFileResourceFromPost&quot;;</span>
+<span class="nc" id="L383">		logger.info(&quot;Method Invoked: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+
+		try {
+<span class="nc" id="L386">			boolean deleteFileResource = this.fileService.deleteFileResource(postId, path, fileName);</span>
+<span class="nc bnc" id="L387" title="All 2 branches missed.">			if (!deleteFileResource) {</span>
+<span class="nc" id="L388">				return ResponseEntity.status(HttpStatus.OK)</span>
+<span class="nc" id="L389">						.body(new ApiResponse(&quot;File Not Found!&quot;, deleteFileResource));</span>
+			}
+
+<span class="nc" id="L392">			logger.info(&quot;Response The Method: &quot; + this.getClass().getName() + &quot;:&quot; + METHOD_NAME);</span>
+<span class="nc" id="L393">			return ResponseEntity.status(HttpStatus.OK)</span>
+<span class="nc" id="L394">					.body(new ApiResponse(&quot;File Was Deleted Successfully!&quot;, deleteFileResource));</span>
+<span class="nc" id="L395">		} catch (Exception e) {</span>
+<span class="nc" id="L396">			logger.error(e.getMessage());</span>
+<span class="nc" id="L397">			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)</span>
+<span class="nc" id="L398">					.body(new ApiResponse(&quot;File Was Not Deleted!&quot;, false));</span>
+>>>>>>> 8095d6e (update project for production setup)
+>>>>>>> 00e972f (update project for production setup)
 
 		}
 	}

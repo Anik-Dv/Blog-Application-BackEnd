@@ -1,4 +1,12 @@
 -------------------------------------------------------------------------------
 Test set: com.anikdv.blog.app.SpringBootBlogApplicationBackEndApplicationTests
 -------------------------------------------------------------------------------
+<<<<<<< HEAD
 Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 47.926 s - in com.anikdv.blog.app.SpringBootBlogApplicationBackEndApplicationTests
+=======
+<<<<<<< HEAD
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 47.926 s - in com.anikdv.blog.app.SpringBootBlogApplicationBackEndApplicationTests
+=======
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 49.698 s - in com.anikdv.blog.app.SpringBootBlogApplicationBackEndApplicationTests
+>>>>>>> 8095d6e (update project for production setup)
+>>>>>>> 00e972f (update project for production setup)
