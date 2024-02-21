@@ -15,7 +15,7 @@ import lombok.ToString;
  *
  * @author AnikDV
  */
-@Getter
+<span class="nc" id="L18">@Getter</span>
 <span class="nc" id="L19">@Setter</span>
 <span class="nc" id="L20">@NoArgsConstructor</span>
 <span class="nc" id="L21">@AllArgsConstructor</span>
@@ -24,9 +24,9 @@ public class CategoryDto implements Serializable {
 
 	private static final long serialVersionUID = -7893607740507662277L;
 
-<span class="nc" id="L27">	private Integer categoryId;</span>
+	private Integer categoryId;
 	@NotBlank
 	@Size(min = 4, max = 30, message = &quot;Category has must be minimum 4 chars and maximum 30 chars!&quot;)
-<span class="nc" id="L30">	private String categoryTitle;</span>
+	private String categoryTitle;
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

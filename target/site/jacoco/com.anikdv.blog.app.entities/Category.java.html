@@ -21,19 +21,19 @@ import lombok.Setter;
  * @author AnikDv
  */
 @Entity
-@Getter
+<span class="nc" id="L24">@Getter</span>
 <span class="nc" id="L25">@Setter</span>
 <span class="fc" id="L26">@NoArgsConstructor</span>
 public class Category {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-<span class="nc" id="L31">	private Integer categoryId;</span>
-<span class="nc" id="L32">	private String categoryTitle;</span>
+	private Integer categoryId;
+	private String categoryTitle;
 
-<span class="fc" id="L34">	@OneToMany(mappedBy = &quot;category&quot;, cascade = { CascadeType.ALL }, orphanRemoval = true)</span>
+	@OneToMany(mappedBy = &quot;category&quot;, cascade = { CascadeType.ALL }, orphanRemoval = true)
 	@JsonBackReference
-<span class="nc" id="L36">	private Set&lt;Post&gt; posts = new HashSet&lt;&gt;();</span>
+<span class="fc" id="L36">	private Set&lt;Post&gt; posts = new HashSet&lt;&gt;();</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

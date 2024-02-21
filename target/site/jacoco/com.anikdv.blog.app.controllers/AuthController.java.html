@@ -50,15 +50,7 @@ import jakarta.validation.Valid;
 
 	@Autowired
 	private UserService userService;
-<<<<<<< HEAD
-	
-=======
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> 8095d6e (update project for production setup)
->>>>>>> 00e972f (update project for production setup)
 	@Autowired
 	private ModelMapperConfiguration mapperConfiguration;
 
@@ -113,15 +105,7 @@ import jakarta.validation.Valid;
 <span class="nc" id="L105">				 return ResponseEntity.status(HttpStatus.CREATED).body(registeredUser);</span>
 			} else {
 <span class="nc" id="L107">				return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(&quot;You Password &amp; Comfirm Password Is Not Matched!&quot;);</span>
-<<<<<<< HEAD
-			}			
-=======
-<<<<<<< HEAD
-			}			
-=======
 			}
->>>>>>> 8095d6e (update project for production setup)
->>>>>>> 00e972f (update project for production setup)
 <span class="nc" id="L109">		} catch (Exception e) {</span>
 <span class="nc" id="L110">			logger.error(e.getMessage());</span>
 <span class="nc" id="L111">			return ResponseEntity.status(HttpStatus.UNAUTHORIZED)</span>
@@ -132,13 +116,13 @@ import jakarta.validation.Valid;
 	/* This Method For Authenticate User */
 	private void doAuthentication(String username, String password) {
 <span class="nc" id="L118">		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,</span>
-				password);
+<span class="nc" id="L119">				password);</span>
 		try {
 <span class="nc" id="L121">			this.manager.authenticate(authenticationToken);</span>
 <span class="nc" id="L122">		} catch (BadCredentialsException ex) {</span>
 <span class="nc" id="L123">			logger.error(&quot;Invalid Username or Password!&quot;);</span>
 <span class="nc" id="L124">			throw new BadCredentialsException(&quot;Invalid Username or Password!&quot;);</span>
-<span class="nc" id="L125">		}</span>
+		}
 <span class="nc" id="L126">	}</span>
 
 }

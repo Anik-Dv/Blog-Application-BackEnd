@@ -98,79 +98,29 @@ import com.anikdv.blog.app.utils.GetAllDataFromCache;
 <span class="nc" id="L98">		Post createdPost = this.postsRepository.save(postEntity);</span>
 <span class="nc" id="L99">		return this.mapperConfiguration.modelMapper().map(createdPost, PostDto.class);</span>
 	}
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 00e972f (update project for production setup)
-	
-	
-	@Override
-	public PostDto updatePost(PostDto postDto, Integer postId) throws ResourceNotFoundException {
-<<<<<<< HEAD
-=======
-=======
 
 
 	@Override
 	public PostDto updatePost(PostDto postDto, Integer postId, Integer userId) throws Exception {
->>>>>>> 8095d6e (update project for production setup)
->>>>>>> 00e972f (update project for production setup)
 
 <span class="nc" id="L106">		Post post = this.postsRepository.findById(postId)</span>
 <span class="nc" id="L107">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;POST&quot;, &quot;ID&quot;, postId));</span>
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 00e972f (update project for production setup)
-		// set new value to old post
-<span class="nc" id="L110">		post.setTitle(postDto.getTitle());</span>
-<span class="nc" id="L111">		post.setContent(postDto.getContent());</span>
-<span class="nc" id="L112">		post.setTag(postDto.getTag());</span>
-
-<span class="nc" id="L114">		Post updatedPost = this.postsRepository.save(post);</span>
-<span class="nc" id="L115">		return this.mapperConfiguration.modelMapper().map(updatedPost, PostDto.class);</span>
-<<<<<<< HEAD
-=======
-=======
 <span class="nc bnc" id="L109" title="All 2 branches missed.">		if(post.getUser().getUserid()==userId) {</span>
 			// set new value to old post
 <span class="nc" id="L111">			post.setTitle(postDto.getTitle());</span>
 <span class="nc" id="L112">			post.setContent(postDto.getContent());</span>
 <span class="nc" id="L113">			post.setTag(postDto.getTag());</span>
-		} else {
+<span class="nc" id="L114">		} else {</span>
 <span class="nc" id="L115">			throw new Exception(&quot;You Information Are Not Valid!&quot;);</span>
 		}
 
 <span class="nc" id="L118">		Post updatedPost = this.postsRepository.save(post);</span>
 <span class="nc" id="L119">		return this.mapperConfiguration.modelMapper().map(updatedPost, PostDto.class);</span>
->>>>>>> 8095d6e (update project for production setup)
->>>>>>> 00e972f (update project for production setup)
 	}
 
 	@Override
 	public boolean deletePost(Integer postId, String path) {
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 00e972f (update project for production setup)
-<span class="nc" id="L120">		boolean flag = false;</span>
-		try {
-<span class="nc" id="L122">			Post post = this.postsRepository.findById(postId)</span>
-<span class="nc" id="L123">					.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;POST&quot;, &quot;ID&quot;, postId));</span>
-
-<span class="nc" id="L125">			String filePath = path + File.separator + post.getImageName();</span>
-<span class="nc" id="L126">			File file = new File(filePath);</span>
-<span class="nc bnc" id="L127" title="All 2 branches missed.">			if (file.exists()) {</span>
-<span class="nc" id="L128">				file.delete();</span>
-			}
-<span class="nc" id="L130">			this.postsRepository.delete(post);</span>
-<span class="nc" id="L131">			return flag = true;</span>
-<span class="nc" id="L132">		} catch (ResourceNotFoundException e) {</span>
-<span class="nc" id="L133">			return flag;</span>
-<<<<<<< HEAD
-=======
-=======
 <span class="nc" id="L124">		boolean flag = false;</span>
 		try {
 <span class="nc" id="L126">			Post post = this.postsRepository.findById(postId)</span>
@@ -185,28 +135,14 @@ import com.anikdv.blog.app.utils.GetAllDataFromCache;
 <span class="nc" id="L135">			return flag = true;</span>
 <span class="nc" id="L136">		} catch (ResourceNotFoundException e) {</span>
 <span class="nc" id="L137">			return flag;</span>
->>>>>>> 8095d6e (update project for production setup)
->>>>>>> 00e972f (update project for production setup)
 		}
 	}
 
 	@Override
 	public PostDto getPostById(Integer postId) {
-<<<<<<< HEAD
-<span class="nc" id="L139">		Post post = this.postsRepository.findById(postId)</span>
-<span class="nc" id="L140">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Post&quot;, &quot;ID&quot;, postId));</span>
-<span class="nc" id="L141">		return this.mapperConfiguration.modelMapper().map(post, PostDto.class);</span>
-=======
-<<<<<<< HEAD
-<span class="nc" id="L139">		Post post = this.postsRepository.findById(postId)</span>
-<span class="nc" id="L140">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Post&quot;, &quot;ID&quot;, postId));</span>
-<span class="nc" id="L141">		return this.mapperConfiguration.modelMapper().map(post, PostDto.class);</span>
-=======
 <span class="nc" id="L143">		Post post = this.postsRepository.findById(postId)</span>
 <span class="nc" id="L144">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Post&quot;, &quot;ID&quot;, postId));</span>
 <span class="nc" id="L145">		return this.mapperConfiguration.modelMapper().map(post, PostDto.class);</span>
->>>>>>> 8095d6e (update project for production setup)
->>>>>>> 00e972f (update project for production setup)
 
 	}
 
@@ -215,38 +151,6 @@ import com.anikdv.blog.app.utils.GetAllDataFromCache;
 			throws ResourceNotFoundException {
 
 		// for get all data from cache
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 00e972f (update project for production setup)
-<span class="nc" id="L150">		GetAllDataFromCache cache = new GetAllDataFromCache();</span>
-<span class="nc" id="L151">		cache.getAllDataCache(pageNumber, pageSize);</span>
-
-<span class="nc" id="L153">		Sort sortDiraction = null;</span>
-<span class="nc bnc" id="L154" title="All 2 branches missed.">		if (sortDir.equals(&quot;asc&quot;))</span>
-<span class="nc" id="L155">			sortDiraction = Sort.by(sortBy).ascending();</span>
-<span class="nc bnc" id="L156" title="All 2 branches missed.">		else if (sortDir.equals(&quot;desc&quot;))</span>
-<span class="nc" id="L157">			sortDiraction = Sort.by(sortBy).descending();</span>
-
-<span class="nc" id="L159">		Pageable pageable = PageRequest.of(pageNumber, pageSize, sortDiraction);</span>
-<span class="nc" id="L160">		Page&lt;Post&gt; postOfPage = this.postsRepository.findAll(pageable);</span>
-<span class="nc" id="L161">		List&lt;Post&gt; allPosts = postOfPage.getContent();</span>
-		// System.out.println(&quot;get all data from database&quot;);
-<span class="nc" id="L163">		List&lt;PostDto&gt; listOfPostDto = allPosts.stream()</span>
-<span class="nc" id="L164">				.map((post) -&gt; this.mapperConfiguration.modelMapper().map(post, PostDto.class))</span>
-<span class="nc" id="L165">				.collect(Collectors.toList());</span>
-
-<span class="nc" id="L167">		PostResponse postResponse = new PostResponse();</span>
-<span class="nc" id="L168">		postResponse.setContent(listOfPostDto);</span>
-<span class="nc" id="L169">		postResponse.setPageNumber(postOfPage.getNumber());</span>
-<span class="nc" id="L170">		postResponse.setPageContentSize(postOfPage.getSize());</span>
-<span class="nc" id="L171">		postResponse.setTotalPages(postOfPage.getTotalPages());</span>
-<span class="nc" id="L172">		postResponse.setTotalContent(postOfPage.getTotalElements());</span>
-<span class="nc" id="L173">		postResponse.setLastPage(postOfPage.isLast());</span>
-<span class="nc" id="L174">		return postResponse;</span>
-<<<<<<< HEAD
-=======
-=======
 <span class="nc" id="L154">		GetAllDataFromCache cache = new GetAllDataFromCache();</span>
 <span class="nc" id="L155">		cache.getAllDataCache(pageNumber, pageSize);</span>
 
@@ -272,82 +176,32 @@ import com.anikdv.blog.app.utils.GetAllDataFromCache;
 <span class="nc" id="L176">		postResponse.setTotalContent(postOfPage.getTotalElements());</span>
 <span class="nc" id="L177">		postResponse.setLastPage(postOfPage.isLast());</span>
 <span class="nc" id="L178">		return postResponse;</span>
->>>>>>> 8095d6e (update project for production setup)
->>>>>>> 00e972f (update project for production setup)
 	}
 
 	@Override
 	public Set&lt;PostDto&gt; getPostByUser(Integer userId) {
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 00e972f (update project for production setup)
-<span class="nc" id="L180">		User user = this.userRepository.findById(userId)</span>
-<span class="nc" id="L181">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;USER&quot;, &quot;ID&quot;, userId));</span>
-<span class="nc" id="L182">		Set&lt;Post&gt; userAllPosts = this.postsRepository.findByUser(user);</span>
-<span class="nc" id="L183">		Set&lt;PostDto&gt; posts = userAllPosts.stream()</span>
-<span class="nc" id="L184">				.map((p) -&gt; this.mapperConfiguration.modelMapper().map(p, PostDto.class)).collect(Collectors.toSet());</span>
-<span class="nc" id="L185">		return posts;</span>
-<<<<<<< HEAD
-=======
-=======
 <span class="nc" id="L184">		User user = this.userRepository.findById(userId)</span>
 <span class="nc" id="L185">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;USER&quot;, &quot;ID&quot;, userId));</span>
 <span class="nc" id="L186">		Set&lt;Post&gt; userAllPosts = this.postsRepository.findByUser(user);</span>
 <span class="nc" id="L187">		Set&lt;PostDto&gt; posts = userAllPosts.stream()</span>
 <span class="nc" id="L188">				.map((p) -&gt; this.mapperConfiguration.modelMapper().map(p, PostDto.class)).collect(Collectors.toSet());</span>
 <span class="nc" id="L189">		return posts;</span>
->>>>>>> 8095d6e (update project for production setup)
->>>>>>> 00e972f (update project for production setup)
 	}
 
 	@Override
 	public Set&lt;PostDto&gt; getPostByCategory(Integer categoryId) {
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 00e972f (update project for production setup)
-<span class="nc" id="L191">		Category category = this.categoryRepository.findById(categoryId)</span>
-<span class="nc" id="L192">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Category&quot;, &quot;ID&quot;, categoryId));</span>
-<span class="nc" id="L193">		Set&lt;Post&gt; categoryAllPosts = this.postsRepository.findByCategory(category);</span>
-<span class="nc" id="L194">		Set&lt;PostDto&gt; posts = categoryAllPosts.stream()</span>
-<span class="nc" id="L195">				.map((p) -&gt; this.mapperConfiguration.modelMapper().map(p, PostDto.class)).collect(Collectors.toSet());</span>
-<span class="nc" id="L196">		return posts;</span>
-<<<<<<< HEAD
-=======
-=======
 <span class="nc" id="L195">		Category category = this.categoryRepository.findById(categoryId)</span>
 <span class="nc" id="L196">				.orElseThrow(() -&gt; new ResourceNotFoundException(&quot;Category&quot;, &quot;ID&quot;, categoryId));</span>
 <span class="nc" id="L197">		Set&lt;Post&gt; categoryAllPosts = this.postsRepository.findByCategory(category);</span>
 <span class="nc" id="L198">		Set&lt;PostDto&gt; posts = categoryAllPosts.stream()</span>
 <span class="nc" id="L199">				.map((p) -&gt; this.mapperConfiguration.modelMapper().map(p, PostDto.class)).collect(Collectors.toSet());</span>
 <span class="nc" id="L200">		return posts;</span>
->>>>>>> 8095d6e (update project for production setup)
->>>>>>> 00e972f (update project for production setup)
 	}
 
 	@Override
 	public List&lt;PostDto&gt; searchPostByKeyword(String keyword) {
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 00e972f (update project for production setup)
-<span class="nc" id="L201">		List&lt;PostDto&gt; resultOfPostDto = null;</span>
-		try {
-<span class="nc" id="L203">			List&lt;Post&gt; result = this.postsRepository.searchPosts(&quot;%&quot; + keyword + &quot;%&quot;);</span>
-<span class="nc" id="L204">			resultOfPostDto = result.stream()</span>
-<span class="nc" id="L205">					.map((post) -&gt; this.mapperConfiguration.modelMapper().map(post, PostDto.class))</span>
-<span class="nc" id="L206">					.collect(Collectors.toList());</span>
-<span class="nc" id="L207">			return resultOfPostDto;</span>
-<span class="nc" id="L208">		} catch (ResourceNotFoundException e) {</span>
-<span class="nc" id="L209">			e.printStackTrace();</span>
-		}
-<span class="nc" id="L211">		return resultOfPostDto;</span>
-<<<<<<< HEAD
-=======
-=======
 <span class="nc" id="L205">		List&lt;PostDto&gt; resultOfPostDto = null;</span>
 		try {
 <span class="nc" id="L207">			List&lt;Post&gt; result = this.postsRepository.searchPosts(&quot;%&quot; + keyword + &quot;%&quot;);</span>
@@ -359,8 +213,6 @@ import com.anikdv.blog.app.utils.GetAllDataFromCache;
 <span class="nc" id="L213">			e.printStackTrace();</span>
 		}
 <span class="nc" id="L215">		return resultOfPostDto;</span>
->>>>>>> 8095d6e (update project for production setup)
->>>>>>> 00e972f (update project for production setup)
 	}
 
 }

@@ -47,27 +47,12 @@ import com.anikdv.blog.app.security.JwtAuthenticationFilter;
 	@Autowired
 	private JwtAuthenticationFilter filter;
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 00e972f (update project for production setup)
-<span class="fc" id="L50">	private static final String[] PUBLIC_URL = {&quot;api/auth/**&quot;, &quot;/api-docs&quot;, &quot;api/posts/feed&quot;, &quot;api/post/{postId}&quot;, </span>
-			&quot;api/post/file/{fileName}&quot;, &quot;/api/search/post/{keyword}&quot;, &quot;api/post/{post_id}/comments&quot;, 
-			&quot;api/category/{categoryId}/posts&quot;, &quot;api/user/{userId}/posts&quot;, &quot;/api/category/&quot;,&quot;/api/category/{categoryId}&quot;,
-			&quot;api/user/&quot;, &quot;api/user/{userId}&quot;, &quot;api/user/file/{fileName}&quot;,
-			&quot;/swagger-resources/**&quot;, &quot;/swagger-ui/**&quot;, &quot;/webjars/**&quot; };
-	
-<<<<<<< HEAD
-=======
-=======
 <span class="fc" id="L50">	private static final String[] PUBLIC_URL = {&quot;api/auth/**&quot;, &quot;/api-docs&quot;, &quot;api/posts/feed&quot;, &quot;api/post/{postId}&quot;,</span>
-			&quot;api/post/file/{fileName}&quot;, &quot;/api/search/post/{keyword}&quot;, &quot;api/post/{post_id}/comments&quot;, &quot;api/comments&quot;,
-			&quot;api/comment/{comment_id}&quot;, &quot;api/user/{user_id}/comments&quot;, &quot;api/category/{categoryId}/posts&quot;,
-			&quot;api/user/{userId}/posts&quot;, &quot;/api/category/&quot;,&quot;/api/category/{categoryId}&quot;, &quot;api/user/&quot;, &quot;api/user/{userId}&quot;,
-			&quot;api/user/file/{fileName}&quot;, &quot;/swagger-resources/**&quot;, &quot;/swagger-ui/**&quot;, &quot;/webjars/**&quot; };
+<span class="fc" id="L51">			&quot;api/post/file/{fileName}&quot;, &quot;/api/search/post/{keyword}&quot;, &quot;api/post/{post_id}/comments&quot;, &quot;api/comments&quot;,</span>
+<span class="fc" id="L52">			&quot;api/comment/{comment_id}&quot;, &quot;api/user/{user_id}/comments&quot;, &quot;api/category/{categoryId}/posts&quot;,</span>
+<span class="fc" id="L53">			&quot;api/user/{userId}/posts&quot;, &quot;/api/category/&quot;,&quot;/api/category/{categoryId}&quot;, &quot;api/user/&quot;, &quot;api/user/{userId}&quot;,</span>
+<span class="fc" id="L54">			&quot;api/user/file/{fileName}&quot;, &quot;/swagger-resources/**&quot;, &quot;/swagger-ui/**&quot;, &quot;/webjars/**&quot; };</span>
 
->>>>>>> 8095d6e (update project for production setup)
->>>>>>> 00e972f (update project for production setup)
 	/**
 	 * @param security
 	 * @throws Exception
@@ -78,70 +63,34 @@ import com.anikdv.blog.app.security.JwtAuthenticationFilter;
 	public SecurityFilterChain configuration(HttpSecurity security) throws Exception {
 <span class="fc" id="L64">		security.cors(Customizer.withDefaults());</span>
 <span class="fc" id="L65">		security.csrf(csrf -&gt; csrf.disable()).authorizeHttpRequests(</span>
-				authorize -&gt;
+<span class="fc" id="L66">				authorize -&gt;</span>
 <span class="fc" id="L67">				authorize.requestMatchers(PUBLIC_URL).permitAll().anyRequest().authenticated());</span>
 <span class="fc" id="L68">		security.exceptionHandling(e -&gt; e.authenticationEntryPoint(this.point))</span>
 <span class="fc" id="L69">				.sessionManagement(session -&gt; session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));</span>
 <span class="fc" id="L70">		security.addFilterBefore(filter, UsernamePasswordAuthenticationFilter.class);</span>
 <span class="fc" id="L71">		return security.build();</span>
 	}
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 00e972f (update project for production setup)
-	
-	
-	@Bean
-	public CorsConfigurationSource corsConfigurationSource() {
-<span class="fc" id="L77">		CorsConfiguration corsConfiguration = new CorsConfiguration();</span>
-		
-<<<<<<< HEAD
-=======
-=======
 
 
 	@Bean
 	public CorsConfigurationSource corsConfigurationSource() {
 <span class="fc" id="L77">		CorsConfiguration corsConfiguration = new CorsConfiguration();</span>
 
->>>>>>> 8095d6e (update project for production setup)
->>>>>>> 00e972f (update project for production setup)
 <span class="fc" id="L79">		corsConfiguration.setAllowedOrigins(Arrays.asList(&quot;http://localhost:3000&quot;));</span>
 <span class="fc" id="L80">		corsConfiguration.setAllowedMethods(Arrays.asList(&quot;GET&quot;, &quot;POST&quot;, &quot;PUT&quot;, &quot;DELETE&quot;, &quot;OPTIONS&quot;));</span>
 <span class="fc" id="L81">		corsConfiguration.setAllowedHeaders(List.of(&quot;Authorization&quot;, &quot;Content-Type&quot;));</span>
 <span class="fc" id="L82">		corsConfiguration.setAllowCredentials(true);</span>
 <span class="fc" id="L83">		corsConfiguration.setMaxAge(3600L);</span>
 		//corsConfiguration.setAllowedHeaders(List.of(&quot;Content-Type&quot;, &quot;Accept&quot;));
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 00e972f (update project for production setup)
-		
-<span class="fc" id="L86">		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();</span>
-<span class="fc" id="L87">		source.registerCorsConfiguration(&quot;/**&quot;, corsConfiguration);</span>
-		
-<<<<<<< HEAD
-=======
-=======
 
 <span class="fc" id="L86">		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();</span>
 <span class="fc" id="L87">		source.registerCorsConfiguration(&quot;/**&quot;, corsConfiguration);</span>
 
->>>>>>> 8095d6e (update project for production setup)
->>>>>>> 00e972f (update project for production setup)
 //		 FilterRegistrationBean&lt;?&gt; filterRegistrationBean = new FilterRegistrationBean&lt;&gt;();
 //		 filterRegistrationBean.setOrder(-110);
 <span class="fc" id="L91">		return source;</span>
 	}
-<<<<<<< HEAD
-	
-=======
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> 8095d6e (update project for production setup)
->>>>>>> 00e972f (update project for production setup)
 
 	/**
 	 * @param builder
@@ -163,27 +112,12 @@ import com.anikdv.blog.app.security.JwtAuthenticationFilter;
 	public PasswordEncoder passwordEncoder() {
 <span class="fc" id="L113">		return new BCryptPasswordEncoder();</span>
 	}
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 00e972f (update project for production setup)
-	
-	
-//	@Bean
-//	public FilterRegistrationBean corsFilter() {
-//		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-//		
-<<<<<<< HEAD
-=======
-=======
 
 
 //	@Bean
 //	public FilterRegistrationBean corsFilter() {
 //		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 //
->>>>>>> 8095d6e (update project for production setup)
->>>>>>> 00e972f (update project for production setup)
 //		CorsConfiguration corsConfiguration = new CorsConfiguration();
 //		corsConfiguration.setAllowCredentials(true);
 //		corsConfiguration.addAllowedOriginPattern(&quot;*&quot;);
@@ -196,32 +130,14 @@ import com.anikdv.blog.app.security.JwtAuthenticationFilter;
 //		corsConfiguration.addAllowedHeader(&quot;GET&quot;);
 //		corsConfiguration.addAllowedHeader(&quot;OPTIONS&quot;);
 //		corsConfiguration.setMaxAge(3600L);
-<<<<<<< HEAD
-//		
-=======
-<<<<<<< HEAD
-//		
-=======
 //
->>>>>>> 8095d6e (update project for production setup)
->>>>>>> 00e972f (update project for production setup)
 //		//NOTE: UPDATE &quot;/**&quot; TO PRODUCTION FORNT-END APP URL
 //		source.registerCorsConfiguration(&quot;/**&quot;, corsConfiguration);
 //		FilterRegistrationBean registrationBean = new FilterRegistrationBean(new CorsFilter(source));
 //		return registrationBean;
 //	}
-<<<<<<< HEAD
-	
-	
-=======
-<<<<<<< HEAD
-	
-	
-=======
 
 
->>>>>>> 8095d6e (update project for production setup)
->>>>>>> 00e972f (update project for production setup)
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

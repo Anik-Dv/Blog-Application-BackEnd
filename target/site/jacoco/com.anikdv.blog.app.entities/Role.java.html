@@ -20,12 +20,12 @@ public class Role implements Serializable {
 
 	@Id
 	@Column(name = &quot;ROLEID&quot;)
-<span class="nc" id="L23">	private Integer id;</span>
+	private Integer id;
 
 	@Column(name = &quot;ROLENAME&quot;)
-<span class="nc" id="L26">	private String name;</span>
+	private String name;
 
 	@ManyToOne
-<span class="nc" id="L29">	private User user;</span>
+	private User user;
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

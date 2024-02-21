@@ -18,27 +18,27 @@ import lombok.Setter;
  * Entity of Comments
  */
 @Entity
-@Getter
+<span class="nc" id="L21">@Getter</span>
 <span class="nc" id="L22">@Setter</span>
 <span class="fc" id="L23">@NoArgsConstructor</span>
 public class Comments {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-<span class="nc" id="L28">	private Integer commentId;</span>
+	private Integer commentId;
 
 	@Column(name = &quot;commentDate&quot;, nullable = false)
-<span class="nc" id="L31">	private LocalDateTime createDate;</span>
+	private LocalDateTime createDate;
 
 	@Column(length = 150, nullable = false)
-<span class="nc" id="L34">	private String Content;</span>
+	private String Content;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(nullable = false, name = &quot;user_Id&quot;)
-<span class="nc" id="L38">	private User user;</span>
+	private User user;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(nullable = false, name = &quot;post_Id&quot;)
-<span class="nc" id="L42">	private Post post;</span>
+	private Post post;
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

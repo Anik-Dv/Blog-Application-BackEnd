@@ -29,36 +29,36 @@ import lombok.Setter;
 
 @Entity
 @Table(name = &quot;Posts&quot;)
-@Getter
+<span class="nc" id="L32">@Getter</span>
 <span class="nc" id="L33">@Setter</span>
 <span class="fc" id="L34">@NoArgsConstructor</span>
 public class Post {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-<span class="nc" id="L39">	private Integer postId;</span>
+	private Integer postId;
 
 	@Column(nullable = false, length = 80)
-<span class="nc" id="L42">	private String title;</span>
+	private String title;
 	@Column(nullable = false, length = 2600)
-<span class="nc" id="L44">	private String content;</span>
-<span class="nc" id="L45">	private String tag;</span>
-<span class="nc" id="L46">	private String imageName;</span>
+	private String content;
+	private String tag;
+	private String imageName;
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = &quot;yyyy-MM-dd HH:mm:ss&quot;)
-<span class="nc" id="L48">	private LocalDateTime createDate;</span>
+	private LocalDateTime createDate;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(nullable = false, name = &quot;categoryId&quot;)
 	@JsonManagedReference
-<span class="nc" id="L53">	private Category category;</span>
+	private Category category;
 
 	@ManyToOne(cascade = CascadeType.PERSIST)
 	@JoinColumn(nullable = false, name = &quot;userid&quot;)
 	@JsonManagedReference
-<span class="nc" id="L58">	private User user;</span>
+	private User user;
 
-<span class="fc" id="L60">	@OneToMany(mappedBy = &quot;post&quot;, cascade = { CascadeType.ALL }, orphanRemoval = true)</span>
-<span class="nc" id="L61">	private Set&lt;Comments&gt; comments = new HashSet&lt;&gt;();</span>
+	@OneToMany(mappedBy = &quot;post&quot;, cascade = { CascadeType.ALL }, orphanRemoval = true)
+<span class="fc" id="L61">	private Set&lt;Comments&gt; comments = new HashSet&lt;&gt;();</span>
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

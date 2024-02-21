@@ -1,12 +1,2 @@
-<<<<<<< HEAD
-D:\GitHub\blog-clone-repo\Blog-Application-BackEnd-master\Blog-Application-BackEnd-master\src\test\java\com\anikdv\blog\app\SpringBootBlogApplicationBackEndApplicationTests.java
-D:\GitHub\blog-clone-repo\Blog-Application-BackEnd-master\Blog-Application-BackEnd-master\src\test\java\com\anikdv\blog\app\testController\TestUserController.java
-=======
-<<<<<<< HEAD
-D:\GitHub\blog-clone-repo\Blog-Application-BackEnd-master\Blog-Application-BackEnd-master\src\test\java\com\anikdv\blog\app\SpringBootBlogApplicationBackEndApplicationTests.java
-D:\GitHub\blog-clone-repo\Blog-Application-BackEnd-master\Blog-Application-BackEnd-master\src\test\java\com\anikdv\blog\app\testController\TestUserController.java
-=======
 /home/anikdv/git/app/Blog-Application/src/test/java/com/anikdv/blog/app/SpringBootBlogApplicationBackEndApplicationTests.java
 /home/anikdv/git/app/Blog-Application/src/test/java/com/anikdv/blog/app/testController/TestUserController.java
->>>>>>> 8095d6e (update project for production setup)
->>>>>>> 00e972f (update project for production setup)

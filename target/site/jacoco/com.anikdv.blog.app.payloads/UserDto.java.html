@@ -22,7 +22,7 @@ import lombok.Setter;
 /**
  * This Model Class is DTO (Data Transfer Object)
  */
-@Getter
+<span class="nc" id="L25">@Getter</span>
 <span class="nc" id="L26">@Setter</span>
 <span class="nc" id="L27">@NoArgsConstructor</span>
 <span class="nc" id="L28">@AllArgsConstructor</span>
@@ -30,24 +30,16 @@ import lombok.Setter;
 public class UserDto implements Serializable {
 	private static final long serialVersionUID = 6082824759048463498L;
 
-<span class="nc" id="L33">	private Integer userid;</span>
+	private Integer userid;
 	@NotBlank
 	@Size(min = 4, max = 26, message = &quot;You Name Is Must be Minimum 4 Chars and Maximum is 26 Chars!&quot;)
-<span class="nc" id="L36">	private String name;</span>
-<<<<<<< HEAD
-	
-=======
-<<<<<<< HEAD
-	
-=======
+	private String name;
 
->>>>>>> 8095d6e (update project for production setup)
->>>>>>> 00e972f (update project for production setup)
 	@Size(min = 16, max = 900, message = &quot;About is Must be Minimum 16 Chars and Maximum is 900 Chars!&quot;)
-<span class="nc" id="L39">	private String about;</span>
+	private String about;
 	@Email(regexp = &quot;^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$&quot;, message = &quot;Email Address is Not Valid!&quot;)
 	@NotBlank
-<span class="nc" id="L42">	private String email;</span>
+	private String email;
 	@NotBlank
 	@Pattern(regexp = &quot;^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$&quot;, message = &quot;Minimum eight characters, at least one upper case letter, one number and one special character&quot;)
 	@Size(min = 8, max = 20)
@@ -56,52 +48,18 @@ public class UserDto implements Serializable {
 	@Pattern(regexp = &quot;^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$&quot;, message = &quot;Minimum eight characters, at least one upper case letter, one number and one special character&quot;)
 	@Size(min = 8, max = 20)
 	private String comfirmPassword;
-<span class="nc" id="L51">	private String image_Name;</span>
-<span class="nc" id="L52">	private String status;</span>
-<<<<<<< HEAD
-	
-=======
-<<<<<<< HEAD
-	
-=======
+	private String image_Name;
+	private String status;
 
->>>>>>> 8095d6e (update project for production setup)
->>>>>>> 00e972f (update project for production setup)
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = &quot;yyyy-MM-dd HH:mm:ss&quot;)
-<span class="nc" id="L55">	private LocalDateTime createDate;</span>
+	private LocalDateTime createDate;
 
 <span class="nc" id="L57">	private Set&lt;RoleDto&gt; roles = new HashSet&lt;&gt;();</span>
-<<<<<<< HEAD
-	
-=======
-<<<<<<< HEAD
-	
-=======
 
->>>>>>> 8095d6e (update project for production setup)
->>>>>>> 00e972f (update project for production setup)
 	@JsonIgnore
 	public String getPassword() {
 <span class="nc" id="L61">		return this.password;</span>
 	}
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
->>>>>>> 00e972f (update project for production setup)
-	
-	@JsonIgnore
-	public String getComfirmPassword() {
-<span class="nc" id="L66">		return this.comfirmPassword;</span>
-	}
-	
-	@JsonProperty
-	public void setPassword(String password) {
-<span class="nc" id="L71">		this.password=password;</span>
-<span class="nc" id="L72">	}</span>
-	
-<<<<<<< HEAD
-=======
-=======
 
 	@JsonProperty
 	public void setPassword(String password) {
@@ -113,8 +71,6 @@ public class UserDto implements Serializable {
 <span class="nc" id="L71">		return this.comfirmPassword;</span>
 	}
 
->>>>>>> 8095d6e (update project for production setup)
->>>>>>> 00e972f (update project for production setup)
 	@JsonProperty
 	public void setComfirmPassword(String comfirmPassword) {
 <span class="nc" id="L76">		this.comfirmPassword = comfirmPassword;</span>
