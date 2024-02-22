@@ -136,7 +136,7 @@ import com.anikdv.blog.app.utils.AppConstants;
 <span class="nc bnc" id="L136" title="All 4 branches missed.">			if (userDto.getComfirmPassword() != null || !userDto.getComfirmPassword().isEmpty()) {</span>
 <span class="nc" id="L137">				user.setComfirmPassword(this.passwordEncoder.encode(userDto.getComfirmPassword()));</span>
 			}
-<span class="nc" id="L139">		} else {</span>
+		} else {
 			// return throw Exception password not matches
 <span class="nc" id="L141">			throw new Exception(&quot;Your Current Password Not Matches!&quot;);</span>
 		}

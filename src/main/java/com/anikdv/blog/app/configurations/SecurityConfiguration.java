@@ -76,7 +76,7 @@ public class SecurityConfiguration {
 	public CorsConfigurationSource corsConfigurationSource() {
 		CorsConfiguration corsConfiguration = new CorsConfiguration();
 
-		corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
+		corsConfiguration.setAllowedOrigins(Arrays.asList("http://localhost:3000","https://blog-bounty.vercel.app"));
 		corsConfiguration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
 		corsConfiguration.setAllowedHeaders(List.of("Authorization", "Content-Type"));
 		corsConfiguration.setAllowCredentials(true);

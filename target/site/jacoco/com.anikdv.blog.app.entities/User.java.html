@@ -32,7 +32,7 @@ import lombok.Setter;
  * @author AnikDV
  */
 @Entity
-<span class="nc" id="L35">@Getter</span>
+@Getter
 <span class="nc" id="L36">@Setter</span>
 <span class="fc" id="L37">@NoArgsConstructor</span>
 <span class="nc" id="L38">@AllArgsConstructor</span>
@@ -42,33 +42,33 @@ public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = &quot;userid&quot;)
-	private Integer userid;
+<span class="nc" id="L45">	private Integer userid;</span>
 
 	@Column(name = &quot;UserName&quot;)
-	private String name;
+<span class="nc" id="L48">	private String name;</span>
 	@Column(length = 900)
-	private String about;
+<span class="nc" id="L50">	private String about;</span>
 	@Column(name = &quot;EmailId&quot;, nullable = false, unique = true)
-	private String email;
-	private String password;
-	private String comfirmPassword;
-	private String image_Name;
-	private String status;
+<span class="nc" id="L52">	private String email;</span>
+<span class="nc" id="L53">	private String password;</span>
+<span class="nc" id="L54">	private String comfirmPassword;</span>
+<span class="nc" id="L55">	private String image_Name;</span>
+<span class="nc" id="L56">	private String status;</span>
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = &quot;yyyy-MM-dd HH:mm:ss&quot;)
-	private LocalDateTime createDate;
+<span class="nc" id="L59">	private LocalDateTime createDate;</span>
 
-	@OneToMany(mappedBy = &quot;user&quot;, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+<span class="pc" id="L61">	@OneToMany(mappedBy = &quot;user&quot;, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)</span>
 	@JsonBackReference
-<span class="pc" id="L63">	private Set&lt;Post&gt; posts = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L63">	private Set&lt;Post&gt; posts = new HashSet&lt;&gt;();</span>
 
-	@OneToMany(mappedBy = &quot;user&quot;, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+<span class="pc" id="L65">	@OneToMany(mappedBy = &quot;user&quot;, cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)</span>
 	@JsonBackReference
-<span class="pc" id="L67">	private Set&lt;Comments&gt; comments = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L67">	private Set&lt;Comments&gt; comments = new HashSet&lt;&gt;();</span>
 
-	@OneToMany(mappedBy = &quot;user&quot; ,cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+<span class="pc" id="L69">	@OneToMany(mappedBy = &quot;user&quot; ,cascade = CascadeType.ALL, fetch = FetchType.EAGER)</span>
 	//@JoinTable(name = &quot;USERROLE&quot;, joinColumns = @JoinColumn(name = &quot;USER&quot;, referencedColumnName = &quot;userid&quot;), inverseJoinColumns = @JoinColumn(name = &quot;ROLE&quot;, referencedColumnName = &quot;ROLEID&quot;))
-<span class="pc" id="L71">	private Set&lt;Role&gt; roles = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L71">	private Set&lt;Role&gt; roles = new HashSet&lt;&gt;();</span>
 
 	@Override
 	public Collection&lt;? extends GrantedAuthority&gt; getAuthorities() {

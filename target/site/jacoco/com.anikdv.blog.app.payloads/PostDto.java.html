@@ -14,32 +14,32 @@ import lombok.Setter;
 /**
  *
  */
-<span class="nc" id="L17">@Getter</span>
+@Getter
 <span class="nc" id="L18">@Setter</span>
 <span class="nc" id="L19">@NoArgsConstructor</span>
 public class PostDto implements Serializable {
 	private static final long serialVersionUID = 6340156754117897222L;
 
-	private Integer postId;
+<span class="nc" id="L23">	private Integer postId;</span>
 
 	@NotBlank
 	@Size(min = 6, max = 80, message = &quot;Post Title Must be Minimum of 6 Chars and Maximum is 80 Chars!&quot;)
-	private String title;
+<span class="nc" id="L27">	private String title;</span>
 
 	@NotBlank
 	@Size(min = 6, max = 2600, message = &quot;Post Content Must be Minimum of 4 Chars and Maximum is 2600 Chars!&quot;)
-	private String content;
+<span class="nc" id="L31">	private String content;</span>
 
 	@Size(min = 3, max = 25, message = &quot;Post Tag Must be Minimum of 3 Chars and Maximum is 25 Chars!&quot;)
-	private String tag;
-	private String imageName;
-	private LocalDateTime createDate;
+<span class="nc" id="L34">	private String tag;</span>
+<span class="nc" id="L35">	private String imageName;</span>
+<span class="nc" id="L36">	private LocalDateTime createDate;</span>
 	@NotBlank
-	private CategoryDto category;
+<span class="nc" id="L38">	private CategoryDto category;</span>
 	@NotBlank
-	private UserDto user;
+<span class="nc" id="L40">	private UserDto user;</span>
 
-	@NotBlank
+<span class="nc" id="L42">	@NotBlank</span>
 <span class="nc" id="L43">	private Set&lt;CommentsDto&gt; comments = new HashSet&lt;&gt;();</span>
 
 }

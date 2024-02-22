@@ -116,13 +116,13 @@ import jakarta.validation.Valid;
 	/* This Method For Authenticate User */
 	private void doAuthentication(String username, String password) {
 <span class="nc" id="L118">		UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,</span>
-<span class="nc" id="L119">				password);</span>
+				password);
 		try {
 <span class="nc" id="L121">			this.manager.authenticate(authenticationToken);</span>
 <span class="nc" id="L122">		} catch (BadCredentialsException ex) {</span>
 <span class="nc" id="L123">			logger.error(&quot;Invalid Username or Password!&quot;);</span>
 <span class="nc" id="L124">			throw new BadCredentialsException(&quot;Invalid Username or Password!&quot;);</span>
-		}
+<span class="nc" id="L125">		}</span>
 <span class="nc" id="L126">	}</span>
 
 }

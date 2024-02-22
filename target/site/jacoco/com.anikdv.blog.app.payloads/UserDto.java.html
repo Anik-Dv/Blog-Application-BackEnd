@@ -22,7 +22,7 @@ import lombok.Setter;
 /**
  * This Model Class is DTO (Data Transfer Object)
  */
-<span class="nc" id="L25">@Getter</span>
+@Getter
 <span class="nc" id="L26">@Setter</span>
 <span class="nc" id="L27">@NoArgsConstructor</span>
 <span class="nc" id="L28">@AllArgsConstructor</span>
@@ -30,16 +30,16 @@ import lombok.Setter;
 public class UserDto implements Serializable {
 	private static final long serialVersionUID = 6082824759048463498L;
 
-	private Integer userid;
+<span class="nc" id="L33">	private Integer userid;</span>
 	@NotBlank
 	@Size(min = 4, max = 26, message = &quot;You Name Is Must be Minimum 4 Chars and Maximum is 26 Chars!&quot;)
-	private String name;
+<span class="nc" id="L36">	private String name;</span>
 
 	@Size(min = 16, max = 900, message = &quot;About is Must be Minimum 16 Chars and Maximum is 900 Chars!&quot;)
-	private String about;
+<span class="nc" id="L39">	private String about;</span>
 	@Email(regexp = &quot;^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$&quot;, message = &quot;Email Address is Not Valid!&quot;)
 	@NotBlank
-	private String email;
+<span class="nc" id="L42">	private String email;</span>
 	@NotBlank
 	@Pattern(regexp = &quot;^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$&quot;, message = &quot;Minimum eight characters, at least one upper case letter, one number and one special character&quot;)
 	@Size(min = 8, max = 20)
@@ -48,11 +48,11 @@ public class UserDto implements Serializable {
 	@Pattern(regexp = &quot;^(?=.*\\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$&quot;, message = &quot;Minimum eight characters, at least one upper case letter, one number and one special character&quot;)
 	@Size(min = 8, max = 20)
 	private String comfirmPassword;
-	private String image_Name;
-	private String status;
+<span class="nc" id="L51">	private String image_Name;</span>
+<span class="nc" id="L52">	private String status;</span>
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = &quot;yyyy-MM-dd HH:mm:ss&quot;)
-	private LocalDateTime createDate;
+<span class="nc" id="L55">	private LocalDateTime createDate;</span>
 
 <span class="nc" id="L57">	private Set&lt;RoleDto&gt; roles = new HashSet&lt;&gt;();</span>
 

@@ -48,10 +48,10 @@ import com.anikdv.blog.app.security.JwtAuthenticationFilter;
 	private JwtAuthenticationFilter filter;
 
 <span class="fc" id="L50">	private static final String[] PUBLIC_URL = {&quot;api/auth/**&quot;, &quot;/api-docs&quot;, &quot;api/posts/feed&quot;, &quot;api/post/{postId}&quot;,</span>
-<span class="fc" id="L51">			&quot;api/post/file/{fileName}&quot;, &quot;/api/search/post/{keyword}&quot;, &quot;api/post/{post_id}/comments&quot;, &quot;api/comments&quot;,</span>
-<span class="fc" id="L52">			&quot;api/comment/{comment_id}&quot;, &quot;api/user/{user_id}/comments&quot;, &quot;api/category/{categoryId}/posts&quot;,</span>
-<span class="fc" id="L53">			&quot;api/user/{userId}/posts&quot;, &quot;/api/category/&quot;,&quot;/api/category/{categoryId}&quot;, &quot;api/user/&quot;, &quot;api/user/{userId}&quot;,</span>
-<span class="fc" id="L54">			&quot;api/user/file/{fileName}&quot;, &quot;/swagger-resources/**&quot;, &quot;/swagger-ui/**&quot;, &quot;/webjars/**&quot; };</span>
+			&quot;api/post/file/{fileName}&quot;, &quot;/api/search/post/{keyword}&quot;, &quot;api/post/{post_id}/comments&quot;, &quot;api/comments&quot;,
+			&quot;api/comment/{comment_id}&quot;, &quot;api/user/{user_id}/comments&quot;, &quot;api/category/{categoryId}/posts&quot;,
+			&quot;api/user/{userId}/posts&quot;, &quot;/api/category/&quot;,&quot;/api/category/{categoryId}&quot;, &quot;api/user/&quot;, &quot;api/user/{userId}&quot;,
+			&quot;api/user/file/{fileName}&quot;, &quot;/swagger-resources/**&quot;, &quot;/swagger-ui/**&quot;, &quot;/webjars/**&quot; };
 
 	/**
 	 * @param security
@@ -63,7 +63,7 @@ import com.anikdv.blog.app.security.JwtAuthenticationFilter;
 	public SecurityFilterChain configuration(HttpSecurity security) throws Exception {
 <span class="fc" id="L64">		security.cors(Customizer.withDefaults());</span>
 <span class="fc" id="L65">		security.csrf(csrf -&gt; csrf.disable()).authorizeHttpRequests(</span>
-<span class="fc" id="L66">				authorize -&gt;</span>
+				authorize -&gt;
 <span class="fc" id="L67">				authorize.requestMatchers(PUBLIC_URL).permitAll().anyRequest().authenticated());</span>
 <span class="fc" id="L68">		security.exceptionHandling(e -&gt; e.authenticationEntryPoint(this.point))</span>
 <span class="fc" id="L69">				.sessionManagement(session -&gt; session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));</span>
@@ -76,7 +76,7 @@ import com.anikdv.blog.app.security.JwtAuthenticationFilter;
 	public CorsConfigurationSource corsConfigurationSource() {
 <span class="fc" id="L77">		CorsConfiguration corsConfiguration = new CorsConfiguration();</span>
 
-<span class="fc" id="L79">		corsConfiguration.setAllowedOrigins(Arrays.asList(&quot;http://localhost:3000&quot;));</span>
+<span class="fc" id="L79">		corsConfiguration.setAllowedOrigins(Arrays.asList(&quot;http://localhost:3000&quot;,&quot;https://blog-bounty.vercel.app&quot;));</span>
 <span class="fc" id="L80">		corsConfiguration.setAllowedMethods(Arrays.asList(&quot;GET&quot;, &quot;POST&quot;, &quot;PUT&quot;, &quot;DELETE&quot;, &quot;OPTIONS&quot;));</span>
 <span class="fc" id="L81">		corsConfiguration.setAllowedHeaders(List.of(&quot;Authorization&quot;, &quot;Content-Type&quot;));</span>
 <span class="fc" id="L82">		corsConfiguration.setAllowCredentials(true);</span>

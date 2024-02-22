@@ -16,15 +16,15 @@ import lombok.Data;
 public class CommentsDto implements Serializable {
 	private static final long serialVersionUID = -3816259610003470315L;
 
-	private Integer commentId;
+<span class="nc" id="L19">	private Integer commentId;</span>
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = &quot;yyyy-MM-dd HH:mm:ss&quot;)
-	private LocalDateTime createDate;
+<span class="nc" id="L22">	private LocalDateTime createDate;</span>
 
 	@NotEmpty(message = &quot;Comment Content Must Not be Empty!&quot;)
 	@Size(min = 3, max = 130, message = &quot;Content Must be Minimum 3 Chars and Maximum 130 Chars!&quot;)
-	private String Content;
+<span class="nc" id="L26">	private String Content;</span>
 
-	private UserDto user;
+<span class="nc" id="L28">	private UserDto user;</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

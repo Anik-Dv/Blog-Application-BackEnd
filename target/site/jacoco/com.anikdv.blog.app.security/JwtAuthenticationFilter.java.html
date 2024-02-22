@@ -47,8 +47,8 @@ import jakarta.servlet.http.HttpServletResponse;
 <span class="nc" id="L47">			} catch (Exception e) {</span>
 				// Handle token extraction/validation errors
 <span class="nc" id="L49">				logger.error(&quot;Error extracting username from token: &quot; + e.getMessage());</span>
-			}
-<span class="nc" id="L51">		} else {</span>
+<span class="nc" id="L50">			}</span>
+		} else {
 <span class="nc" id="L52">			logger.error(&quot;Invalid Header Value!&quot;);</span>
 		}
 
