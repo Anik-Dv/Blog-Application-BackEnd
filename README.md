@@ -8,15 +8,13 @@ Based on the project structure and files, the purpose of this project appears to
 One of the key problems this project solves is the need for an easy-to-use and customizable blog platform. By providing a structured backend application, developers can focus on building the frontend and user interface, while leveraging the backend to handle the blog's core functionalities. This separation of concerns allows for a more efficient development process and a better user experience overall.
 
 
+## APPLICATION APIS DOCS
+
+![Blog App Docs](https://github.com/Anik-Dv/Blog-Application-BackEnd/assets/104680177/ed553b73-22ab-4c71-b274-06793c11d4a0)
+
 
 ## Demo
 [Application Api Request And Response Demo](https://github.com/Anik-Dv/Blog-Application-BackEnd/assets/104680177/f8f9c7ee-9dde-4846-bc8d-cd59636ecac0)
-
-
-
-## Screenshots
-
-![App Screenshot](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
 
 
 ## API Reference
