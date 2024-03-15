@@ -8,6 +8,16 @@ Based on the project structure and files, the purpose of this project appears to
 One of the key problems this project solves is the need for an easy-to-use and customizable blog platform. By providing a structured backend application, developers can focus on building the frontend and user interface, while leveraging the backend to handle the blog's core functionalities. This separation of concerns allows for a more efficient development process and a better user experience overall.
 
 
+
+# APPLICATION FLOWCHART
+![BLOGBOUNTY-Application-Architucture](https://github.com/Anik-Dv/Blog-Application-BackEnd/assets/104680177/4cb1827b-f97e-4852-a100-fb68b58e9c6c)
+
+
+# APPLICATION ENTITY RELATIONSHIP FLOWCHART
+![Entity-relationship diagrams](https://github.com/Anik-Dv/Blog-Application-BackEnd/assets/104680177/bfb288c9-304b-45bb-955e-8ece06f32de7)
+
+
+
 ## APPLICATION APIS DOCS
 
 ![Blog App Docs](https://github.com/Anik-Dv/Blog-Application-BackEnd/assets/104680177/ed553b73-22ab-4c71-b274-06793c11d4a0)
